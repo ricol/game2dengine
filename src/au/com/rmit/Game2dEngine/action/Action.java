@@ -17,9 +17,10 @@ public abstract class Action
 
     public static final double MINIMUM = 0.001;
     public static final double EQUAL_STANDARD = 0.000000001;
+    public static final double MINIMUM_DURATION = 0.001;
 
     public Random theRandom = new Random();
-    protected MovingSprite theSprite;
+    protected MovingSprite theSprite = null;
     public boolean bComplete = false;
 
     //runningTime in milliseconds

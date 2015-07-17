@@ -131,7 +131,7 @@ public class Scene extends JPanel
         }
     }
 
-    private void Loop()
+    private synchronized void Loop()
     {
 
         this.number++;

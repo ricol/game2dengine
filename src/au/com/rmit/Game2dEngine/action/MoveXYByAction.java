@@ -26,9 +26,25 @@ public class MoveXYByAction extends MoveAction
     double moveYByCurrent;
     boolean moveYByComplete;
 
+    public MoveXYByAction()
+    {
+        this.moveXBy = 0;
+        this.moveXByDuration = 0;
+        this.moveXBySpeed = 0;
+        this.moveXByCurrent = 0;
+        this.moveXByComplete = false;
+
+        this.moveYBy = 0;
+        this.moveYByDuration = 0;
+        this.moveYBySpeed = 0;
+        this.moveYByCurrent = 0;
+        this.moveYByComplete = false;
+    }
+
     //duratio in seconds
     public void moveXBy(double x, float duration)
     {
+        if (duration <= 0) duration = (float)Action.MINIMUM_DURATION;
         this.moveXBy = x;
         this.moveXByDuration = abs(duration * 1000);
         this.moveXBySpeed = x / abs(duration * 1000);
@@ -38,6 +54,7 @@ public class MoveXYByAction extends MoveAction
     //duratio in seconds
     public void moveYBy(double y, float duration)
     {
+        if (duration <= 0) duration = (float)Action.MINIMUM_DURATION;
         this.moveYBy = y;
         this.moveYByDuration = abs(duration * 1000);
         this.moveYBySpeed = y / abs(duration * 1000);
@@ -47,12 +64,14 @@ public class MoveXYByAction extends MoveAction
     @Override
     public void perform(double runningTime)
     {
+        if (bComplete) return;
+        
         if (!moveXByComplete)
         {
 
-            if (abs(abs(this.moveXBy) - Action.MINIMUM) > Action.EQUAL_STANDARD)
+            if (abs(this.moveXBy) > Action.MINIMUM)
             {
-                double tmpX = this.theSprite.getX();
+                double x = this.theSprite.getX();
                 double value = this.moveXBySpeed * runningTime;
                 this.moveXByCurrent += value;
 
@@ -63,7 +82,7 @@ public class MoveXYByAction extends MoveAction
                         moveXByComplete = true;
                     } else
                     {
-                        tmpX += value;
+                        x += value;
                     }
                 } else
                 {
@@ -72,10 +91,10 @@ public class MoveXYByAction extends MoveAction
                         moveXByComplete = true;
                     } else
                     {
-                        tmpX += value;
+                        x += value;
                     }
                 }
-                this.theSprite.setX(tmpX);
+                this.theSprite.setX(x);
             } else
             {
                 moveXByComplete = true;
@@ -85,10 +104,9 @@ public class MoveXYByAction extends MoveAction
 
         if (!moveYByComplete)
         {
-
-            if (abs(abs(this.moveYBy) - Action.MINIMUM) > Action.EQUAL_STANDARD)
+            if (abs(this.moveYBy) > Action.MINIMUM)
             {
-                double tmpY = this.theSprite.getY();
+                double y = this.theSprite.getY();
                 double value = this.moveYBySpeed * runningTime;
                 this.moveYByCurrent += value;
 
@@ -99,7 +117,7 @@ public class MoveXYByAction extends MoveAction
                         moveYByComplete = true;
                     } else
                     {
-                        tmpY += value;
+                        y += value;
                     }
                 } else
                 {
@@ -108,11 +126,11 @@ public class MoveXYByAction extends MoveAction
                         moveYByComplete = true;
                     } else
                     {
-                        tmpY += value;
+                        y += value;
                     }
                 }
 
-                this.theSprite.setY(tmpY);
+                this.theSprite.setY(y);
             } else
             {
                 moveYByComplete = true;
