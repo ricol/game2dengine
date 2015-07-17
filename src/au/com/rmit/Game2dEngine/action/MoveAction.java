@@ -9,16 +9,7 @@ package au.com.rmit.Game2dEngine.action;
  *
  * @author ricolwang
  */
-public class MovingAction extends Action
+public class MoveAction extends Action
 {
 
-    public void moveTo(double X, double Y, double duration)
-    {
-
-    }
-
-    public void moveBy(double DelX, double DelY, double duration)
-    {
-
-    }
 }

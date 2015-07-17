@@ -12,13 +12,27 @@ package au.com.rmit.Game2dEngine.action;
 public class RotateAction extends Action
 {
 
-    public void RotateTo(double degree, double duration)
-    {
+    public double angleBy;
+    public double angleByDuration;
 
+    public double angleTo;
+    public double angleToDuration;
+
+    public void rotateBy(double angle, double duration)
+    {
+        this.angleBy = angle;
+        this.angleByDuration = duration;
     }
 
-    public void RotateBy(double degree, double duration)
+    public void rotateTo(double angle, double duration)
     {
+        this.angleTo = angle;
+        this.angleToDuration = duration;
+    }
 
+    @Override
+    public void perform(double runningTime)
+    {
+        super.perform(runningTime);
     }
 }

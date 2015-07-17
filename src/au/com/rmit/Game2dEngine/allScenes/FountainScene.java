@@ -65,7 +65,7 @@ public class FountainScene extends Scene
         super.stop();
     }
 
-    public synchronized void createParticles(int number, int x, int y, Gravity g)
+    public void createParticles(int number, int x, int y, Gravity g)
     {
         for (int i = 0; i < number; i++)
         {
@@ -85,6 +85,14 @@ public class FountainScene extends Scene
             aObject.color = new Color(redValue, greenValue, blueValue);
 
             aObject.applyGravity(g);
+
+//            if (abs(theRandom.nextInt()) % 100 > 50)
+//            {
+//                aObject.setImage("starSmall.png");
+//            } else
+//            {
+//                aObject.setImage("starBig.png");
+//            }
 
             this.addSprite(aObject);
         }

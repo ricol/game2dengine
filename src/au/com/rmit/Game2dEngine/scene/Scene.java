@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.scene;
 
+import au.com.rmit.Game2dEngine.node.MovingSprite;
 import au.com.rmit.Game2dEngine.node.Sprite;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -39,6 +40,7 @@ public class Scene extends JPanel
     long lastTime = System.currentTimeMillis();
     long fps = 0;
     float timeEllapsed = 0;
+    long actionCount = 0;
 
     HashMap<Integer, Layer> layers = new HashMap();
 
@@ -155,11 +157,17 @@ public class Scene extends JPanel
                 aLayer.AllObjects.removeAll(aLayer.DeadObjects);
                 aLayer.DeadObjects.clear();
 
+                actionCount = 0;
                 //update sprites states
                 for (Sprite aSprite : aLayer.AllObjects)
                 {
                     aSprite.updateState(currentTime);
-
+                    
+                    if (aSprite instanceof MovingSprite)
+                    {
+                        actionCount += ((MovingSprite)aSprite).getActionCount();
+                    }
+                    
                     if (!aSprite.isAlive())
                     {
                         aLayer.DeadObjects.add(aSprite);
@@ -222,13 +230,17 @@ public class Scene extends JPanel
                 totalLayers++;
                 totalNodes += aLayer.AllObjects.size();
             }
-
+            
             text = "NODES: " + totalNodes;
             theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
+            
+            //draw total actions
+            text = "ACTIONS: " + actionCount;
+            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
 
             //draw total layers
             text = "LAYERS: " + totalLayers;
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
+            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
 
             //draw current time ellapsed
             text = String.format("TIME: %.2f", timeEllapsed);
@@ -261,4 +273,5 @@ public class Scene extends JPanel
     {
         this.addSprite(aSprite, 0);
     }
+
 }

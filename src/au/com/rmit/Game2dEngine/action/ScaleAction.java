@@ -12,12 +12,16 @@ package au.com.rmit.Game2dEngine.action;
 public class ScaleAction extends Action
 {
 
-    public void ScaleTo(double t, double duration)
+    public void scaleBy(double time, double duration)
     {
-
     }
 
-    public void ScaleBy(double t, double duration)
+    public void scaleTo(double time, double duration)
+    {
+    }
+
+    @Override
+    public void perform(double runningTime)
     {
 
     }
