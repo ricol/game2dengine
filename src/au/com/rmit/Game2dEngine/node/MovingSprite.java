@@ -7,7 +7,8 @@ package au.com.rmit.Game2dEngine.node;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,11 +20,9 @@ public class MovingSprite extends Sprite
 {
 
     public boolean bDeadIfNoActions;
-    protected double angle;
     protected double velocityX;
     protected double velocityY;
 
-//    protected Queue<Action> theQueueOfActions = new LinkedList<>();
     protected Set<Action> theSetOfActions = new HashSet<>();
     Set<Action> theSetOfActionsDeleted = new HashSet<>();
 
@@ -33,8 +32,6 @@ public class MovingSprite extends Sprite
 
         this.velocityX = velocityX;
         this.velocityY = velocityY;
-
-        this.angle = 0;
     }
 
     @Override
@@ -90,7 +87,7 @@ public class MovingSprite extends Sprite
     }
 
     @Override
-    public void updateGUI(Graphics g)
+    public void updateGUI(Graphics2D g)
     {
         if (g == null)
         {
@@ -101,7 +98,12 @@ public class MovingSprite extends Sprite
         {
             if (this.theImage != null)
             {
+                AffineTransform old = g.getTransform();
+
+                g.rotate(angle);
                 g.drawImage(theImage, (int) x, (int) y, (int) this.width, (int) this.height, null);
+
+                g.setTransform(old);
             } else
             {
                 if (color == null)
@@ -112,7 +114,12 @@ public class MovingSprite extends Sprite
                     g.setColor(color);
                 }
 
+                AffineTransform old = g.getTransform();
+
+                g.rotate(angle);
                 g.fillArc((int) x, (int) y, (int) width, (int) height, 0, 360);
+
+                g.setTransform(old);
             }
         }
     }
@@ -121,14 +128,12 @@ public class MovingSprite extends Sprite
     {
         aAction.setSprite(this);
         this.theSetOfActions.add(aAction);
-//        System.out.println("Action added." + this.theQueueOfActions.size());
     }
 
     public void removeAction(Action aAction)
     {
         aAction.clearSprite();
         this.theSetOfActions.remove(aAction);
-//        System.out.println("Action removed. " + this.theQueueOfActions.size());
     }
 
     public int getActionCount()

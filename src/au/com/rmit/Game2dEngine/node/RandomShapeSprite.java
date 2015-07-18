@@ -6,7 +6,7 @@
 package au.com.rmit.Game2dEngine.node;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import static java.lang.Math.abs;
 
 /**
@@ -24,7 +24,7 @@ public class RandomShapeSprite extends MovingSprite
     }
 
     @Override
-    public void updateGUI(Graphics g)
+    public void updateGUI(Graphics2D g)
     {
         if (this.isAlive)
         {
