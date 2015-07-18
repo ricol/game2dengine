@@ -7,8 +7,8 @@ package au.com.rmit.Game2dEngine.node;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +57,39 @@ public class Sprite extends Node
 
     public void updateGUI(Graphics2D g)
     {
+        if (g == null)
+        {
+            return;
+        }
 
+        if (this.isAlive)
+        {
+            if (this.theImage != null)
+            {
+                AffineTransform old = g.getTransform();
+
+                g.rotate(angle);
+                g.drawImage(theImage, (int) x, (int) y, (int) this.width, (int) this.height, null);
+
+                g.setTransform(old);
+            } else
+            {
+                if (color == null)
+                {
+                    g.setColor(Color.RED);
+                } else
+                {
+                    g.setColor(color);
+                }
+
+                AffineTransform old = g.getTransform();
+
+                g.rotate(angle);
+                g.fillArc((int) x, (int) y, (int) width, (int) height, 0, 360);
+
+                g.setTransform(old);
+            }
+        }
     }
 
     public boolean isAlive()

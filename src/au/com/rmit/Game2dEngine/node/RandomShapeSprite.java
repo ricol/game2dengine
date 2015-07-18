@@ -15,6 +15,7 @@ import static java.lang.Math.abs;
  */
 public class RandomShapeSprite extends MovingSprite
 {
+
     int angleStart = abs(theRandom.nextInt()) % 360;
     int angleEnd = angleStart + abs(theRandom.nextInt()) % 360;
 
@@ -37,7 +38,7 @@ public class RandomShapeSprite extends MovingSprite
             }
 
 //            g.fillArc((int) x, (int) y, (int) width, (int) height, 0, 360);
-            g.fill3DRect((int)this.x, (int)this.y, (int)this.width, (int)this.height, true);
+            g.fill3DRect((int) this.x, (int) this.y, (int) this.width, (int) this.height, true);
 //            g.draw3DRect((int)this.x, (int)this.y, (int)this.width, (int)this.height, true);
 //            g.fillOval((int)this.x, (int)this.y, (int)this.width, (int)this.height);
         }
