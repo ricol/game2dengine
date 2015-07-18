@@ -27,7 +27,6 @@ public class MoveXByAction extends MoveAction
         this.moveXByCurrent = 0;
     }
 
-    //duratio in seconds
     public void moveXBy(double x, float duration)
     {
         if (duration <= 0)

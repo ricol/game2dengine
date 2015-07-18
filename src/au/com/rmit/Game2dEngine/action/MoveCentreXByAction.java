@@ -25,7 +25,6 @@ public class MoveCentreXByAction extends MoveAction
         this.moveCentreXByDuration = 0;
     }
 
-    //duratio in seconds
     public void MoveCentreXBy(double x, float duration)
     {
         if (duration <= 0)

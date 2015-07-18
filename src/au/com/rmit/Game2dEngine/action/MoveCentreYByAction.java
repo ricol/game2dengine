@@ -25,7 +25,6 @@ public class MoveCentreYByAction extends MoveAction
         this.moveCentreYByDuration = 0;
     }
 
-    //duratio in seconds
     public void MoveCentreYBy(double x, float duration)
     {
         if (duration <= 0)

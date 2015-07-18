@@ -35,7 +35,6 @@ public class MoveCentreYToAction extends MoveAction
         }
     }
 
-    //duratio in seconds
     public void MoveCentreYTo(double x, float duration)
     {
         if (duration <= 0)

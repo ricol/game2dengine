@@ -27,7 +27,6 @@ public class MoveYByAction extends MoveAction
         this.moveYByCurrent = 0;
     }
 
-    //duratio in seconds
     public void moveYBy(double y, float duration)
     {
         if (duration <= 0)

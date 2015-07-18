@@ -35,7 +35,6 @@ public class MoveXToAction extends MoveAction
         }
     }
 
-    //duratio in seconds
     public void moveXTo(double x, float duration)
     {
         if (duration <= 0)
