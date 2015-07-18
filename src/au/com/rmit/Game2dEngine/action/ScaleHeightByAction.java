@@ -31,17 +31,26 @@ public class ScaleHeightByAction extends ScaleAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
+            bImmediately = true;
         }
         this.scaleHeightBy = value;
         this.scaleHeightByDuration = duration;
-        this.scaleHeightBySpeed = value / abs(duration * 1000);
+        if (!bImmediately)
+        {
+            this.scaleHeightBySpeed = value / abs(duration * 1000);
+        }
         this.scaleHeightByCurrent = 0;
     }
 
     @Override
     public void perform(double runningTime)
     {
+        if (bImmediately)
+        {
+            this.theSprite.setHeight(this.theSprite.getHeight() + scaleHeightBy);
+            bComplete = true;
+        }
         if (bComplete)
         {
             return;

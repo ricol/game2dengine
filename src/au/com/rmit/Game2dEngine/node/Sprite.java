@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 public class Sprite extends Node
 {
 
+    public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
     public double mass;
     public Gravity g;
@@ -105,33 +106,40 @@ public class Sprite extends Node
 
         if (this.isAlive)
         {
-            if (this.theImage != null)
+            if (bCustomDrawing)
             {
                 Graphics2D theGraphics2D = this.getTheImageGraphics();
-                Color blackTransparent = new Color(0, 0, 0, 0);
-                theGraphics2D.setColor(blackTransparent);
-                theGraphics2D.fillRect(0, 0, w, h);
-
-                AffineTransform old = theGraphics2D.getTransform();
-                theGraphics2D.rotate(angle);
-
-                theGraphics2D.drawImage(theImage, 0, 0, w, h, null);
-                theGraphics2D.setTransform(old);
+                this.onCustomDraw(theGraphics2D);
             } else
             {
-                Graphics2D theGraphics2D = this.getTheImageGraphics();
-                Color blackTransparent = new Color(0, 0, 0, 0);
-                theGraphics2D.setColor(blackTransparent);
-                theGraphics2D.fillRect(0, 0, w, h);
+                if (this.theImage != null)
+                {
+                    Graphics2D theGraphics2D = this.getTheImageGraphics();
+                    Color blackTransparent = new Color(0, 0, 0, 0);
+                    theGraphics2D.setColor(blackTransparent);
+                    theGraphics2D.fillRect(0, 0, w, h);
 
-                AffineTransform old = theGraphics2D.getTransform();
+                    AffineTransform old = theGraphics2D.getTransform();
+                    theGraphics2D.rotate(angle);
 
-                theGraphics2D.rotate(angle);
-                Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
-                theGraphics2D.setColor(theColor);
-                theGraphics2D.fillArc(0, 0, w, h, 0, 360);
+                    theGraphics2D.drawImage(theImage, 0, 0, w, h, null);
+                    theGraphics2D.setTransform(old);
+                } else
+                {
+                    Graphics2D theGraphics2D = this.getTheImageGraphics();
+                    Color blackTransparent = new Color(0, 0, 0, 0);
+                    theGraphics2D.setColor(blackTransparent);
+                    theGraphics2D.fillRect(0, 0, w, h);
 
-                theGraphics2D.setTransform(old);
+                    AffineTransform old = theGraphics2D.getTransform();
+
+                    theGraphics2D.rotate(angle);
+                    Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
+                    theGraphics2D.setColor(theColor);
+                    theGraphics2D.fillArc(0, 0, w, h, 0, 360);
+
+                    theGraphics2D.setTransform(old);
+                }
             }
 
             if (theImageCanvas != null)
@@ -247,5 +255,30 @@ public class Sprite extends Node
             value = 255;
         }
         this.blue = value;
+    }
+
+    public double getCentreX()
+    {
+        return this.x + width / 2.0;
+    }
+
+    public double getCentreY()
+    {
+        return this.y + height / 2.0;
+    }
+
+    public void setCentreX(double value)
+    {
+        this.setX(value - width / 2.0);
+    }
+
+    public void setCentreY(double value)
+    {
+        this.setX(value - height / 2.0);
+    }
+
+    public void onCustomDraw(Graphics2D theGraphics2D)
+    {
+
     }
 }

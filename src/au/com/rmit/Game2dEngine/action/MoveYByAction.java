@@ -27,22 +27,31 @@ public class MoveYByAction extends MoveAction
         this.moveYByCurrent = 0;
     }
 
-    //duratio in seconds
     public void moveYBy(double y, float duration)
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
+            bImmediately = true;
         }
         this.moveYBy = y;
         this.moveYByDuration = abs(duration * 1000);
-        this.moveYBySpeed = y / abs(duration * 1000);
+        if (!bImmediately)
+        {
+            this.moveYBySpeed = y / abs(duration * 1000);
+        }
         this.moveYByCurrent = 0;
     }
 
     @Override
     public void perform(double runningTime)
     {
+        if (bImmediately)
+        {
+            this.theSprite.setY(this.theSprite.getY() + moveYBy);
+            bComplete = true;
+        }
+        
         if (bComplete)
         {
             return;

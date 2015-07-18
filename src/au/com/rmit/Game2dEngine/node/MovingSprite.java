@@ -15,7 +15,7 @@ import java.util.Set;
  */
 public class MovingSprite extends Sprite
 {
-
+    
     public boolean bDeadIfNoActions;
     protected double velocityX;
     protected double velocityY;
@@ -98,5 +98,15 @@ public class MovingSprite extends Sprite
     public int getActionCount()
     {
         return this.theSetOfActions.size();
+    }
+    
+    public void setVelocityX(double value)
+    {
+        this.velocityX = value;
+    }
+    
+    public void setVelocityY(double value)
+    {
+        this.velocityY = value;
     }
 }
