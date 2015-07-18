@@ -5,52 +5,34 @@
  */
 package au.com.rmit.Game2dEngine.action;
 
-import au.com.rmit.Game2dEngine.node.MovingSprite;
 import static java.lang.Math.abs;
 
 /**
  *
  * @author ricolwang
  */
-public class MoveXToAction extends MoveAction
+public class MoveCentreXByAction extends MoveAction
 {
 
     MoveXByAction theMoveXByAction;
 
-    double moveXTo;
-    float moveXToDuration;
+    double moveCentreXBy;
+    float moveCentreXByDuration;
 
-    public MoveXToAction(MovingSprite theSprite)
+    public MoveCentreXByAction()
     {
-        if (theSprite != null)
-        {
-            this.setSprite(theSprite);
-
-            this.moveXTo = this.theSprite.getX();
-            this.moveXToDuration = 0;
-
-        } else
-        {
-            bComplete = true;
-        }
+        this.moveCentreXBy = 0;
+        this.moveCentreXByDuration = 0;
     }
 
-    public void moveXTo(double x, float duration)
+    public void MoveCentreXBy(double x, float duration)
     {
         if (duration <= 0)
         {
             duration = 0;
         }
-        this.moveXTo = x;
-        this.moveXToDuration = abs(duration * 1000);
-    }
-
-    @Override
-    public void clearSprite()
-    {
-        this.theMoveXByAction.clearSprite();
-        this.theMoveXByAction = null;
-        this.theSprite = null;
+        this.moveCentreXBy = x;
+        this.moveCentreXByDuration = abs(duration * 1000);
     }
 
     @Override
@@ -64,8 +46,7 @@ public class MoveXToAction extends MoveAction
         if (theMoveXByAction == null)
         {
             theMoveXByAction = new MoveXByAction();
-            double tmpX = this.theSprite.getX();
-            theMoveXByAction.moveXBy(moveXTo - tmpX, this.moveXToDuration / 1000.0f);
+            theMoveXByAction.moveXBy(moveCentreXBy, this.moveCentreXByDuration / 1000.0f);
             theMoveXByAction.setSprite(theSprite);
         }
 

@@ -40,7 +40,7 @@ public class AlphaToAction extends AlphaAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
         }
         this.alphaTo = x;
         this.alphaToDuration = abs(duration * 1000);

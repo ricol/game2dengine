@@ -31,17 +31,27 @@ public class ScaleWidthByAction extends ScaleAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
+            bImmediately = true;
         }
         this.scaleWidthBy = value;
         this.scaleWidthByDuration = duration;
-        this.scaleWidthBySpeed = value / abs(duration * 1000);
+        if (!bImmediately)
+        {
+            this.scaleWidthBySpeed = value / abs(duration * 1000);
+        }
         this.scaleWidthByCurrent = 0;
     }
 
     @Override
     public void perform(double runningTime)
     {
+        if (bImmediately)
+        {
+            this.theSprite.setWidth(this.theSprite.getWidth() + scaleWidthBy);
+            bComplete = true;
+        }
+
         if (bComplete)
         {
             return;
