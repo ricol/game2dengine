@@ -92,6 +92,11 @@ public class MovingSprite extends Sprite
     @Override
     public void updateGUI(Graphics g)
     {
+        if (g == null)
+        {
+            return;
+        }
+
         if (this.isAlive)
         {
             if (this.theImage != null)

@@ -70,6 +70,7 @@ public class Scene extends JPanel
                 {
                     return;
                 }
+
                 theImage = null;
                 theGraphics = null;
 
@@ -81,29 +82,29 @@ public class Scene extends JPanel
 
     public void start()
     {
-        if (this.getWidth() > 0 && this.getHeight() > 0)
+        if (getWidth() > 0 && getHeight() > 0)
         {
-            if (this.theImage == null)
+            if (theImage == null)
             {
-                this.theImage = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                this.theGraphics = this.theImage.createGraphics();
+                theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+                theGraphics = theImage.createGraphics();
             }
 
-            this.bPaused = false;
+            bPaused = false;
         }
     }
 
     public void pause()
     {
-        this.bPaused = !this.bPaused;
+        bPaused = !bPaused;
     }
 
     public void stop()
     {
-        this.theImage = null;
-        this.theGraphics = null;
+        theImage = null;
+        theGraphics = null;
 
-        this.bPaused = true;
+        bPaused = true;
     }
 
     public void updateState()
@@ -114,139 +115,21 @@ public class Scene extends JPanel
     @Override
     public void paint(Graphics g)
     {
-        this.Loop();
+        Loop();
 
-        if (this.theImage != null)
+        if (theImage != null)
         {
-            g.drawImage(this.theImage, 0, 0, null);
+            g.drawImage(theImage, 0, 0, null);
         }
 
         try
         {
             Thread.sleep(DELAY);
-            this.repaint();
+            repaint();
         } catch (InterruptedException ex)
         {
 
         }
-    }
-
-    private synchronized void Loop()
-    {
-
-        this.number++;
-
-        double currentTime = System.currentTimeMillis();
-
-        if (!bPaused)
-        {
-            for (int i = 0; i <= MAX_LAYERS; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                {
-                    continue;
-                }
-
-                //remove all dead sprites
-                for (Sprite aSprite : aLayer.DeadObjects)
-                {
-                    aSprite.theScene = null;
-                }
-
-                aLayer.AllObjects.removeAll(aLayer.DeadObjects);
-                aLayer.DeadObjects.clear();
-
-                actionCount = 0;
-                //update sprites states
-                for (Sprite aSprite : aLayer.AllObjects)
-                {
-                    aSprite.updateState(currentTime);
-                    
-                    if (aSprite instanceof MovingSprite)
-                    {
-                        actionCount += ((MovingSprite)aSprite).getActionCount();
-                    }
-                    
-                    if (!aSprite.isAlive())
-                    {
-                        aLayer.DeadObjects.add(aSprite);
-                    }
-                }
-
-                aLayer.AllObjects.addAll(aLayer.NewObjects);
-                aLayer.NewObjects.clear();
-
-                this.updateState();
-            }
-        }
-
-        //update GUI
-        if (theGraphics != null)
-        {
-            theGraphics.setColor(Color.BLACK);
-            theGraphics.fillRect(0, 0, this.size().width, this.size().height);
-
-            for (int i = 0; i <= MAX_LAYERS; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                {
-                    continue;
-                }
-
-                for (Sprite aSprite : aLayer.AllObjects)
-                {
-                    aSprite.updateGUI(theGraphics);
-                }
-            }
-
-            long time = System.currentTimeMillis();
-            long delta = time - this.lastTime;
-            if (delta > INTERVAL)
-            {
-                this.fps = (long) ((this.number / (delta * 1.0)) * 1000);
-                this.number = 0;
-                this.lastTime = time;
-            }
-
-            //draw fps
-            String text = "FPS: " + fps;
-            theGraphics.setColor(Color.RED);
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT);
-
-            //draw sprites count
-            int totalNodes = 0;
-            int totalLayers = 0;
-
-            for (int i = 0; i <= MAX_LAYERS; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                {
-                    continue;
-                }
-
-                totalLayers++;
-                totalNodes += aLayer.AllObjects.size();
-            }
-            
-            text = "NODES: " + totalNodes;
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
-            
-            //draw total actions
-            text = "ACTIONS: " + actionCount;
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
-
-            //draw total layers
-            text = "LAYERS: " + totalLayers;
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
-
-            //draw current time ellapsed
-            text = String.format("TIME: %.2f", timeEllapsed);
-            theGraphics.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
-        }
-
     }
 
     public void addSprite(Sprite aSprite, int zOrder)
@@ -271,7 +154,122 @@ public class Scene extends JPanel
 
     public void addSprite(Sprite aSprite)
     {
-        this.addSprite(aSprite, 0);
+        addSprite(aSprite, 0);
     }
 
+    private void Loop()
+    {
+
+        if (!bPaused)
+        {
+            number++;
+
+            double currentTime = System.currentTimeMillis();
+            for (int i = 0; i <= MAX_LAYERS; i++)
+            {
+                Layer aLayer = layers.get(i);
+                if (aLayer == null)
+                {
+                    continue;
+                }
+
+                //remove all dead sprites
+                for (Sprite aSprite : aLayer.DeadObjects)
+                {
+                    aSprite.theScene = null;
+                }
+
+                aLayer.AllObjects.removeAll(aLayer.DeadObjects);
+                aLayer.DeadObjects.clear();
+
+                actionCount = 0;
+                //update sprites states
+                for (Sprite aSprite : aLayer.AllObjects)
+                {
+                    aSprite.updateState(currentTime);
+
+                    if (aSprite instanceof MovingSprite)
+                    {
+                        actionCount += ((MovingSprite) aSprite).getActionCount();
+                    }
+
+                    if (!aSprite.isAlive())
+                    {
+                        aLayer.DeadObjects.add(aSprite);
+                    }
+                }
+
+                aLayer.AllObjects.addAll(aLayer.NewObjects);
+                aLayer.NewObjects.clear();
+
+                updateState();
+            }
+        }
+
+        //update GUI
+        if (theGraphics != null)
+        {
+            theGraphics.setColor(Color.BLACK);
+            theGraphics.fillRect(0, 0, this.size().width, this.size().height);
+
+            for (int i = 0; i <= MAX_LAYERS; i++)
+            {
+                Layer aLayer = layers.get(i);
+                if (aLayer == null)
+                {
+                    continue;
+                }
+
+                for (Sprite aSprite : aLayer.AllObjects)
+                {
+                    aSprite.updateGUI(theGraphics);
+                }
+            }
+
+            long time = System.currentTimeMillis();
+            long delta = time - lastTime;
+            if (delta > INTERVAL)
+            {
+                fps = (long) ((number / (delta * 1.0)) * 1000);
+                number = 0;
+                lastTime = time;
+            }
+
+            //draw fps
+            String text = "FPS: " + fps;
+            theGraphics.setColor(Color.RED);
+            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT);
+
+            //draw sprites count
+            int totalNodes = 0;
+            int totalLayers = 0;
+
+            for (int i = 0; i <= MAX_LAYERS; i++)
+            {
+                Layer aLayer = layers.get(i);
+                if (aLayer == null)
+                {
+                    continue;
+                }
+
+                totalLayers++;
+                totalNodes += aLayer.AllObjects.size();
+            }
+
+            text = "NODES: " + totalNodes;
+            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
+
+            //draw total actions
+            text = "ACTIONS: " + actionCount;
+            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
+
+            //draw total layers
+            text = "LAYERS: " + totalLayers;
+            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
+
+            //draw current time ellapsed
+            text = String.format("TIME: %.2f", timeEllapsed);
+            theGraphics.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
+        }
+    }
 }
