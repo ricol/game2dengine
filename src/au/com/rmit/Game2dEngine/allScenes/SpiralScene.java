@@ -93,7 +93,7 @@ public class SpiralScene extends Scene
         super.stop();
     }
 
-    public synchronized void createParticles(int number, int x, int y, Gravity g)
+    public void createParticles(int number, int x, int y, Gravity g)
     {
         for (int i = 0; i < number; i++)
         {

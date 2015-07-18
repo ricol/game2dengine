@@ -32,6 +32,30 @@ public class Director
 
     }
 
+    public void start()
+    {
+        if (currentScene != null)
+        {
+            currentScene.start();
+        }
+    }
+
+    public void pause()
+    {
+        if (currentScene != null)
+        {
+            currentScene.pause();
+        }
+    }
+
+    public void stop()
+    {
+        if (currentScene != null)
+        {
+            currentScene.stop();
+        }
+    }
+
     public void setParent(JPanel parent)
     {
         this.parent = parent;

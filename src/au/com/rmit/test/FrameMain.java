@@ -35,7 +35,6 @@ public class FrameMain extends javax.swing.JFrame
                 Director.getSharedInstance().updatePosition(0, 0, panelGame.getWidth(), panelGame.getHeight());
             }
         });
-
     }
 
     @SuppressWarnings("unchecked")

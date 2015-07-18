@@ -20,6 +20,7 @@ import javax.imageio.ImageIO;
 public class Sprite extends Node
 {
 
+    public static final long EVER = Long.MAX_VALUE;
     public double mass;
     public Gravity g;
     public Color color;
@@ -59,7 +60,7 @@ public class Sprite extends Node
         {
             if (this.theImage != null)
             {
-                g.drawImage(theImage, (int) x, (int) y, null);
+                g.drawImage(theImage, (int) x, (int) y, (int) this.width, (int) this.height, null);
             } else
             {
                 if (color == null)

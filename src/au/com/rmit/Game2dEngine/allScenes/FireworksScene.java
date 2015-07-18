@@ -12,12 +12,8 @@ import au.com.rmit.Game2dEngine.node.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import static java.lang.Math.abs;
 import javax.swing.Timer;
 
@@ -70,7 +66,7 @@ public class FireworksScene extends Scene
         super.stop();
     }
 
-    public synchronized void createParticles(int number, int x, int y, Gravity g)
+    public void createParticles(int number, int x, int y, Gravity g)
     {
         for (int i = 0; i < number; i++)
         {
