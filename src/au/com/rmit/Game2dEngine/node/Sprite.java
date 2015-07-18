@@ -125,23 +125,23 @@ public class Sprite extends Node
                 theGraphics2D.fillRect(0, 0, w, h);
 
                 AffineTransform old = theGraphics2D.getTransform();
-                
+
                 theGraphics2D.rotate(angle);
                 Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
                 theGraphics2D.setColor(theColor);
                 theGraphics2D.fillArc(0, 0, w, h, 0, 360);
-                
+
                 theGraphics2D.setTransform(old);
             }
 
             if (theImageCanvas != null)
             {
                 Composite old = g.getComposite();
-                
+
                 AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
                 g.setComposite(ac);
                 g.drawImage(theImageCanvas, (int) x, (int) y, null);
-                
+
                 g.setComposite(old);
             }
         }

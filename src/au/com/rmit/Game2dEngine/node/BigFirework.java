@@ -6,7 +6,6 @@
 package au.com.rmit.Game2dEngine.node;
 
 import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
-import java.awt.Color;
 import static java.lang.Math.abs;
 
 /**
