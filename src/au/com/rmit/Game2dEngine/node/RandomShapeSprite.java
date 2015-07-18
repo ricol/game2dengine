@@ -29,13 +29,8 @@ public class RandomShapeSprite extends MovingSprite
     {
         if (this.isAlive)
         {
-            if (color == null)
-            {
-                g.setColor(Color.RED);
-            } else
-            {
-                g.setColor(color);
-            }
+            Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
+            g.setColor(theColor);
 
 //            g.fillArc((int) x, (int) y, (int) width, (int) height, 0, 360);
             g.fill3DRect((int) this.x, (int) this.y, (int) this.width, (int) this.height, true);

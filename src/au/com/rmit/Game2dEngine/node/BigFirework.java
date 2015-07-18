@@ -60,8 +60,9 @@ public class BigFirework extends Firework
                 int redValue = abs(theRandom.nextInt()) % 255;
                 int greenValue = abs(theRandom.nextInt()) % 255;
                 int blueValue = abs(theRandom.nextInt()) % 255;
-
-                aObject.color = new Color(redValue, greenValue, blueValue);
+                aObject.setRed(redValue);
+                aObject.setGreen(greenValue);
+                aObject.setBlue(blueValue);
 
                 this.theScene.addSprite(aObject);
             }

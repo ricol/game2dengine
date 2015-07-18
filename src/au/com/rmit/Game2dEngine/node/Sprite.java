@@ -6,7 +6,9 @@
 package au.com.rmit.Game2dEngine.node;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -21,10 +23,14 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
+
     public static final long EVER = Long.MAX_VALUE;
     public double mass;
     public Gravity g;
-    public Color color;
+    protected float alpha = 1;
+    protected int red = 0;
+    protected int green = 0;
+    protected int blue = 0;
     protected double lastUpdateTime;
     public double lifetime = 1; //in seconds
     protected double currentLife = 0;
@@ -108,32 +114,35 @@ public class Sprite extends Node
 
                 AffineTransform old = theGraphics2D.getTransform();
                 theGraphics2D.rotate(angle);
+
                 theGraphics2D.drawImage(theImage, 0, 0, w, h, null);
                 theGraphics2D.setTransform(old);
             } else
             {
-                if (color == null)
-                {
-                    g.setColor(Color.RED);
-                } else
-                {
-                    g.setColor(color);
-                }
-
                 Graphics2D theGraphics2D = this.getTheImageGraphics();
                 Color blackTransparent = new Color(0, 0, 0, 0);
                 theGraphics2D.setColor(blackTransparent);
+                theGraphics2D.fillRect(0, 0, w, h);
 
                 AffineTransform old = theGraphics2D.getTransform();
+                
                 theGraphics2D.rotate(angle);
-                theGraphics2D.setColor(color);
+                Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
+                theGraphics2D.setColor(theColor);
                 theGraphics2D.fillArc(0, 0, w, h, 0, 360);
+                
                 theGraphics2D.setTransform(old);
             }
 
             if (theImageCanvas != null)
             {
+                Composite old = g.getComposite();
+                
+                AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+                g.setComposite(ac);
                 g.drawImage(theImageCanvas, (int) x, (int) y, null);
+                
+                g.setComposite(old);
             }
         }
     }
@@ -166,5 +175,77 @@ public class Sprite extends Node
     {
         super.setHeight(height);
         this.releaseTheImageCanvas();
+    }
+
+    public float getAlpha()
+    {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha)
+    {
+        if (alpha < 0)
+        {
+            alpha = 0;
+        }
+        if (alpha > 1)
+        {
+            alpha = 1;
+        }
+        this.alpha = alpha;
+    }
+
+    public int getRed()
+    {
+        return red;
+    }
+
+    public int getGreen()
+    {
+        return green;
+    }
+
+    public int getBlue()
+    {
+        return blue;
+    }
+
+    public void setRed(int value)
+    {
+        if (value < 0)
+        {
+            value = 0;
+        }
+        if (value > 255)
+        {
+            value = 255;
+        }
+        this.red = value;
+    }
+
+    public void setGreen(int value)
+    {
+        if (value < 0)
+        {
+            value = 0;
+        }
+        if (value > 255)
+        {
+            value = 255;
+        }
+        this.green = value;
+    }
+
+    public void setBlue(int value)
+    {
+        if (value < 0)
+        {
+            value = 0;
+        }
+        if (value > 255)
+        {
+            value = 255;
+        }
+        this.blue = value;
     }
 }
