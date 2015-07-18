@@ -23,7 +23,6 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
-
     public static final long EVER = Long.MAX_VALUE;
     public double mass;
     public Gravity g;
@@ -247,5 +246,25 @@ public class Sprite extends Node
             value = 255;
         }
         this.blue = value;
+    }
+    
+    public double getCentreX()
+    {
+        return this.x + width / 2.0;
+    }
+    
+    public double getCentreY()
+    {
+        return this.y + height / 2.0;
+    }
+    
+    public void setCentreX(double value)
+    {
+        this.setX(value - width / 2.0);
+    }
+    
+    public void setCentreY(double value)
+    {
+        this.setX(value - height / 2.0);
     }
 }
