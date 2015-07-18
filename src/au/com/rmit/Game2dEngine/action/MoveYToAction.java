@@ -38,7 +38,7 @@ public class MoveYToAction extends MoveAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
         }
         this.moveYTo = y;
         this.moveYToDuration = abs(duration * 1000);

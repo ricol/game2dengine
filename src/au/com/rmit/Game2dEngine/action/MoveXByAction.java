@@ -32,17 +32,27 @@ public class MoveXByAction extends MoveAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
+            bImmediately = true;
         }
         this.moveXBy = x;
         this.moveXByDuration = abs(duration * 1000);
-        this.moveXBySpeed = x / abs(duration * 1000);
+        if (!bImmediately)
+        {
+            this.moveXBySpeed = x / abs(duration * 1000);
+        }
         this.moveXByCurrent = 0;
     }
 
     @Override
     public void perform(double runningTime)
     {
+        if (bImmediately)
+        {
+            this.theSprite.setX(this.theSprite.getX() + moveXBy);
+            bComplete = true;
+        }
+        
         if (bComplete)
         {
             return;

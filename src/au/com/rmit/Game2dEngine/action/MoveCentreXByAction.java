@@ -30,7 +30,7 @@ public class MoveCentreXByAction extends MoveAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
         }
         this.moveCentreXBy = x;
         this.moveCentreXByDuration = abs(duration * 1000);

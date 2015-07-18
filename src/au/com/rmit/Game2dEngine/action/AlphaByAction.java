@@ -24,17 +24,27 @@ public class AlphaByAction extends AlphaAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
+            this.bImmediately = true;
         }
         this.alphaBy = alpha;
         this.alphaByDuration = abs(duration * 1000);
-        this.alphaByBySpeed = alpha / abs(duration * 1000);
+        if (!this.bImmediately)
+        {
+            this.alphaByBySpeed = alpha / abs(duration * 1000);
+        }
         this.alphaByCurrent = 0;
     }
 
     @Override
     public void perform(double runningTime)
     {
+        if (bImmediately)
+        {
+            this.theSprite.setAlpha(this.theSprite.getAlpha() + alphaBy);
+            bComplete = true;
+        }
+        
         if (bComplete)
         {
             return;

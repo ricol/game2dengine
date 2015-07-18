@@ -14,7 +14,8 @@ import java.util.Random;
  */
 public abstract class Action
 {
-
+    protected boolean bImmediately;
+    
     public static final double MINIMUM = 0.001;
     public static final double EQUAL_STANDARD = 0.000000001;
     public static final double MINIMUM_DURATION = 0.001;

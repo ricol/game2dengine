@@ -23,17 +23,26 @@ public class RotateByAction extends RotateAction
     {
         if (duration <= 0)
         {
-            duration = (float) Action.MINIMUM_DURATION;
+            duration = 0;
+            bImmediately = true;
         }
         this.rotateBy = angle;
         this.rotateByDuration = duration;
-        this.rotateBySpeed = angle / abs(duration * 1000);
+        if (bImmediately)
+        {
+            this.rotateBySpeed = angle / abs(duration * 1000);
+        }
         this.rotateByCurrent = 0;
     }
 
     @Override
     public void perform(double runningTime)
     {
+        if (bImmediately)
+        {
+            this.theSprite.setAngle(this.theSprite.getAngle() + rotateBy);
+            bComplete = true;
+        }
         if (bComplete)
         {
             return;
