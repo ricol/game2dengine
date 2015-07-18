@@ -8,8 +8,8 @@ package au.com.rmit.Game2dEngine.node;
 import au.com.rmit.Game2dEngine.action.Action;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -17,12 +17,15 @@ import java.util.Queue;
  */
 public class MovingSprite extends Sprite
 {
+
     public boolean bDeadIfNoActions;
     protected double angle;
     protected double velocityX;
     protected double velocityY;
 
-    protected Queue<Action> theQueueOfActions = new LinkedList<>();
+//    protected Queue<Action> theQueueOfActions = new LinkedList<>();
+    protected Set<Action> theSetOfActions = new HashSet<>();
+    Set<Action> theSetOfActionsDeleted = new HashSet<>();
 
     public MovingSprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY)
     {
@@ -58,21 +61,27 @@ public class MovingSprite extends Sprite
             y += IncY;
 
             //perform actions
-            Action aAction = this.theQueueOfActions.peek();
+            //delete old actions
+            this.theSetOfActions.removeAll(this.theSetOfActionsDeleted);
+            this.theSetOfActionsDeleted.clear();
 
-            if (aAction != null)
-            {
-                aAction.perform(currentTime - this.lastUpdateTime);
-
-                if (aAction.bComplete)
-                {
-                    this.removeAction(aAction);
-                }
-            }else
+            if (this.theSetOfActions.size() <= 0)
             {
                 if (this.bDeadIfNoActions)
                 {
                     this.isAlive = false;
+                }
+            } else
+            {
+                //run actions
+                for (Action aAction : this.theSetOfActions)
+                {
+                    aAction.perform(currentTime - this.lastUpdateTime);
+
+                    if (aAction.bComplete)
+                    {
+                        this.theSetOfActionsDeleted.add(aAction);
+                    }
                 }
             }
 
@@ -106,19 +115,19 @@ public class MovingSprite extends Sprite
     public void addAction(Action aAction)
     {
         aAction.setSprite(this);
-        this.theQueueOfActions.add(aAction);
+        this.theSetOfActions.add(aAction);
 //        System.out.println("Action added." + this.theQueueOfActions.size());
     }
 
     public void removeAction(Action aAction)
     {
         aAction.clearSprite();
-        this.theQueueOfActions.remove(aAction);
+        this.theSetOfActions.remove(aAction);
 //        System.out.println("Action removed. " + this.theQueueOfActions.size());
     }
-    
+
     public int getActionCount()
     {
-        return this.theQueueOfActions.size();
+        return this.theSetOfActions.size();
     }
 }
