@@ -93,8 +93,9 @@ public class FireworksScene extends Scene
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
             int blueValue = abs(theRandom.nextInt()) % 255;
-            aObject.color = new Color(redValue, greenValue, blueValue);
-
+            aObject.setRed(redValue);
+            aObject.setGreen(greenValue);
+            aObject.setBlue(blueValue);
             aObject.applyGravity(g);
             
             this.addSprite(aObject);

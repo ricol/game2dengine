@@ -9,6 +9,7 @@ package au.com.rmit.Game2dEngine.action;
  *
  * @author ricolwang
  */
-public class RotateAction extends Action
+public class AlphaAction extends Action
 {
+
 }

@@ -3,6 +3,7 @@ package au.com.rmit.test;
 import au.com.rmit.Game2dEngine.allScenes.FireworksScene;
 import au.com.rmit.Game2dEngine.allScenes.FountainScene;
 import au.com.rmit.Game2dEngine.allScenes.RandomShapeScene;
+import au.com.rmit.Game2dEngine.allScenes.SpiralScene;
 import au.com.rmit.Game2dEngine.director.Director;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;

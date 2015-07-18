@@ -6,7 +6,6 @@
 package au.com.rmit.Game2dEngine.node;
 
 import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
-import java.awt.Color;
 import static java.lang.Math.abs;
 
 /**
@@ -60,9 +59,10 @@ public class BigFirework extends Firework
                 int redValue = abs(theRandom.nextInt()) % 255;
                 int greenValue = abs(theRandom.nextInt()) % 255;
                 int blueValue = abs(theRandom.nextInt()) % 255;
+                aObject.setRed(redValue);
+                aObject.setGreen(greenValue);
+                aObject.setBlue(blueValue);
 
-                aObject.color = new Color(redValue, greenValue, blueValue);
-                
                 this.theScene.addSprite(aObject);
             }
         }

@@ -82,8 +82,9 @@ public class FountainScene extends Scene
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
             int blueValue = abs(theRandom.nextInt()) % 255;
-            aObject.color = new Color(redValue, greenValue, blueValue);
-
+            aObject.setRed(redValue);
+            aObject.setGreen(greenValue);
+            aObject.setBlue(blueValue);
             aObject.applyGravity(g);
 
 //            if (abs(theRandom.nextInt()) % 100 > 50)
@@ -93,7 +94,6 @@ public class FountainScene extends Scene
 //            {
 //                aObject.setImage("starBig.png");
 //            }
-
             this.addSprite(aObject);
         }
     }
