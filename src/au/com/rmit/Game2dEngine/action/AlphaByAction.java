@@ -18,7 +18,7 @@ public class AlphaByAction extends AlphaAction
     float alphaByDuration;
     float alphaByBySpeed;
     float alphaByCurrent;
-
+    
     public void alphaBy(float alpha, float duration)
     {
         if (duration <= 0)

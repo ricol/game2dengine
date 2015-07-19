@@ -15,13 +15,14 @@ import java.util.Set;
  */
 public class MovingSprite extends Sprite
 {
-    
+
     public boolean bDeadIfNoActions;
     protected double velocityX;
     protected double velocityY;
 
     protected Set<Action> theSetOfActions = new HashSet<>();
     Set<Action> theSetOfActionsDeleted = new HashSet<>();
+    Set<Action> theSetOfActionsAdded = new HashSet<>();
 
     public MovingSprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY)
     {
@@ -36,7 +37,7 @@ public class MovingSprite extends Sprite
     {
         super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
 
-        if (this.isAlive)
+        if (this.isAlive())
         {
             //how much time passed since last update
             double t = (currentTime - this.lastUpdateTime) / 1000.0f; //in seconds
@@ -58,23 +59,29 @@ public class MovingSprite extends Sprite
             //delete old actions
             this.theSetOfActions.removeAll(this.theSetOfActionsDeleted);
             this.theSetOfActionsDeleted.clear();
+            
+            //add new actions
+            this.theSetOfActions.addAll(this.theSetOfActionsAdded);
+            this.theSetOfActionsAdded.clear();
 
             if (this.theSetOfActions.size() <= 0)
             {
                 if (this.bDeadIfNoActions)
                 {
-                    this.isAlive = false;
+                    this.setDead();
                 }
             } else
             {
                 //run actions
                 for (Action aAction : this.theSetOfActions)
                 {
+                    this.onActionRunning(aAction);
                     aAction.perform(currentTime - this.lastUpdateTime);
 
                     if (aAction.bComplete)
                     {
                         this.theSetOfActionsDeleted.add(aAction);
+                        this.onActionComplete(aAction);
                     }
                 }
             }
@@ -86,27 +93,45 @@ public class MovingSprite extends Sprite
     public void addAction(Action aAction)
     {
         aAction.setSprite(this);
-        this.theSetOfActions.add(aAction);
+        this.theSetOfActionsAdded.add(aAction);
     }
 
     public void removeAction(Action aAction)
     {
         aAction.clearSprite();
-        this.theSetOfActions.remove(aAction);
+        this.theSetOfActionsDeleted.remove(aAction);
     }
 
     public int getActionCount()
     {
         return this.theSetOfActions.size();
     }
-    
+
     public void setVelocityX(double value)
     {
         this.velocityX = value;
     }
-    
+
     public void setVelocityY(double value)
     {
         this.velocityY = value;
+    }
+    
+    public double getVelocityX()
+    {
+        return this.velocityX;
+    }
+    
+    public double getVelocityY()
+    {
+        return this.velocityY;
+    }
+
+    public void onActionRunning(Action theAction)
+    {
+    }
+
+    public void onActionComplete(Action theAction)
+    {
     }
 }
