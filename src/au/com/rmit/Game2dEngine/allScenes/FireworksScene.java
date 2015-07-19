@@ -35,6 +35,12 @@ public class FireworksScene extends Scene
             createParticles(1, (int) (size().width * (2.0 / 4.0)), (int) (size().height * (3.5 / 4.0)), g);
         }
     });
+    
+    public FireworksScene()
+    {
+        super();
+        this.theColorBackground = new Color(40, 30, 30);
+    }
 
     @Override
     public void start()
