@@ -215,11 +215,6 @@ public class Scene extends JPanel
         //update GUI
         if (theGraphics2D != null)
         {
-//            theGraphics2D.setColor(Color.BLACK);
-//            theGraphics2D.fillRect(0, 0, this.size().width, this.size().height);
-//            Color blackTransparent = new Color(0, 0, 0, 0);
-//            theGraphics2D.setColor(blackTransparent);
-//            theGraphics2D.fillRect(0, 0, this.size().width, this.size().height);
             if (theImageBackground != null)
             {
                 theGraphics2D.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight(), null);
