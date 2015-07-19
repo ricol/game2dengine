@@ -12,9 +12,14 @@ import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import static java.lang.Math.abs;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 /**
@@ -50,6 +55,19 @@ public class RandomShapeScene extends Scene
         }
 
     });
+    
+    public RandomShapeScene()
+    {
+        super();
+        try
+        {
+            //        this.theColorBackground = new Color(30, 20, 100);
+            this.theImageBackground = ImageIO.read(new File("space.jpg"));
+        } catch (IOException ex)
+        {
+            Logger.getLogger(FountainScene.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void start()

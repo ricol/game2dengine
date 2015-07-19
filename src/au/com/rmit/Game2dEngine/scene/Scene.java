@@ -26,7 +26,8 @@ import javax.swing.Timer;
  */
 public class Scene extends JPanel
 {
-
+    public BufferedImage theImageBackground;
+    public Color theColorBackground = Color.black;
     protected Random theRandom = new Random();
     public boolean bPaused;
     static long INTERVAL = 500;
@@ -55,7 +56,7 @@ public class Scene extends JPanel
     });
 
     BufferedImage theImage;
-    Graphics2D theGraphics;
+    Graphics2D theGraphics2D;
 
     public Scene()
     {
@@ -72,10 +73,10 @@ public class Scene extends JPanel
                 }
 
                 theImage = null;
-                theGraphics = null;
+                theGraphics2D = null;
 
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-                theGraphics = theImage.createGraphics();
+                theGraphics2D = theImage.createGraphics();
             }
         });
     }
@@ -87,7 +88,7 @@ public class Scene extends JPanel
             if (theImage == null)
             {
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-                theGraphics = theImage.createGraphics();
+                theGraphics2D = theImage.createGraphics();
             }
 
             bPaused = false;
@@ -102,7 +103,7 @@ public class Scene extends JPanel
     public void stop()
     {
         theImage = null;
-        theGraphics = null;
+        theGraphics2D = null;
 
         bPaused = true;
     }
@@ -154,7 +155,7 @@ public class Scene extends JPanel
 
     public void addSprite(Sprite aSprite)
     {
-        addSprite(aSprite, 0);
+        addSprite(aSprite, aSprite.layer);
     }
 
     private void Loop()
@@ -207,10 +208,23 @@ public class Scene extends JPanel
         }
 
         //update GUI
-        if (theGraphics != null)
+        if (theGraphics2D != null)
         {
-            theGraphics.setColor(Color.BLACK);
-            theGraphics.fillRect(0, 0, this.size().width, this.size().height);
+//            theGraphics2D.setColor(Color.BLACK);
+//            theGraphics2D.fillRect(0, 0, this.size().width, this.size().height);
+//            Color blackTransparent = new Color(0, 0, 0, 0);
+//            theGraphics2D.setColor(blackTransparent);
+//            theGraphics2D.fillRect(0, 0, this.size().width, this.size().height);
+            if (theImageBackground != null)
+            {
+                theGraphics2D.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight(), null);
+            }else
+            {
+                theGraphics2D.setColor(theColorBackground);
+                theGraphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
+            }
+            
+            
 
             for (int i = 0; i <= MAX_LAYERS; i++)
             {
@@ -222,7 +236,7 @@ public class Scene extends JPanel
 
                 for (Sprite aSprite : aLayer.AllObjects)
                 {
-                    aSprite.updateGUI(theGraphics);
+                    aSprite.updateGUI(theGraphics2D);
                 }
             }
 
@@ -237,8 +251,8 @@ public class Scene extends JPanel
 
             //draw fps
             String text = "FPS: " + fps;
-            theGraphics.setColor(Color.RED);
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT);
+            theGraphics2D.setColor(Color.RED);
+            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT);
 
             //draw sprites count
             int totalNodes = 0;
@@ -257,19 +271,19 @@ public class Scene extends JPanel
             }
 
             text = "NODES: " + totalNodes;
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
+            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
 
             //draw total actions
             text = "ACTIONS: " + actionCount;
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
+            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
 
             //draw total layers
             text = "LAYERS: " + totalLayers;
-            theGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
+            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
 
             //draw current time ellapsed
             text = String.format("TIME: %.2f", timeEllapsed);
-            theGraphics.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
+            theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
         }
     }
 }
