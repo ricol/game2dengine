@@ -26,8 +26,13 @@ import javax.swing.Timer;
  */
 public class Scene extends JPanel
 {
+
     public BufferedImage theImageBackground;
-    public Color theColorBackground = Color.black;
+    private int red = 0;
+    private int green = 0;
+    private int blue = 0;
+    private Color theBackgroundColor = new Color(red, green, blue);
+
     protected Random theRandom = new Random();
     public boolean bPaused;
     static long INTERVAL = 500;
@@ -218,13 +223,11 @@ public class Scene extends JPanel
             if (theImageBackground != null)
             {
                 theGraphics2D.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight(), null);
-            }else
+            } else
             {
-                theGraphics2D.setColor(theColorBackground);
+                theGraphics2D.setColor(theBackgroundColor);
                 theGraphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
-            
-            
 
             for (int i = 0; i <= MAX_LAYERS; i++)
             {
@@ -285,5 +288,47 @@ public class Scene extends JPanel
             text = String.format("TIME: %.2f", timeEllapsed);
             theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
         }
+    }
+
+    public void setRed(int value)
+    {
+        if (value >= 0 && value <= 255)
+        {
+            this.red = value;
+            this.theBackgroundColor = new Color(red, green, blue);
+        }
+    }
+
+    public void setGreen(int value)
+    {
+        if (value >= 0 && value <= 255)
+        {
+            this.green = value;
+            this.theBackgroundColor = new Color(red, green, blue);
+        }
+    }
+
+    public void setBlue(int value)
+    {
+        if (value >= 0 && value <= 255)
+        {
+            this.blue = value;
+            this.theBackgroundColor = new Color(red, green, blue);
+        }
+    }
+
+    public int getRed()
+    {
+        return this.red;
+    }
+
+    public int getGreen()
+    {
+        return this.green;
+    }
+
+    public int getBlue()
+    {
+        return this.blue;
     }
 }

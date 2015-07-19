@@ -23,9 +23,10 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
+
     private double currentLife = 0;
     private boolean isAlive = true;
-    
+
     public int layer = 0;
     public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
@@ -93,8 +94,18 @@ public class Sprite extends Node
 
     public void updateGUI(Graphics2D g)
     {
+        int tmpX = (int) x;
+        int tmpY = (int) y;
+        int tmpSceneWidth = this.theScene.getWidth();
+        int tmpSceneHeight = this.theScene.getHeight();
         int w = (int) width;
         int h = (int) height;
+
+        if (tmpX + w < 0 || tmpY + h < 0)
+            return;
+        
+        if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+            return;
 
         if (abs(w) <= 0.001 || abs(h) <= 0.001)
         {
@@ -278,7 +289,7 @@ public class Sprite extends Node
     {
         this.setY(value - height / 2.0);
     }
-    
+
     public void setDead()
     {
         this.isAlive = false;
@@ -289,9 +300,9 @@ public class Sprite extends Node
     {
 
     }
-    
+
     public void onDead()
     {
-        
+
     }
 }
