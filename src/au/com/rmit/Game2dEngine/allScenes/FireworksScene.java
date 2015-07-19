@@ -35,11 +35,13 @@ public class FireworksScene extends Scene
             createParticles(1, (int) (size().width * (2.0 / 4.0)), (int) (size().height * (3.5 / 4.0)), g);
         }
     });
-    
+
     public FireworksScene()
     {
         super();
-        this.theColorBackground = new Color(40, 30, 30);
+        this.setRed(40);
+        this.setGreen(30);
+        this.setBlue(30);
     }
 
     @Override
@@ -103,7 +105,7 @@ public class FireworksScene extends Scene
             aObject.setGreen(greenValue);
             aObject.setBlue(blueValue);
             aObject.applyGravity(g);
-            
+
             this.addSprite(aObject);
         }
     }
