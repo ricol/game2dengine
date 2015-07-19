@@ -155,7 +155,7 @@ public class Scene extends JPanel
 
     public void addSprite(Sprite aSprite)
     {
-        addSprite(aSprite, 0);
+        addSprite(aSprite, aSprite.layer);
     }
 
     private void Loop()

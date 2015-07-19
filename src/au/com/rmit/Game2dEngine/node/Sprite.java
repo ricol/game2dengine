@@ -23,7 +23,10 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
-
+    private double currentLife = 0;
+    private boolean isAlive = true;
+    
+    public int layer = 0;
     public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
     public double mass;
@@ -34,8 +37,7 @@ public class Sprite extends Node
     protected int blue = 0;
     protected double lastUpdateTime;
     public double lifetime = 1; //in seconds
-    protected double currentLife = 0;
-    protected boolean isAlive = true;
+
     protected double starttime = System.currentTimeMillis();
     protected BufferedImage theImage;
 
@@ -85,7 +87,7 @@ public class Sprite extends Node
         currentLife += t;
         if (currentLife >= lifetime)
         {
-            this.isAlive = false;
+            this.setDead();
         }
     }
 
@@ -276,9 +278,20 @@ public class Sprite extends Node
     {
         this.setX(value - height / 2.0);
     }
+    
+    public void setDead()
+    {
+        this.isAlive = false;
+        this.onDead();
+    }
 
     public void onCustomDraw(Graphics2D theGraphics2D)
     {
 
+    }
+    
+    public void onDead()
+    {
+        
     }
 }

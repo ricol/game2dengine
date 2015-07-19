@@ -11,5 +11,4 @@ package au.com.rmit.Game2dEngine.action;
  */
 public class AlphaAction extends Action
 {
-
 }

@@ -28,12 +28,12 @@ public abstract class Firework extends MovingSprite
     {
         super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
 
-        if (this.isAlive && this.bShouldBlast && !this.bDidBlast)
+        if (this.isAlive() && this.bShouldBlast && !this.bDidBlast)
         {
             if (currentTime - this.starttime >= blastTime * 1000)
             {
                 this.bDidBlast = true;
-                this.isAlive = false;
+                this.setDead();
             }
         }
     }

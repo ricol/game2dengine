@@ -27,7 +27,7 @@ public class RandomShapeSprite extends MovingSprite
     @Override
     public void updateGUI(Graphics2D g)
     {
-        if (this.isAlive)
+        if (this.isAlive())
         {
             Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
             g.setColor(theColor);
