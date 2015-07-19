@@ -116,6 +116,16 @@ public class MovingSprite extends Sprite
     {
         this.velocityY = value;
     }
+    
+    public double getVelocityX()
+    {
+        return this.velocityX;
+    }
+    
+    public double getVelocityY()
+    {
+        return this.velocityY;
+    }
 
     public void onActionRunning(Action theAction)
     {

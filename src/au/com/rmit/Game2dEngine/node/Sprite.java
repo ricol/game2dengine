@@ -276,7 +276,7 @@ public class Sprite extends Node
 
     public void setCentreY(double value)
     {
-        this.setX(value - height / 2.0);
+        this.setY(value - height / 2.0);
     }
     
     public void setDead()
