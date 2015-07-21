@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.scene;
 
+import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.node.MovingSprite;
 import au.com.rmit.Game2dEngine.node.Sprite;
 import java.awt.Color;
@@ -15,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -42,12 +44,17 @@ public class Scene extends JPanel
     static long TOP_TEXT = 30;
     static long GAP_TEXT = 20;
     static int MAX_LAYERS = 10;
+    public boolean bShowMemoryUsage = true;
 
     long number = 0;
     long lastTime = System.currentTimeMillis();
     long fps = 0;
     float timeEllapsed = 0;
     long actionCount = 0;
+    String strFreeMemory = "";
+    String strAllocatedMemory = "";
+    String strMaxMemory = "";
+    String strTotalFreeMemory = "";
 
     HashMap<Integer, Layer> layers = new HashMap();
     ArrayList<Sprite> allNodes = new ArrayList();
@@ -62,12 +69,35 @@ public class Scene extends JPanel
         }
     });
 
+    Timer theTimerForMemory = new Timer(500, new ActionListener()
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            Runtime runtime = Runtime.getRuntime();
+
+            NumberFormat format = NumberFormat.getInstance();
+
+            StringBuilder sb = new StringBuilder();
+            long maxMemory = runtime.maxMemory();
+            long allocatedMemory = runtime.totalMemory();
+            long freeMemory = runtime.freeMemory();
+
+            strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
+            strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
+            strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
+            strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
+        }
+    });
+
     BufferedImage theImage;
     Graphics2D theGraphics2D;
 
     public Scene()
     {
         theTimer.start();
+        theTimerForMemory.start();
 
         this.addComponentListener(new ComponentAdapter()
         {
@@ -286,6 +316,14 @@ public class Scene extends JPanel
             //draw current time ellapsed
             text = String.format("TIME: %.2f", timeEllapsed);
             theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
+
+            if (bShowMemoryUsage)
+            {
+                theGraphics2D.drawString(strFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
+                theGraphics2D.drawString(strAllocatedMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 3);
+                theGraphics2D.drawString(strMaxMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 4);
+                theGraphics2D.drawString(strTotalFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 5);
+            }
         }
     }
 
@@ -368,15 +406,39 @@ public class Scene extends JPanel
                             //collide with this sprite or not.
                             if (aSprite.collideWith(aTargetSprite))
                             {
-                                aSprite.onCollisionWith(aTargetSprite);
-                                aTargetSprite.onCollisionWith(aSprite);
+                                //collide
+                                if (aSprite.hashCollision.get(aTargetSprite) != Game2dEngineShared.TypeCollisionDetection.COLLIDED)
+                                {
+                                    aSprite.onCollideWith(aTargetSprite);
+                                    aSprite.hashCollision.put(aTargetSprite, Game2dEngineShared.TypeCollisionDetection.COLLIDED);
+                                }
+
+                                if (aTargetSprite.hashCollision.get(aSprite) != Game2dEngineShared.TypeCollisionDetection.COLLIDED)
+                                {
+                                    aTargetSprite.onCollideWith(aSprite);
+                                    aTargetSprite.hashCollision.put(aSprite, Game2dEngineShared.TypeCollisionDetection.COLLIDED);
+                                }
+                            } else
+                            {
+                                //uncollide
+                                if (aSprite.hashCollision.get(aTargetSprite) != Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED)
+                                {
+                                    aSprite.onNotCollideWith(aTargetSprite);
+                                    aSprite.hashCollision.put(aTargetSprite, Game2dEngineShared.TypeCollisionDetection.UNDECTED);
+                                }
+
+                                if (aTargetSprite.hashCollision.get(aSprite) != Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED)
+                                {
+                                    aTargetSprite.onNotCollideWith(aSprite);
+                                    aTargetSprite.hashCollision.put(aSprite, Game2dEngineShared.TypeCollisionDetection.UNDECTED);
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        
+
         this.allNodes.clear();
     }
 }
