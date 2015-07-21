@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
+import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -15,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
+import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 /**
@@ -23,6 +25,11 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
+
+    public boolean bCollisionDetect = false;
+    public int collisionCategory = -1;
+    public int collisionTargetCategory = -1;
+    public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
 
     private Color blackTransparent = new Color(0, 0, 0, 0);
 
@@ -283,6 +290,7 @@ public class Sprite extends Node
     public void setDead()
     {
         this.isAlive = false;
+        this.hashCollision.clear();
         this.onDead();
     }
 
@@ -292,6 +300,21 @@ public class Sprite extends Node
     }
 
     public void onDead()
+    {
+
+    }
+
+    public boolean collideWith(Sprite target)
+    {
+        return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
+    }
+
+    public void onCollideWith(Sprite target)
+    {
+
+    }
+
+    public void onNotCollideWith(Sprite target)
     {
 
     }

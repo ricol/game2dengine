@@ -9,7 +9,6 @@ import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.node.Firework;
 import au.com.rmit.Game2dEngine.node.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Math.abs;

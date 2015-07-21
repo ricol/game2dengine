@@ -82,4 +82,9 @@ public class Node
     {
         this.angle = angle;
     }
+
+    public boolean overlaps(float targetX, float targetY, float targetWidth, float targetHeight)
+    {
+        return x < targetX + targetWidth && x + width > targetX && y < targetY + targetHeight && y + height > targetY;
+    }
 }

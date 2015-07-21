@@ -11,7 +11,6 @@ import au.com.rmit.Game2dEngine.node.Firework;
 import au.com.rmit.Game2dEngine.node.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Math.abs;
@@ -39,9 +38,9 @@ public class FireworksScene extends Scene
     public FireworksScene()
     {
         super();
-        this.setRed(40);
-        this.setGreen(30);
-        this.setBlue(30);
+        this.setRed(0);
+        this.setGreen(0);
+        this.setBlue(0);
     }
 
     @Override
