@@ -12,12 +12,7 @@ import au.com.rmit.Game2dEngine.scene.Scene;
 import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import static java.lang.Math.abs;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 /**
@@ -38,18 +33,13 @@ public class FountainScene extends Scene
             createParticles(10, (int) (size().width * (2.0 / 4.0)), (int) (size().height * (3.5 / 4.0)), g);
         }
     });
-    
+
     public FountainScene()
     {
         super();
-        try
-        {
-            //        this.theColorBackground = new Color(30, 20, 100);
-            this.theImageBackground = ImageIO.read(new File("space.jpg"));
-        } catch (IOException ex)
-        {
-            Logger.getLogger(FountainScene.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.setRed(0);
+        this.setGreen(0);
+        this.setBlue(0);
     }
 
     @Override

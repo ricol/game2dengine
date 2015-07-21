@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import javax.swing.JPanel;
@@ -49,6 +50,7 @@ public class Scene extends JPanel
     long actionCount = 0;
 
     HashMap<Integer, Layer> layers = new HashMap();
+    ArrayList<Sprite> allNodes = new ArrayList();
 
     Timer theTimer = new Timer(10, new ActionListener()
     {
@@ -138,7 +140,7 @@ public class Scene extends JPanel
         }
     }
 
-    public void addSprite(Sprite aSprite, int zOrder)
+    private void addSprite(Sprite aSprite, int zOrder)
     {
         if (zOrder < 0 || zOrder > MAX_LAYERS)
         {
@@ -207,9 +209,11 @@ public class Scene extends JPanel
 
                 aLayer.AllObjects.addAll(aLayer.NewObjects);
                 aLayer.NewObjects.clear();
-
-                updateState();
             }
+
+            updateState();
+
+            collisionDetect();
         }
 
         //update GUI
@@ -325,5 +329,54 @@ public class Scene extends JPanel
     public int getBlue()
     {
         return this.blue;
+    }
+
+    public void collisionDetect()
+    {
+        this.allNodes.clear();
+        for (int i = 0; i <= MAX_LAYERS; i++)
+        {
+            Layer aLayer = layers.get(i);
+            if (aLayer == null)
+            {
+                continue;
+            }
+
+            this.allNodes.addAll(aLayer.AllObjects);
+        }
+
+        for (Sprite aSprite : this.allNodes)
+        {
+            if (aSprite.bCollisionDetect)
+            {
+                int source = aSprite.collisionCategory;
+                int target = aSprite.collisionTargetCategory;
+
+                for (Sprite aTargetSprite : this.allNodes)
+                {
+                    if (aTargetSprite.equals(aSprite))
+                    {
+                        continue;
+                    }
+
+                    //the target allows to be detected
+                    if (aTargetSprite.bCollisionDetect)
+                    {
+                        //the target belongs to the group
+                        if (target == aTargetSprite.collisionCategory)
+                        {
+                            //collide with this sprite or not.
+                            if (aSprite.collideWith(aTargetSprite))
+                            {
+                                aSprite.onCollisionWith(aTargetSprite);
+                                aTargetSprite.onCollisionWith(aSprite);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        this.allNodes.clear();
     }
 }

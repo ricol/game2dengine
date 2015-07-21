@@ -24,6 +24,10 @@ import javax.imageio.ImageIO;
 public class Sprite extends Node
 {
 
+    public boolean bCollisionDetect = false;
+    public int collisionCategory = -1;
+    public int collisionTargetCategory = -1;
+
     private Color blackTransparent = new Color(0, 0, 0, 0);
 
     private double currentLife = 0;
@@ -294,5 +298,15 @@ public class Sprite extends Node
     public void onDead()
     {
 
+    }
+
+    public void onCollisionWith(Sprite target)
+    {
+
+    }
+
+    public boolean collideWith(Sprite target)
+    {
+        return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
     }
 }
