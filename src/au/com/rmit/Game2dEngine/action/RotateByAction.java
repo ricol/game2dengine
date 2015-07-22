@@ -28,7 +28,7 @@ public class RotateByAction extends RotateAction
         }
         this.rotateBy = angle;
         this.rotateByDuration = duration;
-        if (bImmediately)
+        if (!bImmediately)
         {
             this.rotateBySpeed = angle / abs(duration * 1000);
         }
