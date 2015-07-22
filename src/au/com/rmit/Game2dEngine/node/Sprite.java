@@ -48,7 +48,7 @@ public class Sprite extends Node
     private Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
 
     protected double lastUpdateTime;
-    public double lifetime = 1; //in seconds
+    public double lifetime = Sprite.EVER; //in seconds
 
     protected double starttime = System.currentTimeMillis();
     protected BufferedImage theImage;
