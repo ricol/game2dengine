@@ -4,6 +4,7 @@ import au.com.rmit.Game2dEngine.allScenes.FireworksScene;
 import au.com.rmit.Game2dEngine.allScenes.FountainScene;
 import au.com.rmit.Game2dEngine.allScenes.RandomShapeScene;
 import au.com.rmit.Game2dEngine.allScenes.SpiralScene;
+import au.com.rmit.Game2dEngine.allScenes.TestScene;
 import au.com.rmit.Game2dEngine.director.Director;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
@@ -49,6 +50,7 @@ public class FrameMain extends javax.swing.JFrame
         btnFountain = new javax.swing.JButton();
         btnSpiral = new javax.swing.JButton();
         btnFireworks = new javax.swing.JButton();
+        btnTest = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter()
@@ -117,6 +119,15 @@ public class FrameMain extends javax.swing.JFrame
             }
         });
 
+        btnTest.setText("Test");
+        btnTest.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnTestActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,7 +137,9 @@ public class FrameMain extends javax.swing.JFrame
                 .addComponent(btnPause)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnStop)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 284, Short.MAX_VALUE)
+                .addComponent(btnTest)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFireworks)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFountain)
@@ -146,7 +159,8 @@ public class FrameMain extends javax.swing.JFrame
                     .addComponent(btnStop)
                     .addComponent(btnFountain)
                     .addComponent(btnSpiral)
-                    .addComponent(btnFireworks))
+                    .addComponent(btnFireworks)
+                    .addComponent(btnTest))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -196,12 +210,19 @@ public class FrameMain extends javax.swing.JFrame
         Director.getSharedInstance().showScene(new FireworksScene());
     }//GEN-LAST:event_btnFireworksActionPerformed
 
+    private void btnTestActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnTestActionPerformed
+    {//GEN-HEADEREND:event_btnTestActionPerformed
+        // TODO add your handling code here:
+        Director.getSharedInstance().showScene(new TestScene());
+    }//GEN-LAST:event_btnTestActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFireworks;
     private javax.swing.JButton btnFountain;
     private javax.swing.JButton btnPause;
     private javax.swing.JButton btnSpiral;
     private javax.swing.JButton btnStop;
+    private javax.swing.JButton btnTest;
     private javax.swing.JPanel panelGame;
     // End of variables declaration//GEN-END:variables
 }

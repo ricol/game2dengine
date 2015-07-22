@@ -25,13 +25,14 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
-
+    public boolean bDrawFrame = true;
+    public Color theColorOfFrame = Color.yellow;
     public boolean bCollisionDetect = false;
     public int collisionCategory = -1;
     public int collisionTargetCategory = -1;
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
 
-    private Color blackTransparent = new Color(0, 0, 0, 0);
+    private final Color blackTransparent = new Color(0, 0, 0, 0);
 
     private double currentLife = 0;
     private boolean isAlive = true;
@@ -48,7 +49,7 @@ public class Sprite extends Node
     private Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
 
     protected double lastUpdateTime;
-    public double lifetime = 1; //in seconds
+    public double lifetime = Sprite.EVER; //in seconds
 
     protected double starttime = System.currentTimeMillis();
     protected BufferedImage theImage;
@@ -143,24 +144,25 @@ public class Sprite extends Node
                 if (this.theImage != null)
                 {
                     Graphics2D theGraphics2D = this.getTheImageGraphics();
-                    theGraphics2D.setColor(blackTransparent);
-                    theGraphics2D.fillRect(0, 0, w, h);
+                    theGraphics2D.setBackground(blackTransparent);
+                    theGraphics2D.clearRect(0, 0, w, h);
+                    this.drawFrame(theGraphics2D);
 
                     AffineTransform old = theGraphics2D.getTransform();
-                    theGraphics2D.rotate(angle);
+                    theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
 
                     theGraphics2D.drawImage(theImage, 0, 0, w, h, null);
                     theGraphics2D.setTransform(old);
                 } else
                 {
                     Graphics2D theGraphics2D = this.getTheImageGraphics();
-
-                    theGraphics2D.setColor(blackTransparent);
-                    theGraphics2D.fillRect(0, 0, w, h);
+                    theGraphics2D.setBackground(blackTransparent);
+                    theGraphics2D.clearRect(0, 0, w, h);
+                    this.drawFrame(theGraphics2D);
 
                     AffineTransform old = theGraphics2D.getTransform();
 
-                    theGraphics2D.rotate(angle);
+                    theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
                     theGraphics2D.setColor(theColor);
                     theGraphics2D.fillArc(0, 0, w, h, 0, 360);
 
@@ -266,7 +268,7 @@ public class Sprite extends Node
             theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
         }
     }
-    
+
     public Color getColor()
     {
         return this.theColor;
@@ -301,7 +303,16 @@ public class Sprite extends Node
 
     public void onCustomDraw(Graphics2D theGraphics2D)
     {
-
+        theGraphics2D.setBackground(blackTransparent);
+        theGraphics2D.clearRect(0, 0, (int) width, (int) height);
+    }
+    
+    void drawFrame(Graphics2D theGraphics2D)
+    {
+        if (this.bDrawFrame)
+        {
+            theGraphics2D.drawRect(0, 0, (int)width - 1, (int)height - 1);
+        }
     }
 
     public void onDead()
