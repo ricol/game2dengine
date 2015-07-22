@@ -39,6 +39,8 @@ public class LabelSprite extends MovingSprite
     @Override
     public void onCustomDraw(Graphics2D theGraphics2D)
     {
+        super.onCustomDraw(theGraphics2D);
+
         if (bTextFrame)
         {
             theGraphics2D.setColor(textFrameColor);

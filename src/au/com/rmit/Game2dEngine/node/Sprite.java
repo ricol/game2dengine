@@ -266,7 +266,7 @@ public class Sprite extends Node
             theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
         }
     }
-    
+
     public Color getColor()
     {
         return this.theColor;
@@ -301,7 +301,8 @@ public class Sprite extends Node
 
     public void onCustomDraw(Graphics2D theGraphics2D)
     {
-
+        theGraphics2D.setBackground(blackTransparent);
+        theGraphics2D.clearRect(0, 0, (int) width, (int) height);
     }
 
     public void onDead()
