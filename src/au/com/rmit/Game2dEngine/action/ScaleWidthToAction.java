@@ -25,7 +25,7 @@ public class ScaleWidthToAction extends ScaleAction
         this.scaleWidthTo = this.theSprite.getWidth();
         this.scaleWidthToDuration = 0;
     }
-    
+
     public void ScaleWidthTo(double width, float duration)
     {
         this.scaleWidthTo = width;

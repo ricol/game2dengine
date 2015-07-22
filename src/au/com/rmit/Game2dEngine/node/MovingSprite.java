@@ -59,7 +59,7 @@ public class MovingSprite extends Sprite
             //delete old actions
             this.theSetOfActions.removeAll(this.theSetOfActionsDeleted);
             this.theSetOfActionsDeleted.clear();
-            
+
             //add new actions
             this.theSetOfActions.addAll(this.theSetOfActionsAdded);
             this.theSetOfActionsAdded.clear();
@@ -116,12 +116,12 @@ public class MovingSprite extends Sprite
     {
         this.velocityY = value;
     }
-    
+
     public double getVelocityX()
     {
         return this.velocityX;
     }
-    
+
     public double getVelocityY()
     {
         return this.velocityY;

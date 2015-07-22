@@ -14,6 +14,7 @@ import static java.lang.Math.abs;
  */
 public class RotateToAction extends RotateAction
 {
+
     RotateByAction theRotateByAction;
     double rotateTo;
     double rotateToDuration;

@@ -11,5 +11,10 @@ package au.com.rmit.Game2dEngine.common;
  */
 public class Game2dEngineShared
 {
-    public static enum TypeCollisionDetection {UNDECTED, COLLIDED, UNCOLLIDED};
+
+    public static enum TypeCollisionDetection
+    {
+
+        UNDECTED, COLLIDED, UNCOLLIDED
+    };
 }

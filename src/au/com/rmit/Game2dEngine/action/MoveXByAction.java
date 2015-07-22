@@ -51,7 +51,7 @@ public class MoveXByAction extends MoveAction
             this.theSprite.setX(this.theSprite.getX() + moveXBy);
             bComplete = true;
         }
-        
+
         if (bComplete)
         {
             return;
