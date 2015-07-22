@@ -25,7 +25,8 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
-    public boolean bDrawFrame = true;
+
+    public boolean bDrawFrame = false;
     public Color theColorOfFrame = Color.yellow;
     public boolean bCollisionDetect = false;
     public int collisionCategory = -1;
@@ -151,7 +152,7 @@ public class Sprite extends Node
                     AffineTransform old = theGraphics2D.getTransform();
                     theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
 
-                    theGraphics2D.drawImage(theImage, 0, 0, w, h, null);
+                    theGraphics2D.drawImage(theImage, 0, 0, null);
                     theGraphics2D.setTransform(old);
                 } else
                 {
@@ -306,12 +307,12 @@ public class Sprite extends Node
         theGraphics2D.setBackground(blackTransparent);
         theGraphics2D.clearRect(0, 0, (int) width, (int) height);
     }
-    
+
     void drawFrame(Graphics2D theGraphics2D)
     {
         if (this.bDrawFrame)
         {
-            theGraphics2D.drawRect(0, 0, (int)width - 1, (int)height - 1);
+            theGraphics2D.drawRect(0, 0, (int) width - 1, (int) height - 1);
         }
     }
 

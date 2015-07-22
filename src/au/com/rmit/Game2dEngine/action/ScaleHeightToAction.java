@@ -31,7 +31,7 @@ public class ScaleHeightToAction extends ScaleAction
         this.scaleHeightTo = height;
         this.scaleHeightToDuration = abs(duration * 1000);
     }
-    
+
     @Override
     public void clearSprite()
     {

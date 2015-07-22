@@ -51,7 +51,7 @@ public class MoveYByAction extends MoveAction
             this.theSprite.setY(this.theSprite.getY() + moveYBy);
             bComplete = true;
         }
-        
+
         if (bComplete)
         {
             return;

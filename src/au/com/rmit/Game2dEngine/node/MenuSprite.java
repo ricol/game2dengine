@@ -16,5 +16,5 @@ public class MenuSprite extends MovingSprite
     {
         super(x, y, width, height, mass, velocityX, velocityY);
     }
-    
+
 }

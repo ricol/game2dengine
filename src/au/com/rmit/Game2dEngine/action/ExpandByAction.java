@@ -135,12 +135,12 @@ public class ExpandByAction extends Action
 
         this.theSprite = null;
     }
-    
+
     public float getExpandBy()
     {
         return this.expandBy;
     }
-    
+
     public float getExpandByDuration()
     {
         return this.expandByDuration;

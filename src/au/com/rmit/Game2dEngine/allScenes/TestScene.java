@@ -45,7 +45,7 @@ public class TestScene extends Scene
         {
             Logger.getLogger(TestScene.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         Timer theTimerForGravity = new Timer(10, new ActionListener()
         {
 
@@ -113,7 +113,6 @@ public class TestScene extends Scene
                 aObject.bDrawFrame = false;
 
                 addSprite(aObject);
-                
 
 //                aLabel.setVelocityY(-300);
 //                

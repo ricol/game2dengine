@@ -14,9 +14,10 @@ import java.util.Random;
  */
 public abstract class Action
 {
+
     public String identifer = this.getClass().getName();
     protected boolean bImmediately;
-    
+
     public static final double MINIMUM = 0.001;
     public static final double EQUAL_STANDARD = 0.000000001;
     public static final double MINIMUM_DURATION = 0.001;
@@ -40,7 +41,7 @@ public abstract class Action
     {
         this.theSprite = null;
     }
-    
+
     @Override
     public String toString()
     {
