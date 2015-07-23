@@ -7,7 +7,7 @@ package au.com.rmit.Game2dEngine.node;
 
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class MenuItemSprite extends MovingSprite
 {

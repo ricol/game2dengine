@@ -7,7 +7,7 @@ package au.com.rmit.Game2dEngine.gravity;
 
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class Gravity
 {

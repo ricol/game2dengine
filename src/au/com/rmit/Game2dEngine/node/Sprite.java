@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class Sprite extends Node
 {
