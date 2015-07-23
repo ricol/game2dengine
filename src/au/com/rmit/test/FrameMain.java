@@ -17,7 +17,7 @@ import java.awt.event.ComponentEvent;
  */
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class FrameMain extends javax.swing.JFrame
 {

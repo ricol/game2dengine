@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class Sprite extends Node
 {
@@ -152,7 +152,12 @@ public class Sprite extends Node
                     AffineTransform old = theGraphics2D.getTransform();
                     theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
 
-                    theGraphics2D.drawImage(theImage, 0, 0, null);
+                    int tmpImageWidth = this.theImage.getWidth();
+                    int tmpImageHeight = this.theImage.getHeight();
+                    int tmpImagePosX = (int)((width - tmpImageWidth) / 2.0f);
+                    int tmpImagePosY = (int)((height - tmpImageHeight) / 2.0f);
+                    theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
+                    
                     theGraphics2D.setTransform(old);
                 } else
                 {

@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class MovingSprite extends Sprite
 {

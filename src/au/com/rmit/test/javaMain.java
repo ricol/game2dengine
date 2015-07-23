@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
  */
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class javaMain
 {

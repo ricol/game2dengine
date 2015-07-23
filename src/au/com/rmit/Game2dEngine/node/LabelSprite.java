@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
 
 /**
  *
- * @author Philology
+ * @author ricolwang
  */
 public class LabelSprite extends MovingSprite
 {
