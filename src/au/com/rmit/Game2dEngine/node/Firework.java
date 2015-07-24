@@ -22,6 +22,11 @@ public abstract class Firework extends MovingSprite
     {
         super(x, y, width, height, mass, velocityX, velocityY);
     }
+    
+    public Firework(String imagename)
+    {
+        super(imagename);
+    }
 
     @Override
     public void updateState(double currentTime)

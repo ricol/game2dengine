@@ -17,4 +17,8 @@ public class SmallFirework extends Firework
         super(x, y, width, height, mass, velocityX, velocityY);
     }
 
+    public SmallFirework()
+    {
+        super("starSmall.png");
+    }
 }
