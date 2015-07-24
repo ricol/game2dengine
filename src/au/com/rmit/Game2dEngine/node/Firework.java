@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
+import au.com.rmit.Game2dEngine.action.RotateByAction;
 import static java.lang.Math.abs;
 
 /**
@@ -26,6 +27,11 @@ public abstract class Firework extends MovingSprite
     public Firework(String imagename)
     {
         super(imagename);
+//        this.bDrawFrame = true;
+        
+        RotateByAction aAction = new RotateByAction();
+        aAction.rotateBy(Math.PI * 2 * (theRandom.nextBoolean() ? 1 : -1), 2);
+        this.addAction(aAction);
     }
 
     @Override
