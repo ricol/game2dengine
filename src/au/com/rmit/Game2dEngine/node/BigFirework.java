@@ -28,6 +28,9 @@ public class BigFirework extends Firework
     public BigFirework()
     {
         super("starBig.png");
+        
+        this.bShouldBlast = true;
+        this.blastTime = abs(theRandom.nextInt()) % 3 + 1;
     }
 
     @Override
@@ -50,8 +53,8 @@ public class BigFirework extends Firework
                     aObject = new BigFirework();
                     aObject.setX(x);
                     aObject.setY(y);
-                    aObject.setVelocityX(velocityX);
-                    aObject.setVelocityY(velocityY);
+                    aObject.setVelocityX(tmpVelocityX);
+                    aObject.setVelocityY(tmpVelocityY);
                     aObject.lifetime = 1;
                     aObject.blastTime = (abs(theRandom.nextInt()) % 100) / 100.0 + 0.5;
                     ((BigFirework) aObject).subFireworks = 10;
@@ -60,8 +63,8 @@ public class BigFirework extends Firework
                     aObject = new SmallFirework();
                     aObject.setX(x);
                     aObject.setY(y);
-                    aObject.setVelocityX(velocityX);
-                    aObject.setVelocityY(velocityY);
+                    aObject.setVelocityX(tmpVelocityX);
+                    aObject.setVelocityY(tmpVelocityY);
                     aObject.lifetime = abs(theRandom.nextInt()) % 5 + 1;
                 }
 
