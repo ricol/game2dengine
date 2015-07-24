@@ -31,6 +31,11 @@ public class MovingSprite extends Sprite
         this.velocityX = velocityX;
         this.velocityY = velocityY;
     }
+    
+    public MovingSprite(String imagename)
+    {
+        super(imagename);
+    }
 
     @Override
     public void updateState(double currentTime)

@@ -85,14 +85,24 @@ public class FireworksScene extends Scene
 
             if (abs(theRandom.nextInt() % 10) > 5)
             {
-                aObject = new BigFirework(x, y, 20, 20, mass, velocityX, velocityY);
+                aObject = new BigFirework();
+                aObject.setX(x);
+                aObject.setY(y);
+                aObject.setVelocityX(velocityX);
+                aObject.setVelocityY(velocityY);
+                        
                 aObject.lifetime = 100;
                 aObject.blastTime = (abs(theRandom.nextInt()) % 100) / 80.0 + 0.5;
-                aObject.setImage("starBig.png");
+                ((BigFirework) aObject).subFireworks = 20;
 
             } else
             {
-                aObject = new SmallFirework(x, y, 10, 10, mass, velocityX, velocityY);
+                aObject = new SmallFirework();
+                aObject.setX(x);
+                aObject.setY(y);
+                aObject.setVelocityX(velocityX);
+                aObject.setVelocityY(velocityY);
+                
                 aObject.lifetime = abs(theRandom.nextInt()) % 5 + 1;
                 aObject.setImage("starSmall.png");
             }
