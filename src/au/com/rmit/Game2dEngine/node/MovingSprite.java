@@ -7,6 +7,8 @@ package au.com.rmit.Game2dEngine.node;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -23,6 +25,8 @@ public class MovingSprite extends Sprite
     protected Set<Action> theSetOfActions = new HashSet<>();
     Set<Action> theSetOfActionsDeleted = new HashSet<>();
     Set<Action> theSetOfActionsAdded = new HashSet<>();
+    
+    protected Queue<Action> theQueueOfActions = new LinkedList<>();
 
     public MovingSprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY)
     {
@@ -45,7 +49,8 @@ public class MovingSprite extends Sprite
         if (this.isAlive())
         {
             //how much time passed since last update
-            double t = (currentTime - this.lastUpdateTime) / 1000.0f; //in seconds
+            double delta = currentTime - this.lastUpdateTime;
+            double t = delta / 1000.0f; //in seconds
 
             //update state
             if (this.g != null)
@@ -61,6 +66,23 @@ public class MovingSprite extends Sprite
             y += IncY;
 
             //perform actions
+            
+            //perform a action in the queue one by one in sequence
+            Action theHeadAction = this.theQueueOfActions.peek();
+            if (theHeadAction != null)
+            {
+                this.onActionRunning(theHeadAction);
+                theHeadAction.perform(delta);
+                
+                if (theHeadAction.bComplete)
+                {
+                    this.deQueueAction(theHeadAction);
+                    this.onActionComplete(theHeadAction);
+                }
+            }
+            
+            //perform other actions
+           
             //delete old actions
             this.theSetOfActions.removeAll(this.theSetOfActionsDeleted);
             this.theSetOfActionsDeleted.clear();
@@ -81,7 +103,7 @@ public class MovingSprite extends Sprite
                 for (Action aAction : this.theSetOfActions)
                 {
                     this.onActionRunning(aAction);
-                    aAction.perform(currentTime - this.lastUpdateTime);
+                    aAction.perform(delta);
 
                     if (aAction.bComplete)
                     {
@@ -106,10 +128,27 @@ public class MovingSprite extends Sprite
         aAction.clearSprite();
         this.theSetOfActionsDeleted.remove(aAction);
     }
+    
+    public void enQueueAction(Action aAction)
+    {
+        aAction.setSprite(this);
+        this.theQueueOfActions.add(aAction);
+    }
+    
+    public void deQueueAction(Action aAction)
+    {
+        aAction.clearSprite();
+        this.theQueueOfActions.remove(aAction);
+    }
 
     public int getActionCount()
     {
         return this.theSetOfActions.size();
+    }
+    
+    public int getQueueActionCount()
+    {
+        return this.theQueueOfActions.size();
     }
 
     public void setVelocityX(double value)
