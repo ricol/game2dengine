@@ -40,6 +40,11 @@ public class MovingSprite extends Sprite
     {
         super(imagename);
     }
+    
+    public MovingSprite()
+    {
+        this(0, 0, 0, 0, 0, 0, 0);
+    }
 
     @Override
     public void updateState(double currentTime)

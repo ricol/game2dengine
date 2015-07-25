@@ -7,6 +7,7 @@ package au.com.rmit.Game2dEngine.node;
 
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
+import au.com.rmit.Game2dEngine.scene.Layer;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -359,5 +360,15 @@ public class Sprite extends Node
     public void onNotCollideWith(Sprite target)
     {
 
+    }
+    
+    public void onAddToLayer(Layer theLayer)
+    {
+        
+    }
+    
+    public void onRemovedFromLayer(Layer theLayer)
+    {
+        
     }
 }

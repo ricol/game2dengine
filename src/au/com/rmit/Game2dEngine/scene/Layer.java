@@ -32,5 +32,6 @@ public class Layer
     {
         this.NewObjects.add(aSprite);
         aSprite.theScene = this.theScene;
+        aSprite.onAddToLayer(this);
     }
 }
