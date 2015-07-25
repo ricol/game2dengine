@@ -14,7 +14,6 @@ import java.util.Random;
  */
 public class Node
 {
-
     public Scene theScene;
     protected double x;
     protected double y;

@@ -6,6 +6,7 @@
 package au.com.rmit.test;
 
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
+import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.node.MovingSprite;
 import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import static java.lang.Math.abs;
@@ -16,23 +17,31 @@ import static java.lang.Math.abs;
  */
 public class PropelEngine extends MovingSprite
 {
+    public PropelEngine()
+    {
+        RotateByAction aAction = new RotateByAction();
+        aAction.rotateBy(-Math.PI * 20, 20);
+        this.addAction(aAction);
+    }
+    
     public void propel()
     {
         int number = abs(theRandom.nextInt()) % 5 + 10;
 
         for (int i = 0; i < number; i++)
         {
-            double tmpX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 20 * 4;
-            double tmpY = theRandom.nextFloat() * 100 * 10;
+            double tmpVelocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 20 * 4;
+            double tmpVelocityY = theRandom.nextFloat() * 100 * 10;
 
             int size = 6;
 
             MovingSprite aFire = new MovingSprite(0, 0, size, size, 0, 0, 0);
 
-            aFire.setX(this.getCentreX() - size / 2);
-            aFire.setY(this.getCentreY() + this.getHeight() / 2);
-            aFire.setVelocityX(tmpX);
-            aFire.setVelocityY(tmpY);
+            aFire.setCentreX(this.getCentreX() + this.parent.getX());
+            aFire.setCentreY(this.getCentreY() + this.parent.getY());
+            
+            aFire.setVelocityX(tmpVelocityX);
+            aFire.setVelocityY(tmpVelocityY);
             aFire.setRed(255);
             aFire.setGreen(255);
             aFire.setBlue(255);
@@ -43,8 +52,16 @@ public class PropelEngine extends MovingSprite
             AlphaToAction aAction = new AlphaToAction(aFire);
             aAction.alphaTo(0, 0.1f);
             aFire.addAction(aAction);
-
-            this.theScene.addSprite(aFire);
+            
+            this.parent.theScene.addSprite(aFire);
         }
+    }
+
+    @Override
+    public void updateState(double currentTime)
+    {
+        super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
+        
+        System.out.println("Child - CentreX: " + this.getCentreX() + "; CentreY: " + this.getCentreY() + "; Angel: " + this.getAngle());
     }
 }

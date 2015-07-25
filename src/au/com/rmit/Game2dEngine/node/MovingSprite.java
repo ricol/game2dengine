@@ -25,7 +25,7 @@ public class MovingSprite extends Sprite
     protected Set<Action> theSetOfActions = new HashSet<>();
     Set<Action> theSetOfActionsDeleted = new HashSet<>();
     Set<Action> theSetOfActionsAdded = new HashSet<>();
-    
+
     protected Queue<Action> theQueueOfActions = new LinkedList<>();
 
     public MovingSprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY)
@@ -35,12 +35,17 @@ public class MovingSprite extends Sprite
         this.velocityX = velocityX;
         this.velocityY = velocityY;
     }
-    
+
+    public MovingSprite(double x, double y, double width, double height)
+    {
+        super(x, y, width, height, 0);
+    }
+
     public MovingSprite(String imagename)
     {
         super(imagename);
     }
-    
+
     public MovingSprite()
     {
         this(0, 0, 0, 0, 0, 0, 0);
@@ -71,23 +76,21 @@ public class MovingSprite extends Sprite
             y += IncY;
 
             //perform actions
-            
             //perform a action in the queue one by one in sequence
             Action theHeadAction = this.theQueueOfActions.peek();
             if (theHeadAction != null)
             {
                 this.onActionRunning(theHeadAction);
                 theHeadAction.perform(delta);
-                
+
                 if (theHeadAction.bComplete)
                 {
                     this.deQueueAction(theHeadAction);
                     this.onActionComplete(theHeadAction);
                 }
             }
-            
+
             //perform other actions
-           
             //delete old actions
             this.theSetOfActions.removeAll(this.theSetOfActionsDeleted);
             this.theSetOfActionsDeleted.clear();
@@ -133,13 +136,13 @@ public class MovingSprite extends Sprite
         aAction.clearSprite();
         this.theSetOfActionsDeleted.remove(aAction);
     }
-    
+
     public void enQueueAction(Action aAction)
     {
         aAction.setSprite(this);
         this.theQueueOfActions.add(aAction);
     }
-    
+
     public void deQueueAction(Action aAction)
     {
         aAction.clearSprite();
@@ -150,7 +153,7 @@ public class MovingSprite extends Sprite
     {
         return this.theSetOfActions.size();
     }
-    
+
     public int getQueueActionCount()
     {
         return this.theQueueOfActions.size();

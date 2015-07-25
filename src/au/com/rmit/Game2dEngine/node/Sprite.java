@@ -18,6 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import javax.imageio.ImageIO;
 
 /**
@@ -26,6 +28,10 @@ import javax.imageio.ImageIO;
  */
 public class Sprite extends Node
 {
+
+    public boolean bChild;
+    public Sprite parent;
+    public Set<Sprite> children = new HashSet<>();
 
     public boolean bDrawFrame = false;
     public Color theColorOfFrame = Color.yellow;
@@ -120,9 +126,15 @@ public class Sprite extends Node
     {
         double t = (currentTime - this.lastUpdateTime) / 1000.0f;
         currentLife += t;
+
         if (currentLife >= lifetime)
         {
             this.setDead();
+        }
+
+        for (Sprite aSprite : this.children)
+        {
+            aSprite.updateState(currentTime);
         }
     }
 
@@ -130,8 +142,20 @@ public class Sprite extends Node
     {
         int tmpX = (int) x;
         int tmpY = (int) y;
-        int tmpSceneWidth = this.theScene.getWidth();
-        int tmpSceneHeight = this.theScene.getHeight();
+
+        int tmpSceneWidth = 0;
+        int tmpSceneHeight = 0;
+
+        if (bChild)
+        {
+            tmpSceneWidth = (int) this.parent.getWidth();
+            tmpSceneHeight = (int) this.parent.getHeight();
+        } else
+        {
+            tmpSceneWidth = this.theScene.getWidth();
+            tmpSceneHeight = this.theScene.getHeight();
+        }
+
         int w = (int) width;
         int h = (int) height;
 
@@ -163,38 +187,42 @@ public class Sprite extends Node
                 this.onCustomDraw(theGraphics2D);
             } else
             {
+                //clear background
+                Graphics2D theGraphics2D = this.getTheImageGraphics();
+                theGraphics2D.setBackground(blackTransparent);
+                theGraphics2D.clearRect(0, 0, w, h);
+                this.drawFrame(theGraphics2D);
+
+                AffineTransform old = theGraphics2D.getTransform();
+
+                //rotate the angle
+                theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
+
+                //draw itself
                 if (this.theImage != null)
                 {
-                    Graphics2D theGraphics2D = this.getTheImageGraphics();
-                    theGraphics2D.setBackground(blackTransparent);
-                    theGraphics2D.clearRect(0, 0, w, h);
-                    this.drawFrame(theGraphics2D);
-
-                    AffineTransform old = theGraphics2D.getTransform();
-                    theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
-
+                    //draw the image
                     int tmpImageWidth = this.theImage.getWidth();
                     int tmpImageHeight = this.theImage.getHeight();
                     int tmpImagePosX = (int) ((width - tmpImageWidth) / 2.0f);
                     int tmpImagePosY = (int) ((height - tmpImageHeight) / 2.0f);
                     theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
 
-                    theGraphics2D.setTransform(old);
                 } else
                 {
-                    Graphics2D theGraphics2D = this.getTheImageGraphics();
-                    theGraphics2D.setBackground(blackTransparent);
-                    theGraphics2D.clearRect(0, 0, w, h);
-                    this.drawFrame(theGraphics2D);
-
-                    AffineTransform old = theGraphics2D.getTransform();
-
-                    theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
                     theGraphics2D.setColor(theColor);
-                    theGraphics2D.fillArc(0, 0, w, h, 0, 360);
-
-                    theGraphics2D.setTransform(old);
+//                    theGraphics2D.fillArc(0, 0, w, h, 0, 360);
+                    theGraphics2D.fillRect(0, 0, w, h);
                 }
+
+                //draw its children
+                for (Sprite aSprite : this.children)
+                {
+                    aSprite.updateGUI(theGraphics2D);
+                }
+
+                //restore
+                theGraphics2D.setTransform(old);
             }
 
             if (theImageCanvas != null)
@@ -321,6 +349,32 @@ public class Sprite extends Node
         this.setY(value - height / 2.0);
     }
 
+    public double getCentreXInParent()
+    {
+        if (bChild)
+        {
+            double centreX = this.getCentreX();
+            centreX *= Math.cos(this.getAngle());
+            return centreX;
+        } else
+        {
+            return this.getCentreX();
+        }
+    }
+
+    public double getCentreYInParent()
+    {
+        if (bChild)
+        {
+            double centreY = this.getCentreY();
+            centreY *= Math.sin(this.getAngle());
+            return centreY;
+        } else
+        {
+            return this.getCentreY();
+        }
+    }
+
     public void setDead()
     {
         this.isAlive = false;
@@ -344,7 +398,8 @@ public class Sprite extends Node
 
     public void onDead()
     {
-
+        this.clearChildren();
+        this.hashCollision.clear();
     }
 
     public boolean collideWith(Sprite target)
@@ -361,14 +416,33 @@ public class Sprite extends Node
     {
 
     }
-    
+
     public void onAddToLayer(Layer theLayer)
     {
-        
+
     }
-    
+
     public void onRemovedFromLayer(Layer theLayer)
     {
-        
+
+    }
+
+    public void addAChild(Sprite aSprite)
+    {
+        this.children.add(aSprite);
+        aSprite.parent = this;
+        aSprite.bChild = true;
+    }
+
+    public void removeAChild(Sprite aSprite)
+    {
+        this.children.remove(aSprite);
+        aSprite.parent = null;
+        aSprite.bChild = false;
+    }
+
+    public void clearChildren()
+    {
+        this.children.clear();
     }
 }
