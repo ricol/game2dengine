@@ -13,7 +13,7 @@ import static java.lang.Math.abs;
  *
  * @author ricolwang
  */
-public class RandomShapeSprite extends MovingSprite
+public class RandomShapeSprite extends Sprite
 {
 
     int angleStart = abs(theRandom.nextInt()) % 360;

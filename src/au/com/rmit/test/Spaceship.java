@@ -6,7 +6,7 @@
 package au.com.rmit.test;
 
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
-import au.com.rmit.Game2dEngine.node.MovingSprite;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
  *
  * @author ricolwang
  */
-public class Spaceship extends MovingSprite
+public class Spaceship extends Sprite
 {
 
     private int totalLife = 100;

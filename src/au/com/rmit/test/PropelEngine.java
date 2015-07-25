@@ -7,7 +7,7 @@ package au.com.rmit.test;
 
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
-import au.com.rmit.Game2dEngine.node.MovingSprite;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import static java.lang.Math.abs;
 
@@ -15,7 +15,7 @@ import static java.lang.Math.abs;
  *
  * @author ricolwang
  */
-public class PropelEngine extends MovingSprite
+public class PropelEngine extends Sprite
 {
     public PropelEngine()
     {
@@ -35,7 +35,7 @@ public class PropelEngine extends MovingSprite
 
             int size = 6;
 
-            MovingSprite aFire = new MovingSprite(0, 0, size, size, 0, 0, 0);
+            Sprite aFire = new Sprite(0, 0, size, size, 0, 0, 0);
 
             aFire.setCentreX(this.getCentreX() + this.parent.getX());
             aFire.setCentreY(this.getCentreY() + this.parent.getY());

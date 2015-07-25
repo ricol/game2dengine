@@ -12,7 +12,7 @@ import static java.lang.Math.abs;
  *
  * @author ricolwang
  */
-public abstract class Firework extends MovingSprite
+public abstract class Firework extends Sprite
 {
 
     public boolean bShouldBlast = false;

@@ -5,13 +5,13 @@
  */
 package au.com.rmit.test;
 
-import au.com.rmit.Game2dEngine.node.MovingSprite;
+import au.com.rmit.Game2dEngine.node.Sprite;
 
 /**
  *
  * @author ricolwang
  */
-public class SquareShape extends MovingSprite
+public class SquareShape extends Sprite
 {
 
     public SquareShape()

@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.action;
 
-import au.com.rmit.Game2dEngine.node.MovingSprite;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import java.util.Random;
 
 /**
@@ -23,7 +23,7 @@ public abstract class Action
     public static final double MINIMUM_DURATION = 0.001;
 
     public Random theRandom = new Random();
-    protected MovingSprite theSprite = null;
+    protected Sprite theSprite = null;
     public boolean bComplete = false;
 
     //runningTime in milliseconds
@@ -32,7 +32,7 @@ public abstract class Action
         bComplete = theRandom.nextBoolean();
     }
 
-    public void setSprite(MovingSprite theSprite)
+    public void setSprite(Sprite theSprite)
     {
         this.theSprite = theSprite;
     }

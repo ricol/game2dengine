@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.action;
 
-import au.com.rmit.Game2dEngine.node.MovingSprite;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import static java.lang.Math.abs;
 
 /**
@@ -20,7 +20,7 @@ public class MoveXToAction extends MoveAction
     double moveXTo;
     float moveXToDuration;
 
-    public MoveXToAction(MovingSprite theSprite)
+    public MoveXToAction(Sprite theSprite)
     {
         if (theSprite != null)
         {

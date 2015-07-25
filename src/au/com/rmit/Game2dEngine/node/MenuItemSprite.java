@@ -9,7 +9,7 @@ package au.com.rmit.Game2dEngine.node;
  *
  * @author ricolwang
  */
-public class MenuItemSprite extends MovingSprite
+public class MenuItemSprite extends Sprite
 {
 
     public MenuItemSprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY)

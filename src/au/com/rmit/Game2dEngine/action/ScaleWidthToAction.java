@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.action;
 
-import au.com.rmit.Game2dEngine.node.MovingSprite;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import static java.lang.Math.abs;
 
 /**
@@ -19,7 +19,7 @@ public class ScaleWidthToAction extends ScaleAction
     float scaleWidthToDuration;
     ScaleWidthByAction theScaleWidthByAction;
 
-    public ScaleWidthToAction(MovingSprite theSprite)
+    public ScaleWidthToAction(Sprite theSprite)
     {
         this.setSprite(theSprite);
         this.scaleWidthTo = this.theSprite.getWidth();
