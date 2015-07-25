@@ -8,8 +8,8 @@ package au.com.rmit.test;
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.node.Sprite;
-import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 
 /**
  *
@@ -30,7 +30,7 @@ public class PropelEngine extends Sprite
 
         for (int i = 0; i < number; i++)
         {
-            double tmpVelocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 20 * 4;
+            double tmpVelocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 20 * 4;
             double tmpVelocityY = theRandom.nextFloat() * 100 * 10;
 
             int size = 6;

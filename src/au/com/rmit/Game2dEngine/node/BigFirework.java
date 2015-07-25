@@ -5,8 +5,8 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 
 /**
  *
@@ -45,7 +45,7 @@ public class BigFirework extends Firework
                 Firework aObject;
 
                 double tmpMass = theRandom.nextFloat() / 3.0f;
-                double tmpVelocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 500.0f + this.getVelocityX();
+                double tmpVelocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 500.0f + this.getVelocityX();
                 double tmpVelocityY = -1 * theRandom.nextFloat() * 500.0f + this.getVelocityY();
 
                 if (abs(theRandom.nextInt() % 10) > 8)
