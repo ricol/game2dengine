@@ -99,7 +99,7 @@ public class RandomShapeScene extends Scene
             Sprite aObject;
 
             aObject = new RandomShapeSprite(x, y, 50, 50, 0, 0, 0);
-            aObject.lifetime = 10;
+            aObject.setLifeTime(10);
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
             int blueValue = abs(theRandom.nextInt()) % 255;

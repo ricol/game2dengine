@@ -84,7 +84,7 @@ public class FountainScene extends Scene
 
             float size = abs(theRandom.nextInt()) % 7 + 3;
             aObject = new SmallFirework(x, y, size, size, mass, velocityX, velocityY);
-            aObject.lifetime = (abs(theRandom.nextInt()) % 100) / 50.0;
+            aObject.setLifeTime((abs(theRandom.nextInt()) % 100) / 50.0);
 
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;

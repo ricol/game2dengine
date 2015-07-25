@@ -11,10 +11,9 @@ import java.awt.Graphics2D;
 
 /**
  *
- * @author ricolwang
- * Remember to set width and height of the text
+ * @author ricolwang Remember to set width and height of the text
  */
-public class LabelSprite extends MovingSprite
+public class LabelSprite extends Sprite
 {
 
     String text = "";
@@ -36,7 +35,7 @@ public class LabelSprite extends MovingSprite
         }
         this.setGreen(255);
     }
-    
+
     public LabelSprite(String text, Font theTextFont)
     {
         super(0, 0, 0, 0, 0, 0, 0);
@@ -49,7 +48,7 @@ public class LabelSprite extends MovingSprite
         }
         this.setGreen(255);
     }
-    
+
     public LabelSprite(String text)
     {
         super(0, 0, 0, 0, 0, 0, 0);

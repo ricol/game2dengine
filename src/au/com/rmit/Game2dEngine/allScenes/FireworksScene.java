@@ -90,8 +90,8 @@ public class FireworksScene extends Scene
                 aObject.setY(y);
                 aObject.setVelocityX(velocityX);
                 aObject.setVelocityY(velocityY);
-                        
-                aObject.lifetime = 100;
+
+                aObject.setLifeTime(100);
                 aObject.blastTime = (abs(theRandom.nextInt()) % 100) / 80.0 + 0.5;
                 ((BigFirework) aObject).subFireworks = 20;
 
@@ -102,8 +102,8 @@ public class FireworksScene extends Scene
                 aObject.setY(y);
                 aObject.setVelocityX(velocityX);
                 aObject.setVelocityY(velocityY);
-                
-                aObject.lifetime = abs(theRandom.nextInt()) % 5 + 1;
+
+                aObject.setLifeTime(abs(theRandom.nextInt()) % 5 + 1);
                 aObject.setImage("starSmall.png");
             }
 

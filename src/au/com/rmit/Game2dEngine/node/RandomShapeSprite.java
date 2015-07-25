@@ -5,7 +5,6 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
 
@@ -13,7 +12,7 @@ import static java.lang.Math.abs;
  *
  * @author ricolwang
  */
-public class RandomShapeSprite extends MovingSprite
+public class RandomShapeSprite extends Sprite
 {
 
     int angleStart = abs(theRandom.nextInt()) % 360;
@@ -29,13 +28,9 @@ public class RandomShapeSprite extends MovingSprite
     {
         if (this.isAlive())
         {
-            Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
-            g.setColor(theColor);
+            g.setColor(this.getColor());
 
-//            g.fillArc((int) x, (int) y, (int) width, (int) height, 0, 360);
             g.fill3DRect((int) this.x, (int) this.y, (int) this.width, (int) this.height, true);
-//            g.draw3DRect((int)this.x, (int)this.y, (int)this.width, (int)this.height, true);
-//            g.fillOval((int)this.x, (int)this.y, (int)this.width, (int)this.height);
         }
     }
 

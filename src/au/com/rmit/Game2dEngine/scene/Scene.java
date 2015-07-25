@@ -6,7 +6,6 @@
 package au.com.rmit.Game2dEngine.scene;
 
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.Game2dEngine.node.MovingSprite;
 import au.com.rmit.Game2dEngine.node.Sprite;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -192,7 +191,7 @@ public class Scene extends JPanel
 
     public void addSprite(Sprite aSprite)
     {
-        addSprite(aSprite, aSprite.layer);
+        addSprite(aSprite, aSprite.getLayer());
     }
 
     private void Loop()
@@ -226,9 +225,9 @@ public class Scene extends JPanel
                 {
                     aSprite.updateState(currentTime);
 
-                    if (aSprite instanceof MovingSprite)
+                    if (aSprite instanceof Sprite)
                     {
-                        actionCount += ((MovingSprite) aSprite).getActionCount();
+                        actionCount += ((Sprite) aSprite).getActionCount();
                     }
 
                     if (!aSprite.isAlive())
