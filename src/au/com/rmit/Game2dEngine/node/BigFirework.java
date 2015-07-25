@@ -28,7 +28,7 @@ public class BigFirework extends Firework
     public BigFirework()
     {
         super("starBig.png");
-        
+
         this.bShouldBlast = true;
         this.blastTime = abs(theRandom.nextInt()) % 3 + 1;
     }
@@ -45,8 +45,8 @@ public class BigFirework extends Firework
                 Firework aObject;
 
                 double tmpMass = theRandom.nextFloat() / 3.0f;
-                double tmpVelocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 500.0f + this.velocityX;
-                double tmpVelocityY = -1 * theRandom.nextFloat() * 500.0f + this.velocityY;
+                double tmpVelocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 500.0f + this.getVelocityX();
+                double tmpVelocityY = -1 * theRandom.nextFloat() * 500.0f + this.getVelocityY();
 
                 if (abs(theRandom.nextInt() % 10) > 8)
                 {
@@ -55,7 +55,7 @@ public class BigFirework extends Firework
                     aObject.setY(y);
                     aObject.setVelocityX(tmpVelocityX);
                     aObject.setVelocityY(tmpVelocityY);
-                    aObject.lifetime = 1;
+                    aObject.setLifeTime(1);
                     aObject.blastTime = (abs(theRandom.nextInt()) % 100) / 100.0 + 0.5;
                     ((BigFirework) aObject).subFireworks = 10;
                 } else
@@ -65,10 +65,10 @@ public class BigFirework extends Firework
                     aObject.setY(y);
                     aObject.setVelocityX(tmpVelocityX);
                     aObject.setVelocityY(tmpVelocityY);
-                    aObject.lifetime = abs(theRandom.nextInt()) % 5 + 1;
+                    aObject.setLifeTime(abs(theRandom.nextInt()) % 5 + 1);
                 }
 
-                aObject.applyGravity(this.g);
+                aObject.applyGravity(this.getGravity());
 
                 int redValue = abs(theRandom.nextInt()) % 255;
                 int greenValue = abs(theRandom.nextInt()) % 255;

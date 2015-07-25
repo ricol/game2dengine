@@ -24,7 +24,13 @@ public class TestSpaceship extends Spaceship implements ActionListener
     public TestSpaceship()
     {
         super("my-spaceship.png");
-        theTimerForEngine.start();
+        this.addAChild(theEngine);
+        
+        this.bDrawFrame = true;
+        theEngine.bDrawFrame = true;
+        theEngine.setRed(255);
+        theEngine.setWidth(20);
+        theEngine.setHeight(20);
     }
 
     @Override
@@ -39,9 +45,10 @@ public class TestSpaceship extends Spaceship implements ActionListener
     {
         super.onAddToLayer(theLayer); //To change body of generated methods, choose Tools | Templates.
 
-        this.theScene.addSprite(theEngine);
-        theEngine.setCentreX(this.getCentreX());
-        theEngine.setCentreY(this.getCentreY() + this.getHeight() / 2);
+        theEngine.setCentreX(this.getWidth() / 2);
+        theEngine.setCentreY(this.getHeight());
+
+        theTimerForEngine.start();
     }
 
     @Override
@@ -56,5 +63,13 @@ public class TestSpaceship extends Spaceship implements ActionListener
         {
             theEngine.propel();
         }
+    }
+
+    @Override
+    public void updateState(double currentTime)
+    {
+        super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
+
+        System.out.println("Parent - CentreX: " + this.getCentreX() + "; CentreY: " + this.getCentreY() + "; Angel: " + this.getAngle());
     }
 }

@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.action;
 
-import au.com.rmit.Game2dEngine.node.MovingSprite;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import static java.lang.Math.abs;
 
 /**
@@ -19,7 +19,7 @@ public class ScaleHeightToAction extends ScaleAction
     float scaleHeightToDuration;
     ScaleHeightByAction theScaleHeightByAction;
 
-    public ScaleHeightToAction(MovingSprite theSprite)
+    public ScaleHeightToAction(Sprite theSprite)
     {
         this.setSprite(theSprite);
         this.scaleHeightTo = this.theSprite.getHeight();

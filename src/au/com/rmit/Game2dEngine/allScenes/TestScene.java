@@ -67,6 +67,49 @@ public class TestScene extends Scene
             public void mousePressed(MouseEvent e)
             {
 
+//                SquareShape aShape = new SquareShape();
+//                aShape.setWidth(300);
+//                aShape.setHeight(200);
+//                aShape.setCentreX(e.getX());
+//                aShape.setCentreY(e.getY());
+//                aShape.setRed(255);
+//                aShape.setGreen(255);
+//                addSprite(aShape);
+//                aShape.bDeadIfNoActions = true;
+//                RotateByAction aAction = new RotateByAction();
+//                aAction.rotateBy(Math.PI * 10, 10);
+//                aShape.addAction(aAction);
+//                
+//                ExpandByAction aExpandAction = new ExpandByAction();
+//                aExpandAction.expandBy(100, 10);
+//                aShape.addAction(aExpandAction);
+//                SquareShape aFirstChild = new SquareShape();
+//                aFirstChild.setWidth(100);
+//                aFirstChild.setHeight(50);
+//                aFirstChild.setCentreX(aShape.getWidth() / 2);
+//                aFirstChild.setCentreY(aShape.getHeight() / 2);
+//                aFirstChild.setBlue(255);
+//                aShape.addAChild(aFirstChild);
+//                
+//                RotateByAction aActionForFirst = new RotateByAction();
+//                aActionForFirst.rotateBy(Math.PI * 10, 20);
+//                aFirstChild.addAction(aActionForFirst);
+//                
+//                ExpandByAction aExpandActionForFirst = new ExpandByAction();
+//                aExpandActionForFirst.expandBy(50, 10);
+//                aFirstChild.addAction(aExpandActionForFirst);
+//                SquareShape aSecondChild = new SquareShape();
+//                aSecondChild.setWidth(100);
+//                aSecondChild.setHeight(50);
+//                aSecondChild.setX(150);
+//                aSecondChild.setY(20);
+//                aSecondChild.setGreen(255);
+//                aShape.addAChild(aSecondChild);
+//                
+//                RotateByAction aActionForSecond = new RotateByAction();
+//                aActionForSecond.rotateBy(-Math.PI * 10, 10);
+//                aSecondChild.addAction(aActionForSecond);
+
                 /*
                  //test label
                  LabelSprite aLabel = new LabelSprite(0, 0, "This is a text", null);
@@ -106,15 +149,17 @@ public class TestScene extends Scene
                 aObject.setCentreX(e.getX());
                 aObject.setCentreY(e.getY());
 
-                aObject.lifetime = Sprite.EVER;
-//                aObject.bDeadIfNoActions = true;
-
-//                RotateByAction aAction = new RotateByAction();
-//                aAction.rotateBy(Math.PI * 2, 1);
-//                aObject.addAction(aAction);
-//                aObject.bDrawFrame = false;
+                aObject.setLifeTime(Sprite.EVER);
+                aObject.bDeadIfNoActions = true;
 
                 addSprite(aObject);
+
+                RotateByAction aAction = new RotateByAction();
+                aAction.rotateBy(Math.PI * 10, 20);
+
+//                MoveXByAction aAction = new MoveXByAction();
+//                aAction.moveXBy(200, 5);
+                aObject.addAction(aAction);
 
 //                
 //                
