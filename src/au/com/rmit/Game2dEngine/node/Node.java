@@ -5,7 +5,6 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
-import au.com.rmit.Game2dEngine.scene.Scene;
 import java.util.Random;
 
 /**
@@ -14,12 +13,11 @@ import java.util.Random;
  */
 public class Node
 {
-    public Scene theScene;
+
     protected double x;
     protected double y;
     protected double width;
     protected double height;
-    protected double angle;
 
     protected Random theRandom = new Random();
 
@@ -29,7 +27,6 @@ public class Node
         this.y = y;
         this.width = width;
         this.height = height;
-        this.angle = 0;
     }
 
     public double getX()
@@ -52,11 +49,6 @@ public class Node
         return height;
     }
 
-    public double getAngle()
-    {
-        return angle;
-    }
-
     public void setX(double x)
     {
         this.x = x;
@@ -75,11 +67,6 @@ public class Node
     public void setHeight(double height)
     {
         this.height = height;
-    }
-
-    public void setAngle(double angle)
-    {
-        this.angle = angle;
     }
 
     public boolean overlaps(float targetX, float targetY, float targetWidth, float targetHeight)

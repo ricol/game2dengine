@@ -9,6 +9,7 @@ import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
+import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -34,6 +35,8 @@ public class Sprite extends Node
 
     public boolean bChild;
     public Sprite parent;
+    public Scene theScene;
+
     public Set<Sprite> children = new HashSet<>();
     public boolean bDrawFrame = false;
     public Color theColorOfFrame = Color.yellow;
@@ -41,34 +44,35 @@ public class Sprite extends Node
     public int collisionCategory = -1;
     public int collisionTargetCategory = -1;
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
-    public int layer = 0;
     public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
-    public double mass;
-    public Gravity g;
     public boolean bDeadIfNoActions;
-    public double lifetime = Sprite.EVER; //in seconds
 
-    protected float alpha = 1;
-    protected int red = 0;
-    protected int green = 0;
-    protected int blue = 0;
-    protected double lastUpdateTime;
-    protected double starttime = System.currentTimeMillis();
-    protected BufferedImage theImage;
-    protected double velocityX;
-    protected double velocityY;
-    protected Set<Action> theSetOfActions = new HashSet<>();
-    protected Queue<Action> theQueueOfActions = new LinkedList<>();
-
-    private final Color blackTransparent = new Color(0, 0, 0, 0);
+    private int layer = 0;
+    private double lifetime = Sprite.EVER; //in seconds
+    private double lastUpdateTime;
+    private double starttime = System.currentTimeMillis();
+    private double velocityX;
+    private double velocityY;
     private double currentLife = 0;
     private boolean isAlive = true;
-    private BufferedImage theImageCanvas;
-    private Graphics2D theGraphics;
     private Set<Action> theSetOfActionsDeleted = new HashSet<>();
     private Set<Action> theSetOfActionsAdded = new HashSet<>();
+    private Set<Action> theSetOfActions = new HashSet<>();
+    private Queue<Action> theQueueOfActions = new LinkedList<>();
+    private double mass;
+    private Gravity g;
+    private float alpha = 1;
+    private int red = 0;
+    private int green = 0;
+    private int blue = 0;
+    private double angle;
     private Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
+
+    private BufferedImage theImageCanvas;
+    private Graphics2D theGraphics;
+    private BufferedImage theImage;
+    private final Color blackTransparent = new Color(0, 0, 0, 0);
 
     public Sprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY)
     {
@@ -120,14 +124,8 @@ public class Sprite extends Node
             this.setDead();
         }
 
-        for (Sprite aSprite : this.children)
-        {
-            aSprite.updateState(currentTime);
-        }
-
         if (this.isAlive())
         {
-
             //update state
             if (this.g != null)
             {
@@ -187,6 +185,12 @@ public class Sprite extends Node
                 }
             }
 
+            //update its children
+            for (Sprite aSprite : this.children)
+            {
+                aSprite.updateState(currentTime);
+            }
+
             this.lastUpdateTime = currentTime;
         }
     }
@@ -196,8 +200,8 @@ public class Sprite extends Node
         int tmpX = (int) x;
         int tmpY = (int) y;
 
-        int tmpSceneWidth = 0;
-        int tmpSceneHeight = 0;
+        int tmpSceneWidth;
+        int tmpSceneHeight;
 
         if (bChild)
         {
@@ -263,8 +267,8 @@ public class Sprite extends Node
 
                 } else
                 {
+                    //fill
                     theGraphics2D.setColor(theColor);
-//                    theGraphics2D.fillArc(0, 0, w, h, 0, 360);
                     theGraphics2D.fillRect(0, 0, w, h);
                 }
 
@@ -446,6 +450,16 @@ public class Sprite extends Node
         return this.y + height / 2.0;
     }
 
+    public double getAngle()
+    {
+        return angle;
+    }
+
+    public void setAngle(double angle)
+    {
+        this.angle = angle;
+    }
+
     public void setCentreX(double value)
     {
         this.setX(value - width / 2.0);
@@ -463,9 +477,39 @@ public class Sprite extends Node
         this.onDead();
     }
 
+    public Gravity getGravity()
+    {
+        return this.g;
+    }
+
+    public double getStartTime()
+    {
+        return this.starttime;
+    }
+
     public boolean collideWith(Sprite target)
     {
         return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
+    }
+
+    public int getLayer()
+    {
+        return this.layer;
+    }
+
+    public void setLayer(int layer)
+    {
+        this.layer = layer;
+    }
+
+    public double getLife()
+    {
+        return this.lifetime;
+    }
+
+    public void setLifeTime(double life)
+    {
+        this.lifetime = life;
     }
 
     public void addAChild(Sprite aSprite)

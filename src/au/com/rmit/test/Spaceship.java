@@ -63,7 +63,7 @@ public class Spaceship extends Sprite
         }
     }
 
-    public int getLife()
+    public int getCurrentLife()
     {
         return currentLife;
     }

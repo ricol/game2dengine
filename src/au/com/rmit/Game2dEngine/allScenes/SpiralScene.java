@@ -99,7 +99,7 @@ public class SpiralScene extends Scene
             Firework aObject;
 
             aObject = new SmallFirework(x, y, 10, 10, 0, 0, 0);
-            aObject.lifetime = 10;
+            aObject.setLifeTime(10);
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
             int blueValue = abs(theRandom.nextInt()) % 255;

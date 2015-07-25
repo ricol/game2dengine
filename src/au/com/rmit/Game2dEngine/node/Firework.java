@@ -27,7 +27,6 @@ public abstract class Firework extends Sprite
     public Firework(String imagename)
     {
         super(imagename);
-//        this.bDrawFrame = true;
         
         RotateByAction aAction = new RotateByAction();
         aAction.rotateBy(Math.PI * 2 * (theRandom.nextBoolean() ? 1 : -1), 2);
@@ -41,7 +40,7 @@ public abstract class Firework extends Sprite
 
         if (this.isAlive() && this.bShouldBlast && !this.bDidBlast)
         {
-            if (currentTime - this.starttime >= blastTime * 1000)
+            if (currentTime - this.getStartTime() >= blastTime * 1000)
             {
                 this.bDidBlast = true;
                 this.setDead();

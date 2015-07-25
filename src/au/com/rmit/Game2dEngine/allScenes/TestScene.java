@@ -5,14 +5,10 @@
  */
 package au.com.rmit.Game2dEngine.allScenes;
 
-import au.com.rmit.Game2dEngine.action.AlphaToAction;
-import au.com.rmit.Game2dEngine.action.ExpandByAction;
-import au.com.rmit.Game2dEngine.action.MoveXByAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.node.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
-import au.com.rmit.test.SquareShape;
 import au.com.rmit.test.TestSpaceship;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,7 +76,6 @@ public class TestScene extends Scene
 //                aShape.setGreen(255);
 //                addSprite(aShape);
 //                aShape.bDeadIfNoActions = true;
-
 //                RotateByAction aAction = new RotateByAction();
 //                aAction.rotateBy(Math.PI * 10, 10);
 //                aShape.addAction(aAction);
@@ -88,7 +83,6 @@ public class TestScene extends Scene
 //                ExpandByAction aExpandAction = new ExpandByAction();
 //                aExpandAction.expandBy(100, 10);
 //                aShape.addAction(aExpandAction);
-
 //                SquareShape aFirstChild = new SquareShape();
 //                aFirstChild.setWidth(100);
 //                aFirstChild.setHeight(50);
@@ -104,7 +98,6 @@ public class TestScene extends Scene
 //                ExpandByAction aExpandActionForFirst = new ExpandByAction();
 //                aExpandActionForFirst.expandBy(50, 10);
 //                aFirstChild.addAction(aExpandActionForFirst);
-
 //                SquareShape aSecondChild = new SquareShape();
 //                aSecondChild.setWidth(100);
 //                aSecondChild.setHeight(50);
@@ -156,19 +149,18 @@ public class TestScene extends Scene
                 aObject.setCentreX(e.getX());
                 aObject.setCentreY(e.getY());
 
-                aObject.lifetime = Sprite.EVER;
+                aObject.setLifeTime(Sprite.EVER);
                 aObject.bDeadIfNoActions = true;
-                
+
                 addSprite(aObject);
-                
+
                 RotateByAction aAction = new RotateByAction();
                 aAction.rotateBy(Math.PI * 10, 20);
-                
+
 //                MoveXByAction aAction = new MoveXByAction();
 //                aAction.moveXBy(200, 5);
-                
                 aObject.addAction(aAction);
-                
+
 //                
 //                
 //                AlphaToAction aAlphaAction = new AlphaToAction(aObject);
