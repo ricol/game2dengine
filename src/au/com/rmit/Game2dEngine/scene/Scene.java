@@ -234,6 +234,7 @@ public class Scene extends JPanel
                     if (!aSprite.isAlive())
                     {
                         aLayer.DeadObjects.add(aSprite);
+                        aSprite.onRemovedFromLayer(aLayer);
                     }
                 }
 

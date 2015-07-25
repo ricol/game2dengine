@@ -7,6 +7,7 @@ package au.com.rmit.Game2dEngine.node;
 
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
+import au.com.rmit.Game2dEngine.scene.Layer;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -64,6 +65,26 @@ public class Sprite extends Node
 
         this.mass = mass;
         this.lastUpdateTime = System.currentTimeMillis();
+    }
+
+    public Sprite(String imagename)
+    {
+        this(0, 0, 0, 0, 0);
+
+        try
+        {
+            theImage = ImageIO.read(new File(imagename));
+            this.initForImage();
+        } catch (IOException e)
+        {
+            System.out.println("Sprite exception: " + e);
+        }
+    }
+
+    final void initForImage()
+    {
+        this.setWidth(theImage.getWidth());
+        this.setHeight(theImage.getHeight());
     }
 
     BufferedImage getTheImageCanvas()
@@ -154,10 +175,10 @@ public class Sprite extends Node
 
                     int tmpImageWidth = this.theImage.getWidth();
                     int tmpImageHeight = this.theImage.getHeight();
-                    int tmpImagePosX = (int)((width - tmpImageWidth) / 2.0f);
-                    int tmpImagePosY = (int)((height - tmpImageHeight) / 2.0f);
+                    int tmpImagePosX = (int) ((width - tmpImageWidth) / 2.0f);
+                    int tmpImagePosY = (int) ((height - tmpImageHeight) / 2.0f);
                     theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
-                    
+
                     theGraphics2D.setTransform(old);
                 } else
                 {
@@ -339,5 +360,15 @@ public class Sprite extends Node
     public void onNotCollideWith(Sprite target)
     {
 
+    }
+    
+    public void onAddToLayer(Layer theLayer)
+    {
+        
+    }
+    
+    public void onRemovedFromLayer(Layer theLayer)
+    {
+        
     }
 }

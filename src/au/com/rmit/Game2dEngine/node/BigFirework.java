@@ -25,6 +25,14 @@ public class BigFirework extends Firework
         this.blastTime = abs(theRandom.nextInt()) % 3 + 1;
     }
 
+    public BigFirework()
+    {
+        super("starBig.png");
+        
+        this.bShouldBlast = true;
+        this.blastTime = abs(theRandom.nextInt()) % 3 + 1;
+    }
+
     @Override
     public void updateState(double currentTime)
     {
@@ -42,16 +50,22 @@ public class BigFirework extends Firework
 
                 if (abs(theRandom.nextInt() % 10) > 8)
                 {
-                    aObject = new BigFirework(this.x, this.y, 15, 15, tmpMass, tmpVelocityX, tmpVelocityY);
+                    aObject = new BigFirework();
+                    aObject.setX(x);
+                    aObject.setY(y);
+                    aObject.setVelocityX(tmpVelocityX);
+                    aObject.setVelocityY(tmpVelocityY);
                     aObject.lifetime = 1;
                     aObject.blastTime = (abs(theRandom.nextInt()) % 100) / 100.0 + 0.5;
                     ((BigFirework) aObject).subFireworks = 10;
-                    aObject.setImage("starBig.png");
                 } else
                 {
-                    aObject = new SmallFirework(this.x, this.y, 5, 5, tmpMass, tmpVelocityX, tmpVelocityY);
+                    aObject = new SmallFirework();
+                    aObject.setX(x);
+                    aObject.setY(y);
+                    aObject.setVelocityX(tmpVelocityX);
+                    aObject.setVelocityY(tmpVelocityY);
                     aObject.lifetime = abs(theRandom.nextInt()) % 5 + 1;
-                    aObject.setImage("starSmall.png");
                 }
 
                 aObject.applyGravity(this.g);
