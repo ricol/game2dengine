@@ -6,11 +6,8 @@
 package au.com.rmit.Game2dEngine.allScenes;
 
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
-import au.com.rmit.Game2dEngine.action.ExpandByAction;
-import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.Game2dEngine.node.Sprite;
-import au.com.rmit.test.TestSpaceship;
+import au.com.rmit.Game2dEngine.node.LabelSprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import java.util.logging.Level;
@@ -73,48 +71,56 @@ public class TestScene extends Scene
             @Override
             public void mousePressed(MouseEvent e)
             {
-//                LabelSprite aLabel = new LabelSprite(0, 0, "This is a text", null);
-//                addSprite(aLabel);
-//                aLabel.setWidth(100);
-//                aLabel.setHeight(20);
-//                aLabel.setRed(255);
-//                aLabel.bTextFrame = false;
-//
-//                aLabel.setCentreX(e.getX());
-//                aLabel.setCentreY(e.getY());
-//
-//                new Timer(200, new ActionListener()
-//                {
-//
-//                    @Override
-//                    public void actionPerformed(ActionEvent e)
-//                    {
-//                        String text = String.format("%d", abs(theRandom.nextInt()));
-//                        aLabel.setText(text);
-//                    }
-//
-//                }).start();
+
+                //test label
+                LabelSprite aLabel = new LabelSprite(0, 0, "This is a text", null);
+                addSprite(aLabel);
+                aLabel.setWidth(100);
+                aLabel.setHeight(20);
+                aLabel.setRed(255);
+                aLabel.bTextFrame = false;
+                aLabel.bDeadIfNoActions = true;
+
+                aLabel.setCentreX(e.getX());
+                aLabel.setCentreY(e.getY());
+
+                new Timer(200, new ActionListener()
+                {
+
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        String text = String.format("%d", abs(theRandom.nextInt()));
+                        aLabel.setText(text);
+                    }
+
+                }).start();
+
+                aLabel.setVelocityY(-300);
+
+                AlphaToAction aAlphaAction = new AlphaToAction(aLabel);
+                aAlphaAction.alphaTo(0, 3);
+                aLabel.addAction(aAlphaAction);
 
 //                
-                TestSpaceship aObject;
-
-                int width = 100;
-                int height = 100;
-                aObject = new TestSpaceship();
-                aObject.setCentreX(e.getX());
-                aObject.setCentreY(e.getY());
-
-                aObject.lifetime = Sprite.EVER;
-                aObject.bDeadIfNoActions = true;
-
-                RotateByAction aAction = new RotateByAction();
-                aAction.rotateBy(Math.PI * -20, 10);
-                aObject.addAction(aAction);
-                aObject.bDrawFrame = false;
-
-                addSprite(aObject);
-
-//                aLabel.setVelocityY(-300);
+//                TestSpaceship aObject;
+//
+//                int width = 100;
+//                int height = 100;
+//                aObject = new TestSpaceship();
+//                aObject.setCentreX(e.getX());
+//                aObject.setCentreY(e.getY());
+//
+//                aObject.lifetime = Sprite.EVER;
+//                aObject.bDeadIfNoActions = true;
+//
+//                RotateByAction aAction = new RotateByAction();
+//                aAction.rotateBy(Math.PI * -20, 10);
+//                aObject.addAction(aAction);
+//                aObject.bDrawFrame = false;
+//
+//                addSprite(aObject);
+//                
 //                
 //                AlphaToAction aAlphaAction = new AlphaToAction(aObject);
 //                aAlphaAction.alphaTo(0, 3);

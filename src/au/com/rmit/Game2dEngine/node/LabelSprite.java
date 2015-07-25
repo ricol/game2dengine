@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 /**
  *
  * @author ricolwang
+ * Remember to set width and height of the text
  */
 public class LabelSprite extends MovingSprite
 {
@@ -23,16 +24,38 @@ public class LabelSprite extends MovingSprite
     public int textPosX = 10;
     public int textPosY = 10;
 
-    public LabelSprite(double x, double y, String text, Font textFont)
+    public LabelSprite(double x, double y, String text, Font theTextFont)
     {
         super(x, y, 0, 0, 0, 0, 0);
 
         this.bCustomDrawing = true;
         this.text = text;
-        if (textFont != null)
+        if (theTextFont != null)
         {
-            this.textFont = textFont;
+            this.textFont = theTextFont;
         }
+        this.setGreen(255);
+    }
+    
+    public LabelSprite(String text, Font theTextFont)
+    {
+        super(0, 0, 0, 0, 0, 0, 0);
+
+        this.bCustomDrawing = true;
+        this.text = text;
+        if (theTextFont != null)
+        {
+            this.textFont = theTextFont;
+        }
+        this.setGreen(255);
+    }
+    
+    public LabelSprite(String text)
+    {
+        super(0, 0, 0, 0, 0, 0, 0);
+
+        this.bCustomDrawing = true;
+        this.text = text;
         this.setGreen(255);
     }
 
