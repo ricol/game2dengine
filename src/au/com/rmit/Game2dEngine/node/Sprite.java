@@ -107,7 +107,7 @@ public class Sprite extends Node
         this(x, y, width, height, 0, 0, 0);
     }
 
-    public void applyGravity(Gravity g)
+    public void applyGravity(final Gravity g)
     {
         this.g = new Gravity(g.GX, g.GY);
     }
@@ -195,7 +195,7 @@ public class Sprite extends Node
         }
     }
 
-    public void updateGUI(Graphics2D g)
+    public void updateGUI(final Graphics2D g)
     {
         int tmpX = (int) x;
         int tmpY = (int) y;
@@ -487,7 +487,7 @@ public class Sprite extends Node
         return this.starttime;
     }
 
-    public boolean collideWith(Sprite target)
+    public boolean collideWith(final Sprite target)
     {
         return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
     }
@@ -531,35 +531,35 @@ public class Sprite extends Node
         this.children.clear();
     }
 
-    public void onCollideWith(Sprite target)
+    public void onCollideWith(final Sprite target)
     {
 
     }
 
-    public void onNotCollideWith(Sprite target)
+    public void onNotCollideWith(final Sprite target)
     {
 
     }
 
-    public void onAddToLayer(Layer theLayer)
+    public void onAddToLayer(final Layer theLayer)
     {
 
     }
 
-    public void onRemovedFromLayer(Layer theLayer)
+    public void onRemovedFromLayer(final Layer theLayer)
     {
 
     }
 
-    public void onActionRunning(Action theAction)
+    public void onActionRunning(final Action theAction)
     {
     }
 
-    public void onActionComplete(Action theAction)
+    public void onActionComplete(final Action theAction)
     {
     }
 
-    public void onCustomDraw(Graphics2D theGraphics2D)
+    public void onCustomDraw(final Graphics2D theGraphics2D)
     {
         theGraphics2D.setBackground(blackTransparent);
         theGraphics2D.clearRect(0, 0, (int) width, (int) height);
@@ -601,7 +601,7 @@ public class Sprite extends Node
         theImageCanvas = null;
     }
 
-    private void drawFrame(Graphics2D theGraphics2D)
+    private void drawFrame(final Graphics2D theGraphics2D)
     {
         if (this.bDrawFrame)
         {
