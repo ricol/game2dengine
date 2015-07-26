@@ -25,9 +25,9 @@ public class PropelEngine extends Sprite implements ActionListener
 
     public PropelEngine()
     {
-        RotateByAction aAction = new RotateByAction();
-        aAction.rotateBy(-Math.PI * 20, 20);
-        this.addAction(aAction);
+//        RotateByAction aAction = new RotateByAction();
+//        aAction.rotateBy(-Math.PI * 20, 20);
+//        this.addAction(aAction);
 
         theTimerForEngine.start();
     }
@@ -52,8 +52,8 @@ public class PropelEngine extends Sprite implements ActionListener
 
             Sprite aFire = new Sprite(0, 0, size, size, 0, 0, 0);
 
-            aFire.setCentreX(this.getCentreX() + this.parent.getX());
-            aFire.setCentreY(this.getCentreY() + this.parent.getY());
+            aFire.setCentreX(this.getCentreX());
+            aFire.setCentreY(this.getCentreY());
 
             aFire.setVelocityX(tmpVelocityX);
             aFire.setVelocityY(tmpVelocityY);
@@ -69,9 +69,7 @@ public class PropelEngine extends Sprite implements ActionListener
             aFire.addAction(aAction);
 
             if (this.parent == null) break;
-            if (this.parent.theScene == null) break;
-            
-            this.parent.theScene.addSprite(aFire);
+            this.parent.addAChild(aFire);
         }
     }
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.allScenes;
+package au.com.rmit.test;
 
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.action.ExpandByAction;
@@ -78,11 +78,11 @@ public class TestScene extends Scene
                 aShape.setCentreY(e.getY());
                 aShape.setGreen(100);
                 aShape.setRed(0);
-                aShape.setBlue(255);
+                aShape.setBlue(100);
                 addSprite(aShape);
 
-//                PropelEngine aEngine = new PropelEngine();
-//                aShape.addAChild(aEngine);
+                PropelEngine aEngine = new PropelEngine();
+                aShape.addAChild(aEngine);
 
 //                aShape.bDeadIfNoActions = true;
                 
@@ -108,38 +108,45 @@ public class TestScene extends Scene
                 aFirstChild.setHeight(80);
                 aFirstChild.setCentreX(aShape.getWidth() / 2);
                 aFirstChild.setCentreY(aShape.getHeight() / 2);
-                aFirstChild.setBlue(255);
+                aFirstChild.setGreen(100);
                 aShape.addAChild(aFirstChild);
-
-                RotateByAction aRotateByActionForFirst = new RotateByAction();
-                aRotateByActionForFirst.rotateBy(Math.PI * 2, 5);
-                aFirstChild.enQueueAction(aRotateByActionForFirst);
                 
-                RotateByAction aRotateByActionForFirstReverse = new RotateByAction();
-                aRotateByActionForFirstReverse.rotateBy(-Math.PI * 2, 5);
-                aFirstChild.enQueueAction(aRotateByActionForFirstReverse);
-
-                ExpandByAction aExpandActionForFirst = new ExpandByAction();
-                aExpandActionForFirst.expandBy(50, 5);
-                aFirstChild.enQueueAction(aExpandActionForFirst);
+                PropelEngine aFirstChildEngine = new PropelEngine();
+                aFirstChild.addAChild(aFirstChildEngine);
                 
-                ExpandByAction aExpandActionForFirstReverse = new ExpandByAction();
-                aExpandActionForFirstReverse.expandBy(-50, 5);
-                aFirstChild.enQueueAction(aExpandActionForFirstReverse);
+//
+//                RotateByAction aRotateByActionForFirst = new RotateByAction();
+//                aRotateByActionForFirst.rotateBy(Math.PI * 2, 5);
+//                aFirstChild.enQueueAction(aRotateByActionForFirst);
+//                
+//                RotateByAction aRotateByActionForFirstReverse = new RotateByAction();
+//                aRotateByActionForFirstReverse.rotateBy(-Math.PI * 2, 5);
+//                aFirstChild.enQueueAction(aRotateByActionForFirstReverse);
+//
+//                ExpandByAction aExpandActionForFirst = new ExpandByAction();
+//                aExpandActionForFirst.expandBy(50, 5);
+//                aFirstChild.enQueueAction(aExpandActionForFirst);
+//                
+//                ExpandByAction aExpandActionForFirstReverse = new ExpandByAction();
+//                aExpandActionForFirstReverse.expandBy(-50, 5);
+//                aFirstChild.enQueueAction(aExpandActionForFirstReverse);
 //                
 //                
-//                SquareShape aFirstFirstChild = new SquareShape();
-//                aFirstFirstChild.setWidth(80);
-//                aFirstFirstChild.setHeight(50);
-//                aFirstFirstChild.setCentreX(aFirstChild.getWidth() / 2);
-//                aFirstFirstChild.setCentreY(aFirstChild.getHeight() / 2);
-//                aFirstFirstChild.setRed(255);
-//                
-//                RotateByAction aActionForFirstFirst = new RotateByAction();
-//                aActionForFirstFirst.rotateBy(-Math.PI * 10, 20);
-//                aFirstFirstChild.enQueueAction(aActionForFirstFirst);
-//                
-//                aFirstChild.addAChild(aFirstFirstChild);
+                SquareShape aFirstFirstChild = new SquareShape();
+                aFirstFirstChild.setWidth(40);
+                aFirstFirstChild.setHeight(30);
+                aFirstFirstChild.setCentreX(aFirstChild.getWidth() / 2);
+                aFirstFirstChild.setCentreY(aFirstChild.getHeight() / 2);
+                aFirstFirstChild.setRed(255);
+                
+                PropelEngine aFirstFirstChildEngine = new PropelEngine();
+                aFirstFirstChild.addAChild(aFirstFirstChildEngine);
+                
+                RotateByAction aActionForFirstFirst = new RotateByAction();
+                aActionForFirstFirst.rotateBy(-Math.PI * 10, 20);
+                aFirstFirstChild.enQueueAction(aActionForFirstFirst);
+                
+                aFirstChild.addAChild(aFirstFirstChild);
                 
 //                SquareShape aSecondChild = new SquareShape();
 //                aSecondChild.setWidth(100);
