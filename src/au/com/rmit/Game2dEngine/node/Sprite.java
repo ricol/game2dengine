@@ -142,7 +142,7 @@ public class Sprite extends Node
             y += IncY;
 
             //perform actions
-            //perform a action in the queue one by one in sequence
+            //perform a set of actions in the queue one by one in sequence
             Set<Action> theSetOfQueuedActions = this.theQueueOfActions.peek();
 
             if (theSetOfQueuedActions != null)
