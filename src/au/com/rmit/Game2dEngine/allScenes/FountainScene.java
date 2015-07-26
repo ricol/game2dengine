@@ -9,10 +9,10 @@ import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.node.Firework;
 import au.com.rmit.Game2dEngine.node.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
-import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 import javax.swing.Timer;
 
 /**
@@ -79,7 +79,7 @@ public class FountainScene extends Scene
             Firework aObject;
 
             double mass = theRandom.nextFloat() / 3.0f;
-            double velocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 200.0f;
+            double velocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 200.0f;
             double velocityY = -1 * theRandom.nextFloat() * 50.0f - 500.0f;
 
             float size = abs(theRandom.nextInt()) % 7 + 3;

@@ -7,25 +7,21 @@ package au.com.rmit.test;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.scene.Layer;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.Timer;
 
 /**
  *
  * @author ricolwang
  */
-public class TestSpaceship extends Spaceship implements ActionListener
+public class TestSpaceship extends Spaceship
 {
 
-    Timer theTimerForEngine = new Timer(10, this);
     PropelEngine theEngine = new PropelEngine();
 
     public TestSpaceship()
     {
         super("my-spaceship.png");
         this.addAChild(theEngine);
-        
+
         this.bDrawFrame = true;
         theEngine.bDrawFrame = true;
         theEngine.setRed(255);
@@ -37,7 +33,7 @@ public class TestSpaceship extends Spaceship implements ActionListener
     public void onDead()
     {
         super.onDead(); //To change body of generated methods, choose Tools | Templates.
-        theTimerForEngine.stop();
+
     }
 
     @Override
@@ -48,7 +44,6 @@ public class TestSpaceship extends Spaceship implements ActionListener
         theEngine.setCentreX(this.getWidth() / 2);
         theEngine.setCentreY(this.getHeight());
 
-        theTimerForEngine.start();
     }
 
     @Override
@@ -56,20 +51,4 @@ public class TestSpaceship extends Spaceship implements ActionListener
     {
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource().equals(this.theTimerForEngine))
-        {
-            theEngine.propel();
-        }
-    }
-
-    @Override
-    public void updateState(double currentTime)
-    {
-        super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
-
-        System.out.println("Parent - CentreX: " + this.getCentreX() + "; CentreY: " + this.getCentreY() + "; Angel: " + this.getAngle());
-    }
 }

@@ -5,8 +5,8 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
-import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
 import static java.lang.Math.abs;
+import static java.lang.Math.pow;
 
 /**
  *
@@ -38,6 +38,8 @@ public class BigFirework extends Firework
     {
         super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
 
+        if (!this.isAlive()) return;
+        
         if (this.bDidBlast)
         {
             for (int i = 0; i < this.subFireworks; i++)
@@ -45,7 +47,7 @@ public class BigFirework extends Firework
                 Firework aObject;
 
                 double tmpMass = theRandom.nextFloat() / 3.0f;
-                double tmpVelocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 500.0f + this.getVelocityX();
+                double tmpVelocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 500.0f + this.getVelocityX();
                 double tmpVelocityY = -1 * theRandom.nextFloat() * 500.0f + this.getVelocityY();
 
                 if (abs(theRandom.nextInt() % 10) > 8)
@@ -79,6 +81,8 @@ public class BigFirework extends Firework
 
                 this.theScene.addSprite(aObject);
             }
+            
+            this.setShouldDie();
         }
     }
 }

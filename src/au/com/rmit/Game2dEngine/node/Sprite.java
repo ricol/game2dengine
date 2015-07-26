@@ -37,7 +37,6 @@ public class Sprite extends Node
     public Sprite parent;
     public Scene theScene;
 
-    public Set<Sprite> children = new HashSet<>();
     public boolean bDrawFrame = false;
     public Color theColorOfFrame = Color.yellow;
     public boolean bCollisionDetect = false;
@@ -56,10 +55,19 @@ public class Sprite extends Node
     private double velocityY;
     private double currentLife = 0;
     private boolean isAlive = true;
-    private Set<Action> theSetOfActionsDeleted = new HashSet<>();
-    private Set<Action> theSetOfActionsAdded = new HashSet<>();
+    private boolean bShouldDie = false;
+
+    private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
+    private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
     private Set<Action> theSetOfActions = new HashSet<>();
-    private Queue<Action> theQueueOfActions = new LinkedList<>();
+
+    private Set<Action> theSetOfActionsInQueueWillDelete = new HashSet<>();
+    private Queue<Set<Action>> theQueueOfActions = new LinkedList<>();
+
+    private Set<Sprite> theSetOfChildrenWillDelete = new HashSet<>();
+    private Set<Sprite> theSetOfChildrenWillAdd = new HashSet<>();
+    private Set<Sprite> theSetOfChildren = new HashSet<>();
+
     private double mass;
     private Gravity g;
     private float alpha = 1;
@@ -107,13 +115,14 @@ public class Sprite extends Node
         this(x, y, width, height, 0, 0, 0);
     }
 
-    public void applyGravity(final Gravity g)
-    {
-        this.g = new Gravity(g.GX, g.GY);
-    }
-
     public void updateState(double currentTime)
     {
+        if (bShouldDie)
+        {
+            this.setDead();
+            return;
+        }
+
         //how much time passed since last update
         double delta = currentTime - this.lastUpdateTime;
         double t = delta / 1000.0f; //in seconds
@@ -121,123 +130,146 @@ public class Sprite extends Node
 
         if (currentLife >= lifetime)
         {
-            this.setDead();
+            bShouldDie = true;
         }
 
-        if (this.isAlive())
+        //update state
+        if (this.g != null)
         {
-            //update state
-            if (this.g != null)
-            {
-                velocityX += this.g.GX * t;
-                velocityY += this.g.GY * t;
-            }
+            velocityX += this.g.GX * t;
+            velocityY += this.g.GY * t;
+        }
 
-            double IncX = velocityX * t;
-            double IncY = velocityY * t;
+        double IncX = velocityX * t;
+        double IncY = velocityY * t;
 
-            x += IncX;
-            y += IncY;
+        x += IncX;
+        y += IncY;
 
             //perform actions
-            //perform a action in the queue one by one in sequence
-            Action theHeadAction = this.theQueueOfActions.peek();
-            if (theHeadAction != null)
+        //perform a set of actions in the queue one by one in sequence
+        Set<Action> theSetOfQueuedActions = this.theQueueOfActions.peek();
+
+        if (theSetOfQueuedActions != null)
+        {
+            if (theSetOfQueuedActions.size() > 0)
             {
-                this.onActionRunning(theHeadAction);
-                theHeadAction.perform(delta);
-
-                if (theHeadAction.bComplete)
-                {
-                    this.deQueueAction(theHeadAction);
-                    this.onActionComplete(theHeadAction);
-                }
-            }
-
-            //perform other actions
-            //delete old actions
-            this.theSetOfActions.removeAll(this.theSetOfActionsDeleted);
-            this.theSetOfActionsDeleted.clear();
-
-            //add new actions
-            this.theSetOfActions.addAll(this.theSetOfActionsAdded);
-            this.theSetOfActionsAdded.clear();
-
-            if (this.theSetOfActions.size() <= 0)
-            {
-                if (this.bDeadIfNoActions)
-                {
-                    this.setDead();
-                }
-            } else
-            {
-                //run actions
-                for (Action aAction : this.theSetOfActions)
+                for (Action aAction : theSetOfQueuedActions)
                 {
                     this.onActionRunning(aAction);
                     aAction.perform(delta);
 
                     if (aAction.bComplete)
                     {
-                        this.theSetOfActionsDeleted.add(aAction);
+                        theSetOfActionsInQueueWillDelete.add(aAction);
                         this.onActionComplete(aAction);
                     }
                 }
-            }
 
-            //update its children
-            for (Sprite aSprite : this.children)
+                theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
+                theSetOfActionsInQueueWillDelete.clear();
+            } else
             {
-                aSprite.updateState(currentTime);
+                this.theQueueOfActions.remove(theSetOfQueuedActions);
             }
-
-            this.lastUpdateTime = currentTime;
         }
+
+            //perform other actions
+        //add new actions
+        this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
+        this.theSetOfActionsWillAdd.clear();
+
+        if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
+        {
+            if (this.bDeadIfNoActions)
+            {
+                bShouldDie = true;
+            }
+        } else
+        {
+            //run actions
+            for (Action aAction : this.theSetOfActions)
+            {
+                this.onActionRunning(aAction);
+                aAction.perform(delta);
+
+                if (aAction.bComplete)
+                {
+                    this.theSetOfActionsWillDelete.add(aAction);
+                    this.onActionComplete(aAction);
+                }
+            }
+        }
+
+        //delete old actions
+        this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
+        this.theSetOfActionsWillDelete.clear();
+
+        //add new children
+        this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
+        this.theSetOfChildrenWillAdd.clear();
+
+        //update its children
+        for (Sprite aSprite : this.theSetOfChildren)
+        {
+            aSprite.updateState(currentTime);
+
+            if (!aSprite.isAlive)
+            {
+                this.theSetOfChildrenWillDelete.add(aSprite);
+            }
+        }
+
+        //delete old children
+        this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
+        this.theSetOfChildrenWillDelete.clear();
+
+        this.lastUpdateTime = currentTime;
     }
 
     public void updateGUI(final Graphics2D g)
     {
-        int tmpX = (int) x;
-        int tmpY = (int) y;
-
-        int tmpSceneWidth;
-        int tmpSceneHeight;
-
-        if (bChild)
-        {
-            tmpSceneWidth = (int) this.parent.getWidth();
-            tmpSceneHeight = (int) this.parent.getHeight();
-        } else
-        {
-            tmpSceneWidth = this.theScene.getWidth();
-            tmpSceneHeight = this.theScene.getHeight();
-        }
-
-        int w = (int) width;
-        int h = (int) height;
-
-        if (tmpX + w < 0 || tmpY + h < 0)
-        {
-            return;
-        }
-
-        if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
-        {
-            return;
-        }
-
-        if (abs(w) <= 0.1 || abs(h) <= 0.1)
-        {
-            return;
-        }
-
-        if (g == null)
-        {
-            return;
-        }
-
         if (this.isAlive)
         {
+            int tmpX = (int) x;
+            int tmpY = (int) y;
+
+            int tmpSceneWidth;
+            int tmpSceneHeight;
+
+            if (bChild)
+            {
+                tmpSceneWidth = (int) this.parent.getWidth();
+                tmpSceneHeight = (int) this.parent.getHeight();
+            } else
+            {
+                tmpSceneWidth = this.theScene.getWidth();
+                tmpSceneHeight = this.theScene.getHeight();
+            }
+
+            int w = (int) width;
+            int h = (int) height;
+
+            if (tmpX + w < 0 || tmpY + h < 0)
+            {
+                return;
+            }
+
+            if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+            {
+                return;
+            }
+
+            if (abs(w) <= 0.1 || abs(h) <= 0.1)
+            {
+                return;
+            }
+
+            if (g == null)
+            {
+                return;
+            }
+
             if (bCustomDrawing)
             {
                 Graphics2D theGraphics2D = this.getTheImageGraphics();
@@ -273,7 +305,7 @@ public class Sprite extends Node
                 }
 
                 //draw its children
-                for (Sprite aSprite : this.children)
+                for (Sprite aSprite : this.theSetOfChildren)
                 {
                     aSprite.updateGUI(theGraphics2D);
                 }
@@ -295,38 +327,98 @@ public class Sprite extends Node
         }
     }
 
+    private void initForImage()
+    {
+        this.setWidth(theImage.getWidth());
+        this.setHeight(theImage.getHeight());
+    }
+
+    private BufferedImage getTheImageCanvas()
+    {
+        if (theImageCanvas == null)
+        {
+            theImageCanvas = new BufferedImage(abs((int) width), abs((int) height), BufferedImage.TYPE_INT_ARGB);
+        }
+        return theImageCanvas;
+    }
+
+    private Graphics2D getTheImageGraphics()
+    {
+        if (theGraphics == null)
+        {
+            theGraphics = this.getTheImageCanvas().createGraphics();
+        }
+        return theGraphics;
+    }
+
+    private void releaseTheImageCanvas()
+    {
+        theGraphics = null;
+        theImageCanvas = null;
+    }
+
+    private void drawFrame(final Graphics2D theGraphics2D)
+    {
+        if (this.bDrawFrame)
+        {
+            theGraphics2D.drawRect(0, 0, (int) width - 1, (int) height - 1);
+        }
+    }
+
+    private void setDead()
+    {
+        this.isAlive = false;
+        this.onDead();
+    }
+    
+    protected void setShouldDie()
+    {
+        if (bShouldDie) return;
+        
+        bShouldDie = true;
+        
+        for (Sprite aSprite : this.theSetOfChildren)
+        {
+            aSprite.setShouldDie();
+        }
+        
+        this.onWillDead();
+    }
+    
+    public boolean getShouldDie()
+    {
+        return bShouldDie;
+    }
+    
+    public void applyGravity(final Gravity g)
+    {
+        this.g = new Gravity(g.GX, g.GY);
+    }
+
     public void addAction(Action aAction)
     {
         aAction.setSprite(this);
-        this.theSetOfActionsAdded.add(aAction);
+        this.theSetOfActionsWillAdd.add(aAction);
     }
 
     public void removeAction(Action aAction)
     {
         aAction.clearSprite();
-        this.theSetOfActionsDeleted.remove(aAction);
+        this.theSetOfActionsWillDelete.remove(aAction);
     }
 
-    public void enQueueAction(Action aAction)
+    public void enQueueActions(Set<Action> aSetOfActions)
     {
-        aAction.setSprite(this);
-        this.theQueueOfActions.add(aAction);
-    }
-
-    public void deQueueAction(Action aAction)
-    {
-        aAction.clearSprite();
-        this.theQueueOfActions.remove(aAction);
+        for (Action aAction : aSetOfActions)
+        {
+            aAction.setSprite(this);
+        }
+        this.theQueueOfActions.add(aSetOfActions);
     }
 
     public int getActionCount()
     {
-        return this.theSetOfActions.size();
-    }
-
-    public int getQueueActionCount()
-    {
-        return this.theQueueOfActions.size();
+        return this.theSetOfActions.size() + this.theQueueOfActions.size();
     }
 
     public void setVelocityX(double value)
@@ -450,16 +542,6 @@ public class Sprite extends Node
         return this.y + height / 2.0;
     }
 
-    public double getAngle()
-    {
-        return angle;
-    }
-
-    public void setAngle(double angle)
-    {
-        this.angle = angle;
-    }
-
     public void setCentreX(double value)
     {
         this.setX(value - width / 2.0);
@@ -470,11 +552,14 @@ public class Sprite extends Node
         this.setY(value - height / 2.0);
     }
 
-    public void setDead()
+    public double getAngle()
     {
-        this.isAlive = false;
-        this.hashCollision.clear();
-        this.onDead();
+        return angle;
+    }
+
+    public void setAngle(double angle)
+    {
+        this.angle = angle;
     }
 
     public Gravity getGravity()
@@ -514,21 +599,21 @@ public class Sprite extends Node
 
     public void addAChild(Sprite aSprite)
     {
-        this.children.add(aSprite);
+        this.theSetOfChildrenWillAdd.add(aSprite);
         aSprite.parent = this;
         aSprite.bChild = true;
     }
 
     public void removeAChild(Sprite aSprite)
     {
-        this.children.remove(aSprite);
+        this.theSetOfChildrenWillDelete.add(aSprite);
         aSprite.parent = null;
         aSprite.bChild = false;
     }
 
     public void clearChildren()
     {
-        this.children.clear();
+        this.theSetOfChildrenWillDelete.addAll(this.theSetOfChildren);
     }
 
     public void onCollideWith(final Sprite target)
@@ -565,47 +650,29 @@ public class Sprite extends Node
         theGraphics2D.clearRect(0, 0, (int) width, (int) height);
     }
 
+    public void onWillDead()
+    {
+        
+    }
+
     public void onDead()
     {
-        this.clearChildren();
         this.hashCollision.clear();
+
+        this.theSetOfActions.clear();
+        this.theSetOfActionsInQueueWillDelete.clear();
+        this.theSetOfActionsWillAdd.clear();
+        this.theSetOfActionsWillDelete.clear();
+        this.theSetOfChildren.clear();
+        this.theSetOfChildrenWillAdd.clear();
+        this.theSetOfChildrenWillDelete.clear();
+
+        this.theQueueOfActions.clear();
+
+        releaseTheImageCanvas();
+        
+        this.parent = null;
+        this.theScene = null;
     }
 
-    private void initForImage()
-    {
-        this.setWidth(theImage.getWidth());
-        this.setHeight(theImage.getHeight());
-    }
-
-    private BufferedImage getTheImageCanvas()
-    {
-        if (theImageCanvas == null)
-        {
-            theImageCanvas = new BufferedImage(abs((int) width), abs((int) height), BufferedImage.TYPE_INT_ARGB);
-        }
-        return theImageCanvas;
-    }
-
-    private Graphics2D getTheImageGraphics()
-    {
-        if (theGraphics == null)
-        {
-            theGraphics = this.getTheImageCanvas().createGraphics();
-        }
-        return theGraphics;
-    }
-
-    private void releaseTheImageCanvas()
-    {
-        theGraphics = null;
-        theImageCanvas = null;
-    }
-
-    private void drawFrame(final Graphics2D theGraphics2D)
-    {
-        if (this.bDrawFrame)
-        {
-            theGraphics2D.drawRect(0, 0, (int) width - 1, (int) height - 1);
-        }
-    }
 }

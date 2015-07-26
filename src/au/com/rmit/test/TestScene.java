@@ -3,19 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.allScenes;
+package au.com.rmit.test;
 
+import au.com.rmit.Game2dEngine.action.Action;
+import au.com.rmit.Game2dEngine.action.ExpandByAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.Game2dEngine.node.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
-import au.com.rmit.test.TestSpaceship;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.Timer;
 
 /**
@@ -67,37 +69,85 @@ public class TestScene extends Scene
             public void mousePressed(MouseEvent e)
             {
 
-//                SquareShape aShape = new SquareShape();
-//                aShape.setWidth(300);
-//                aShape.setHeight(200);
-//                aShape.setCentreX(e.getX());
-//                aShape.setCentreY(e.getY());
-//                aShape.setRed(255);
-//                aShape.setGreen(255);
-//                addSprite(aShape);
-//                aShape.bDeadIfNoActions = true;
-//                RotateByAction aAction = new RotateByAction();
-//                aAction.rotateBy(Math.PI * 10, 10);
-//                aShape.addAction(aAction);
+                SquareShape aShape = new SquareShape();
+                aShape.setWidth(300);
+                aShape.setHeight(200);
+                aShape.setCentreX(e.getX());
+                aShape.setCentreY(e.getY());
+                aShape.setGreen(100);
+                aShape.setRed(0);
+                aShape.setBlue(100);
+                addSprite(aShape);
+
+                PropelEngine aEngine = new PropelEngine();
+                aShape.addAChild(aEngine);
+
+                aShape.bDeadIfNoActions = true;
+                RotateByAction aRotateByAction = new RotateByAction();
+                aRotateByAction.rotateBy(Math.PI * 2, 5);
+                Set<Action> aSetOfAction = new HashSet<>();
+                aSetOfAction.add(aRotateByAction);
+
+//                RotateByAction aRotateByActionReverse = new RotateByAction();
+//                aRotateByActionReverse.rotateBy(-Math.PI * 2, 5);
+//                aSetOfAction.add(aRotateByActionReverse);
+
+                ExpandByAction aExpandAction = new ExpandByAction();
+                aExpandAction.expandBy(100, 5);
+                aSetOfAction.add(aExpandAction);
+
+//                ExpandByAction aExpandActionReverse = new ExpandByAction();
+//                aExpandActionReverse.expandBy(-100, 5);
+//                aSetOfAction.add(aExpandActionReverse);
+                aShape.enQueueActions(aSetOfAction);
+//
+                SquareShape aFirstChild = new SquareShape();
+                aFirstChild.setWidth(100);
+                aFirstChild.setHeight(80);
+                aFirstChild.setCentreX(aShape.getWidth() / 2);
+                aFirstChild.setCentreY(aShape.getHeight() / 2);
+                aFirstChild.setGreen(100);
+                aShape.addAChild(aFirstChild);
+
+                PropelEngine aFirstChildEngine = new PropelEngine();
+                aFirstChild.addAChild(aFirstChildEngine);
+
+
+//                RotateByAction aRotateByActionForFirst = new RotateByAction();
+//                aRotateByActionForFirst.rotateBy(Math.PI * 2, 5);
+//                aFirstChild.enQueueAction(aRotateByActionForFirst);
 //                
-//                ExpandByAction aExpandAction = new ExpandByAction();
-//                aExpandAction.expandBy(100, 10);
-//                aShape.addAction(aExpandAction);
-//                SquareShape aFirstChild = new SquareShape();
-//                aFirstChild.setWidth(100);
-//                aFirstChild.setHeight(50);
-//                aFirstChild.setCentreX(aShape.getWidth() / 2);
-//                aFirstChild.setCentreY(aShape.getHeight() / 2);
-//                aFirstChild.setBlue(255);
-//                aShape.addAChild(aFirstChild);
-//                
-//                RotateByAction aActionForFirst = new RotateByAction();
-//                aActionForFirst.rotateBy(Math.PI * 10, 20);
-//                aFirstChild.addAction(aActionForFirst);
-//                
+//                RotateByAction aRotateByActionForFirstReverse = new RotateByAction();
+//                aRotateByActionForFirstReverse.rotateBy(-Math.PI * 2, 5);
+//                aFirstChild.enQueueAction(aRotateByActionForFirstReverse);
+//
 //                ExpandByAction aExpandActionForFirst = new ExpandByAction();
-//                aExpandActionForFirst.expandBy(50, 10);
-//                aFirstChild.addAction(aExpandActionForFirst);
+//                aExpandActionForFirst.expandBy(50, 5);
+//                aFirstChild.enQueueAction(aExpandActionForFirst);
+//                
+//                ExpandByAction aExpandActionForFirstReverse = new ExpandByAction();
+//                aExpandActionForFirstReverse.expandBy(-50, 5);
+//                aFirstChild.enQueueAction(aExpandActionForFirstReverse);
+                
+                
+//                SquareShape aFirstFirstChild = new SquareShape();
+//                aFirstFirstChild.setWidth(40);
+//                aFirstFirstChild.setHeight(30);
+//                aFirstFirstChild.setCentreX(aFirstChild.getWidth() / 2);
+//                aFirstFirstChild.setCentreY(aFirstChild.getHeight() / 2);
+//                aFirstFirstChild.setRed(255);
+//
+//                PropelEngine aFirstFirstChildEngine = new PropelEngine();
+//                aFirstFirstChild.addAChild(aFirstFirstChildEngine);
+//
+//                RotateByAction aActionForFirstFirst = new RotateByAction();
+//                aActionForFirstFirst.rotateBy(-Math.PI * 10, 20);
+//                aSetOfAction = new HashSet<>();
+//                aSetOfAction.add(aActionForFirstFirst);
+//                aFirstFirstChild.enQueueActions(aSetOfAction);
+//
+//                aFirstChild.addAChild(aFirstFirstChild);
+
 //                SquareShape aSecondChild = new SquareShape();
 //                aSecondChild.setWidth(100);
 //                aSecondChild.setHeight(50);
@@ -105,67 +155,64 @@ public class TestScene extends Scene
 //                aSecondChild.setY(20);
 //                aSecondChild.setGreen(255);
 //                aShape.addAChild(aSecondChild);
-//                
+//
 //                RotateByAction aActionForSecond = new RotateByAction();
 //                aActionForSecond.rotateBy(-Math.PI * 10, 10);
 //                aSecondChild.addAction(aActionForSecond);
 
-                /*
+                
                  //test label
-                 LabelSprite aLabel = new LabelSprite(0, 0, "This is a text", null);
-                 addSprite(aLabel);
-                 aLabel.setWidth(100);
-                 aLabel.setHeight(20);
-                 aLabel.setRed(255);
-                 aLabel.bTextFrame = false;
-                 aLabel.bDeadIfNoActions = true;
+//                 LabelSprite aLabel = new LabelSprite(0, 0, "This is a text", null);
+//                 addSprite(aLabel);
+//                 aLabel.setWidth(100);
+//                 aLabel.setHeight(20);
+//                 aLabel.setRed(255);
+//                 aLabel.bTextFrame = false;
+//                 aLabel.bDeadIfNoActions = true;
+//
+//                 aLabel.setCentreX(e.getX());
+//                 aLabel.setCentreY(e.getY());
+//
+//                 new Timer(200, new ActionListener()
+//                 {
+//
+//                 @Override
+//                 public void actionPerformed(ActionEvent e)
+//                 {
+//                 String text = String.format("%d", abs(theRandom.nextInt()));
+//                 aLabel.setText(text);
+//                 }
+//
+//                 }).start();
+//
+//                 aLabel.setVelocityY(-300);
+//
+//                 AlphaToAction aAlphaAction = new AlphaToAction(aLabel);
+//                 aAlphaAction.alphaTo(0, 3);
+//                 aLabel.addAction(aAlphaAction);
+                 
+                /*
+                 TestSpaceship aObject;
 
-                 aLabel.setCentreX(e.getX());
-                 aLabel.setCentreY(e.getY());
+                 int width = 100;
+                 int height = 100;
+                 aObject = new TestSpaceship();
+                 aObject.setCentreX(e.getX());
+                 aObject.setCentreY(e.getY());
 
-                 new Timer(200, new ActionListener()
-                 {
+                 aObject.setLifeTime(Sprite.EVER);
+                 aObject.bDeadIfNoActions = true;
 
-                 @Override
-                 public void actionPerformed(ActionEvent e)
-                 {
-                 String text = String.format("%d", abs(theRandom.nextInt()));
-                 aLabel.setText(text);
-                 }
+                 addSprite(aObject);
 
-                 }).start();
+                 RotateByAction aRotateByAction = new RotateByAction();
+                 aRotateByAction.rotateBy(Math.PI * 10, 20);
+                 aObject.addAction(aRotateByAction);
 
-                 aLabel.setVelocityY(-300);
-
-                 AlphaToAction aAlphaAction = new AlphaToAction(aLabel);
-                 aAlphaAction.alphaTo(0, 3);
-                 aLabel.addAction(aAlphaAction);
+                 AlphaToAction aAlphaAction = new AlphaToAction(aObject);
+                 aAlphaAction.alphaTo(0, 20);
+                 aObject.addAction(aAlphaAction);
                  */
-                TestSpaceship aObject;
-
-                int width = 100;
-                int height = 100;
-                aObject = new TestSpaceship();
-                aObject.setCentreX(e.getX());
-                aObject.setCentreY(e.getY());
-
-                aObject.setLifeTime(Sprite.EVER);
-                aObject.bDeadIfNoActions = true;
-
-                addSprite(aObject);
-
-                RotateByAction aAction = new RotateByAction();
-                aAction.rotateBy(Math.PI * 10, 20);
-
-//                MoveXByAction aAction = new MoveXByAction();
-//                aAction.moveXBy(200, 5);
-                aObject.addAction(aAction);
-
-//                
-//                
-//                AlphaToAction aAlphaAction = new AlphaToAction(aObject);
-//                aAlphaAction.alphaTo(0, 3);
-//                aObject.addAction(aAlphaAction);
 
                 /*
                  TestSpaceship aObject;

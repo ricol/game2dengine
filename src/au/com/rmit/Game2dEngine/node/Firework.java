@@ -43,7 +43,6 @@ public abstract class Firework extends Sprite
             if (currentTime - this.getStartTime() >= blastTime * 1000)
             {
                 this.bDidBlast = true;
-                this.setDead();
             }
         }
     }
