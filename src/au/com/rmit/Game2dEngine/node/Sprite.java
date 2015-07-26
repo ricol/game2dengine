@@ -56,13 +56,15 @@ public class Sprite extends Node
     private double currentLife = 0;
     private boolean isAlive = true;
 
-    private Set<Action> theSetOfActionsDeleted = new HashSet<>();
-    private Set<Action> theSetOfActionsAdded = new HashSet<>();
+    private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
+    private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
     private Set<Action> theSetOfActions = new HashSet<>();
-    private Queue<Action> theQueueOfActions = new LinkedList<>();
 
-    private Set<Sprite> theSetOfChildrenDeleted = new HashSet<>();
-    private Set<Sprite> theSetOfChildrenAdded = new HashSet<>();
+    private Set<Action> theSetOfActionsInQueueWillDelete = new HashSet<>();
+    private Queue<Set<Action>> theQueueOfActions = new LinkedList<>();
+
+    private Set<Sprite> theSetOfChildrenWillDelete = new HashSet<>();
+    private Set<Sprite> theSetOfChildrenWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfChildren = new HashSet<>();
 
     private double mass;
@@ -141,23 +143,36 @@ public class Sprite extends Node
 
             //perform actions
             //perform a action in the queue one by one in sequence
-            Action theHeadAction = this.theQueueOfActions.peek();
-            if (theHeadAction != null)
-            {
-                this.onActionRunning(theHeadAction);
-                theHeadAction.perform(delta);
+            Set<Action> theSetOfQueuedActions = this.theQueueOfActions.peek();
 
-                if (theHeadAction.bComplete)
+            if (theSetOfQueuedActions != null)
+            {
+                if (theSetOfQueuedActions.size() > 0)
                 {
-                    this.deQueueAction(theHeadAction);
-                    this.onActionComplete(theHeadAction);
+                    for (Action aAction : theSetOfQueuedActions)
+                    {
+                        this.onActionRunning(aAction);
+                        aAction.perform(delta);
+
+                        if (aAction.bComplete)
+                        {
+                            theSetOfActionsInQueueWillDelete.add(aAction);
+                            this.onActionComplete(aAction);
+                        }
+                    }
+
+                    theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
+                    theSetOfActionsInQueueWillDelete.clear();
+                } else
+                {
+                    this.theQueueOfActions.remove(theSetOfQueuedActions);
                 }
             }
 
             //perform other actions
             //add new actions
-            this.theSetOfActions.addAll(this.theSetOfActionsAdded);
-            this.theSetOfActionsAdded.clear();
+            this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
+            this.theSetOfActionsWillAdd.clear();
 
             if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
             {
@@ -175,19 +190,19 @@ public class Sprite extends Node
 
                     if (aAction.bComplete)
                     {
-                        this.theSetOfActionsDeleted.add(aAction);
+                        this.theSetOfActionsWillDelete.add(aAction);
                         this.onActionComplete(aAction);
                     }
                 }
             }
 
             //delete old actions
-            this.theSetOfActions.removeAll(this.theSetOfActionsDeleted);
-            this.theSetOfActionsDeleted.clear();
+            this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
+            this.theSetOfActionsWillDelete.clear();
 
             //add new children
-            this.theSetOfChildren.addAll(this.theSetOfChildrenAdded);
-            this.theSetOfChildrenAdded.clear();
+            this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
+            this.theSetOfChildrenWillAdd.clear();
 
             //update its children
             for (Sprite aSprite : this.theSetOfChildren)
@@ -196,13 +211,13 @@ public class Sprite extends Node
 
                 if (!aSprite.isAlive)
                 {
-                    this.theSetOfChildrenDeleted.add(aSprite);
+                    this.theSetOfChildrenWillDelete.add(aSprite);
                 }
             }
 
             //delete old children
-            this.theSetOfChildren.removeAll(this.theSetOfChildrenDeleted);
-            this.theSetOfChildrenDeleted.clear();
+            this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
+            this.theSetOfChildrenWillDelete.clear();
 
             this.lastUpdateTime = currentTime;
         }
@@ -354,25 +369,22 @@ public class Sprite extends Node
     public void addAction(Action aAction)
     {
         aAction.setSprite(this);
-        this.theSetOfActionsAdded.add(aAction);
+        this.theSetOfActionsWillAdd.add(aAction);
     }
 
     public void removeAction(Action aAction)
     {
         aAction.clearSprite();
-        this.theSetOfActionsDeleted.remove(aAction);
+        this.theSetOfActionsWillDelete.remove(aAction);
     }
 
-    public void enQueueAction(Action aAction)
+    public void enQueueActions(Set<Action> aSetOfActions)
     {
-        aAction.setSprite(this);
-        this.theQueueOfActions.add(aAction);
-    }
-
-    public void deQueueAction(Action aAction)
-    {
-        aAction.clearSprite();
-        this.theQueueOfActions.remove(aAction);
+        for (Action aAction : aSetOfActions)
+        {
+            aAction.setSprite(this);
+        }
+        this.theQueueOfActions.add(aSetOfActions);
     }
 
     public int getActionCount()
@@ -565,21 +577,21 @@ public class Sprite extends Node
 
     public void addAChild(Sprite aSprite)
     {
-        this.theSetOfChildrenAdded.add(aSprite);
+        this.theSetOfChildrenWillAdd.add(aSprite);
         aSprite.parent = this;
         aSprite.bChild = true;
     }
 
     public void removeAChild(Sprite aSprite)
     {
-        this.theSetOfChildrenDeleted.add(aSprite);
+        this.theSetOfChildrenWillDelete.add(aSprite);
         aSprite.parent = null;
         aSprite.bChild = false;
     }
 
     public void clearChildren()
     {
-        this.theSetOfChildrenDeleted.addAll(this.theSetOfChildren);
+        this.theSetOfChildrenWillDelete.addAll(this.theSetOfChildren);
     }
 
     public void onCollideWith(final Sprite target)

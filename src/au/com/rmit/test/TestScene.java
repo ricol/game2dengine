@@ -5,21 +5,19 @@
  */
 package au.com.rmit.test;
 
-import au.com.rmit.Game2dEngine.action.AlphaToAction;
+import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.action.ExpandByAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.Game2dEngine.node.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
-import au.com.rmit.test.PropelEngine;
-import au.com.rmit.test.SquareShape;
-import au.com.rmit.test.TestSpaceship;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.Timer;
 
 /**
@@ -84,25 +82,25 @@ public class TestScene extends Scene
                 PropelEngine aEngine = new PropelEngine();
                 aShape.addAChild(aEngine);
 
-//                aShape.bDeadIfNoActions = true;
-                
+                aShape.bDeadIfNoActions = true;
                 RotateByAction aRotateByAction = new RotateByAction();
                 aRotateByAction.rotateBy(Math.PI * 2, 5);
-                aShape.enQueueAction(aRotateByAction);
-                
-                RotateByAction aRotateByActionReverse = new RotateByAction();
-                aRotateByActionReverse.rotateBy(-Math.PI * 2, 5);
-                aShape.enQueueAction(aRotateByActionReverse);
+                Set<Action> aSetOfAction = new HashSet<>();
+                aSetOfAction.add(aRotateByAction);
+
+//                RotateByAction aRotateByActionReverse = new RotateByAction();
+//                aRotateByActionReverse.rotateBy(-Math.PI * 2, 5);
+//                aSetOfAction.add(aRotateByActionReverse);
 
                 ExpandByAction aExpandAction = new ExpandByAction();
                 aExpandAction.expandBy(100, 5);
-                aShape.enQueueAction(aExpandAction);
-                
-                ExpandByAction aExpandActionReverse = new ExpandByAction();
-                aExpandActionReverse.expandBy(-100, 5);
-                aShape.enQueueAction(aExpandActionReverse);
-                
-                
+                aSetOfAction.add(aExpandAction);
+
+//                ExpandByAction aExpandActionReverse = new ExpandByAction();
+//                aExpandActionReverse.expandBy(-100, 5);
+//                aSetOfAction.add(aExpandActionReverse);
+                aShape.enQueueActions(aSetOfAction);
+
                 SquareShape aFirstChild = new SquareShape();
                 aFirstChild.setWidth(100);
                 aFirstChild.setHeight(80);
@@ -110,10 +108,10 @@ public class TestScene extends Scene
                 aFirstChild.setCentreY(aShape.getHeight() / 2);
                 aFirstChild.setGreen(100);
                 aShape.addAChild(aFirstChild);
-                
+
                 PropelEngine aFirstChildEngine = new PropelEngine();
                 aFirstChild.addAChild(aFirstChildEngine);
-                
+
 //
 //                RotateByAction aRotateByActionForFirst = new RotateByAction();
 //                aRotateByActionForFirst.rotateBy(Math.PI * 2, 5);
@@ -138,16 +136,18 @@ public class TestScene extends Scene
                 aFirstFirstChild.setCentreX(aFirstChild.getWidth() / 2);
                 aFirstFirstChild.setCentreY(aFirstChild.getHeight() / 2);
                 aFirstFirstChild.setRed(255);
-                
+
                 PropelEngine aFirstFirstChildEngine = new PropelEngine();
                 aFirstFirstChild.addAChild(aFirstFirstChildEngine);
-                
+
                 RotateByAction aActionForFirstFirst = new RotateByAction();
                 aActionForFirstFirst.rotateBy(-Math.PI * 10, 20);
-                aFirstFirstChild.enQueueAction(aActionForFirstFirst);
-                
+                aSetOfAction = new HashSet<>();
+                aSetOfAction.add(aActionForFirstFirst);
+                aFirstFirstChild.enQueueActions(aSetOfAction);
+
                 aFirstChild.addAChild(aFirstFirstChild);
-                
+
 //                SquareShape aSecondChild = new SquareShape();
 //                aSecondChild.setWidth(100);
 //                aSecondChild.setHeight(50);
@@ -191,29 +191,28 @@ public class TestScene extends Scene
                  aAlphaAction.alphaTo(0, 3);
                  aLabel.addAction(aAlphaAction);
                  */
-                
                 /*
-                TestSpaceship aObject;
+                 TestSpaceship aObject;
 
-                int width = 100;
-                int height = 100;
-                aObject = new TestSpaceship();
-                aObject.setCentreX(e.getX());
-                aObject.setCentreY(e.getY());
+                 int width = 100;
+                 int height = 100;
+                 aObject = new TestSpaceship();
+                 aObject.setCentreX(e.getX());
+                 aObject.setCentreY(e.getY());
 
-                aObject.setLifeTime(Sprite.EVER);
-                aObject.bDeadIfNoActions = true;
+                 aObject.setLifeTime(Sprite.EVER);
+                 aObject.bDeadIfNoActions = true;
 
-                addSprite(aObject);
+                 addSprite(aObject);
 
-                RotateByAction aRotateByAction = new RotateByAction();
-                aRotateByAction.rotateBy(Math.PI * 10, 20);
-                aObject.addAction(aRotateByAction);
+                 RotateByAction aRotateByAction = new RotateByAction();
+                 aRotateByAction.rotateBy(Math.PI * 10, 20);
+                 aObject.addAction(aRotateByAction);
 
-                AlphaToAction aAlphaAction = new AlphaToAction(aObject);
-                aAlphaAction.alphaTo(0, 20);
-                aObject.addAction(aAlphaAction);
-                */
+                 AlphaToAction aAlphaAction = new AlphaToAction(aObject);
+                 aAlphaAction.alphaTo(0, 20);
+                 aObject.addAction(aAlphaAction);
+                 */
 
                 /*
                  TestSpaceship aObject;
