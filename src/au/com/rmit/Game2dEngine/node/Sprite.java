@@ -146,7 +146,7 @@ public class Sprite extends Node
         x += IncX;
         y += IncY;
 
-            //perform actions
+        //perform actions
         //perform a set of actions in the queue one by one in sequence
         Set<Action> theSetOfQueuedActions = this.theQueueOfActions.peek();
 
@@ -174,7 +174,7 @@ public class Sprite extends Node
             }
         }
 
-            //perform other actions
+        //perform other actions
         //add new actions
         this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
         this.theSetOfActionsWillAdd.clear();
@@ -367,29 +367,37 @@ public class Sprite extends Node
 
     private void setDead()
     {
+        if (!this.isAlive)
+        {
+            return;
+        }
+
         this.isAlive = false;
         this.onDead();
     }
-    
+
     protected void setShouldDie()
     {
-        if (bShouldDie) return;
-        
+        if (bShouldDie)
+        {
+            return;
+        }
+
         bShouldDie = true;
-        
+
         for (Sprite aSprite : this.theSetOfChildren)
         {
             aSprite.setShouldDie();
         }
-        
+
         this.onWillDead();
     }
-    
+
     public boolean getShouldDie()
     {
         return bShouldDie;
     }
-    
+
     public void applyGravity(final Gravity g)
     {
         this.g = new Gravity(g.GX, g.GY);
@@ -652,7 +660,7 @@ public class Sprite extends Node
 
     public void onWillDead()
     {
-        
+
     }
 
     public void onDead()
@@ -670,7 +678,7 @@ public class Sprite extends Node
         this.theQueueOfActions.clear();
 
         releaseTheImageCanvas();
-        
+
         this.parent = null;
         this.theScene = null;
     }

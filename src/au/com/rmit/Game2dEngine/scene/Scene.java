@@ -74,19 +74,7 @@ public class Scene extends JPanel
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            Runtime runtime = Runtime.getRuntime();
-
-            NumberFormat format = NumberFormat.getInstance();
-
-            StringBuilder sb = new StringBuilder();
-            long maxMemory = runtime.maxMemory();
-            long allocatedMemory = runtime.totalMemory();
-            long freeMemory = runtime.freeMemory();
-
-            strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
-            strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
-            strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
-            strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
+            collectMemoryInfo();
         }
     });
 
@@ -95,6 +83,8 @@ public class Scene extends JPanel
 
     public Scene()
     {
+        collectMemoryInfo();
+        
         theTimer.start();
         theTimerForMemory.start();
 
@@ -440,5 +430,22 @@ public class Scene extends JPanel
         }
 
         this.allNodes.clear();
+    }
+
+    private void collectMemoryInfo()
+    {
+        Runtime runtime = Runtime.getRuntime();
+
+        NumberFormat format = NumberFormat.getInstance();
+
+        StringBuilder sb = new StringBuilder();
+        long maxMemory = runtime.maxMemory();
+        long allocatedMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
+
+        strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
+        strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
+        strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
+        strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
     }
 }
