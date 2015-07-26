@@ -163,7 +163,7 @@ public class Sprite extends Node
             this.theSetOfActions.addAll(this.theSetOfActionsAdded);
             this.theSetOfActionsAdded.clear();
 
-            if (this.theSetOfActions.size() <= 0)
+            if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
             {
                 if (this.bDeadIfNoActions)
                 {
@@ -321,7 +321,7 @@ public class Sprite extends Node
 
     public int getActionCount()
     {
-        return this.theSetOfActions.size();
+        return this.theSetOfActions.size() + this.theQueueOfActions.size();
     }
 
     public int getQueueActionCount()

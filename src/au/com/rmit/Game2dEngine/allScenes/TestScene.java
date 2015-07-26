@@ -5,10 +5,14 @@
  */
 package au.com.rmit.Game2dEngine.allScenes;
 
+import au.com.rmit.Game2dEngine.action.AlphaToAction;
+import au.com.rmit.Game2dEngine.action.ExpandByAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.node.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
+import au.com.rmit.test.PropelEngine;
+import au.com.rmit.test.SquareShape;
 import au.com.rmit.test.TestSpaceship;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,37 +71,76 @@ public class TestScene extends Scene
             public void mousePressed(MouseEvent e)
             {
 
-//                SquareShape aShape = new SquareShape();
-//                aShape.setWidth(300);
-//                aShape.setHeight(200);
-//                aShape.setCentreX(e.getX());
-//                aShape.setCentreY(e.getY());
-//                aShape.setRed(255);
-//                aShape.setGreen(255);
-//                addSprite(aShape);
+                SquareShape aShape = new SquareShape();
+                aShape.setWidth(300);
+                aShape.setHeight(200);
+                aShape.setCentreX(e.getX());
+                aShape.setCentreY(e.getY());
+                aShape.setGreen(100);
+                aShape.setRed(0);
+                aShape.setBlue(255);
+                addSprite(aShape);
+
+//                PropelEngine aEngine = new PropelEngine();
+//                aShape.addAChild(aEngine);
+
 //                aShape.bDeadIfNoActions = true;
-//                RotateByAction aAction = new RotateByAction();
-//                aAction.rotateBy(Math.PI * 10, 10);
-//                aShape.addAction(aAction);
+                
+                RotateByAction aRotateByAction = new RotateByAction();
+                aRotateByAction.rotateBy(Math.PI * 2, 5);
+                aShape.enQueueAction(aRotateByAction);
+                
+                RotateByAction aRotateByActionReverse = new RotateByAction();
+                aRotateByActionReverse.rotateBy(-Math.PI * 2, 5);
+                aShape.enQueueAction(aRotateByActionReverse);
+
+                ExpandByAction aExpandAction = new ExpandByAction();
+                aExpandAction.expandBy(100, 5);
+                aShape.enQueueAction(aExpandAction);
+                
+                ExpandByAction aExpandActionReverse = new ExpandByAction();
+                aExpandActionReverse.expandBy(-100, 5);
+                aShape.enQueueAction(aExpandActionReverse);
+                
+                
+                SquareShape aFirstChild = new SquareShape();
+                aFirstChild.setWidth(100);
+                aFirstChild.setHeight(80);
+                aFirstChild.setCentreX(aShape.getWidth() / 2);
+                aFirstChild.setCentreY(aShape.getHeight() / 2);
+                aFirstChild.setBlue(255);
+                aShape.addAChild(aFirstChild);
+
+                RotateByAction aRotateByActionForFirst = new RotateByAction();
+                aRotateByActionForFirst.rotateBy(Math.PI * 2, 5);
+                aFirstChild.enQueueAction(aRotateByActionForFirst);
+                
+                RotateByAction aRotateByActionForFirstReverse = new RotateByAction();
+                aRotateByActionForFirstReverse.rotateBy(-Math.PI * 2, 5);
+                aFirstChild.enQueueAction(aRotateByActionForFirstReverse);
+
+                ExpandByAction aExpandActionForFirst = new ExpandByAction();
+                aExpandActionForFirst.expandBy(50, 5);
+                aFirstChild.enQueueAction(aExpandActionForFirst);
+                
+                ExpandByAction aExpandActionForFirstReverse = new ExpandByAction();
+                aExpandActionForFirstReverse.expandBy(-50, 5);
+                aFirstChild.enQueueAction(aExpandActionForFirstReverse);
 //                
-//                ExpandByAction aExpandAction = new ExpandByAction();
-//                aExpandAction.expandBy(100, 10);
-//                aShape.addAction(aExpandAction);
-//                SquareShape aFirstChild = new SquareShape();
-//                aFirstChild.setWidth(100);
-//                aFirstChild.setHeight(50);
-//                aFirstChild.setCentreX(aShape.getWidth() / 2);
-//                aFirstChild.setCentreY(aShape.getHeight() / 2);
-//                aFirstChild.setBlue(255);
-//                aShape.addAChild(aFirstChild);
 //                
-//                RotateByAction aActionForFirst = new RotateByAction();
-//                aActionForFirst.rotateBy(Math.PI * 10, 20);
-//                aFirstChild.addAction(aActionForFirst);
+//                SquareShape aFirstFirstChild = new SquareShape();
+//                aFirstFirstChild.setWidth(80);
+//                aFirstFirstChild.setHeight(50);
+//                aFirstFirstChild.setCentreX(aFirstChild.getWidth() / 2);
+//                aFirstFirstChild.setCentreY(aFirstChild.getHeight() / 2);
+//                aFirstFirstChild.setRed(255);
 //                
-//                ExpandByAction aExpandActionForFirst = new ExpandByAction();
-//                aExpandActionForFirst.expandBy(50, 10);
-//                aFirstChild.addAction(aExpandActionForFirst);
+//                RotateByAction aActionForFirstFirst = new RotateByAction();
+//                aActionForFirstFirst.rotateBy(-Math.PI * 10, 20);
+//                aFirstFirstChild.enQueueAction(aActionForFirstFirst);
+//                
+//                aFirstChild.addAChild(aFirstFirstChild);
+                
 //                SquareShape aSecondChild = new SquareShape();
 //                aSecondChild.setWidth(100);
 //                aSecondChild.setHeight(50);
@@ -105,7 +148,7 @@ public class TestScene extends Scene
 //                aSecondChild.setY(20);
 //                aSecondChild.setGreen(255);
 //                aShape.addAChild(aSecondChild);
-//                
+//
 //                RotateByAction aActionForSecond = new RotateByAction();
 //                aActionForSecond.rotateBy(-Math.PI * 10, 10);
 //                aSecondChild.addAction(aActionForSecond);
@@ -141,6 +184,8 @@ public class TestScene extends Scene
                  aAlphaAction.alphaTo(0, 3);
                  aLabel.addAction(aAlphaAction);
                  */
+                
+                /*
                 TestSpaceship aObject;
 
                 int width = 100;
@@ -154,18 +199,14 @@ public class TestScene extends Scene
 
                 addSprite(aObject);
 
-                RotateByAction aAction = new RotateByAction();
-                aAction.rotateBy(Math.PI * 10, 20);
+                RotateByAction aRotateByAction = new RotateByAction();
+                aRotateByAction.rotateBy(Math.PI * 10, 20);
+                aObject.addAction(aRotateByAction);
 
-//                MoveXByAction aAction = new MoveXByAction();
-//                aAction.moveXBy(200, 5);
-                aObject.addAction(aAction);
-
-//                
-//                
-//                AlphaToAction aAlphaAction = new AlphaToAction(aObject);
-//                aAlphaAction.alphaTo(0, 3);
-//                aObject.addAction(aAlphaAction);
+                AlphaToAction aAlphaAction = new AlphaToAction(aObject);
+                aAlphaAction.alphaTo(0, 20);
+                aObject.addAction(aAlphaAction);
+                */
 
                 /*
                  TestSpaceship aObject;

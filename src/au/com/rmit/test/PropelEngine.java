@@ -8,22 +8,37 @@ package au.com.rmit.test;
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.node.Sprite;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
+import javax.swing.Timer;
 
 /**
  *
  * @author ricolwang
  */
-public class PropelEngine extends Sprite
+public class PropelEngine extends Sprite implements ActionListener
 {
+
+    Timer theTimerForEngine = new Timer(10, this);
+
     public PropelEngine()
     {
         RotateByAction aAction = new RotateByAction();
         aAction.rotateBy(-Math.PI * 20, 20);
         this.addAction(aAction);
+
+        theTimerForEngine.start();
     }
-    
+
+    @Override
+    public void onDead()
+    {
+        super.onDead(); //To change body of generated methods, choose Tools | Templates.
+        theTimerForEngine.stop();
+    }
+
     public void propel()
     {
         int number = abs(theRandom.nextInt()) % 5 + 10;
@@ -39,7 +54,7 @@ public class PropelEngine extends Sprite
 
             aFire.setCentreX(this.getCentreX() + this.parent.getX());
             aFire.setCentreY(this.getCentreY() + this.parent.getY());
-            
+
             aFire.setVelocityX(tmpVelocityX);
             aFire.setVelocityY(tmpVelocityY);
             aFire.setRed(255);
@@ -52,6 +67,9 @@ public class PropelEngine extends Sprite
             AlphaToAction aAction = new AlphaToAction(aFire);
             aAction.alphaTo(0, 0.1f);
             aFire.addAction(aAction);
+
+            if (this.parent == null) break;
+            if (this.parent.theScene == null) break;
             
             this.parent.theScene.addSprite(aFire);
         }
@@ -61,7 +79,16 @@ public class PropelEngine extends Sprite
     public void updateState(double currentTime)
     {
         super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
-        
+
         System.out.println("Child - CentreX: " + this.getCentreX() + "; CentreY: " + this.getCentreY() + "; Angel: " + this.getAngle());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getSource().equals(this.theTimerForEngine))
+        {
+            propel();
+        }
     }
 }
