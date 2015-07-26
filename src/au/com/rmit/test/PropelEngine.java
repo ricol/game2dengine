@@ -8,38 +8,55 @@ package au.com.rmit.test;
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.node.Sprite;
-import static com.sun.org.apache.xalan.internal.lib.ExsltMath.power;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import static java.lang.Math.abs;
+import static java.lang.Math.pow;
+import javax.swing.Timer;
 
 /**
  *
  * @author ricolwang
  */
-public class PropelEngine extends Sprite
+public class PropelEngine extends Sprite implements ActionListener
 {
+
+    Timer theTimerForEngine = new Timer(10, this);
+
     public PropelEngine()
     {
-        RotateByAction aAction = new RotateByAction();
-        aAction.rotateBy(-Math.PI * 20, 20);
-        this.addAction(aAction);
+//        RotateByAction aAction = new RotateByAction();
+//        aAction.rotateBy(-Math.PI * 20, 20);
+//        this.addAction(aAction);
+
+        theTimerForEngine.start();
     }
-    
+
+    @Override
+    public void onDead()
+    {
+        super.onDead(); //To change body of generated methods, choose Tools | Templates.
+        theTimerForEngine.stop();
+        this.parent = null;
+        this.theScene = null;
+    }
+
     public void propel()
     {
         int number = abs(theRandom.nextInt()) % 5 + 10;
 
         for (int i = 0; i < number; i++)
         {
-            double tmpVelocityX = power(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 20 * 4;
+            double tmpVelocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 20 * 4;
             double tmpVelocityY = theRandom.nextFloat() * 100 * 10;
 
             int size = 6;
 
             Sprite aFire = new Sprite(0, 0, size, size, 0, 0, 0);
 
-            aFire.setCentreX(this.getCentreX() + this.parent.getX());
-            aFire.setCentreY(this.getCentreY() + this.parent.getY());
-            
+            aFire.setCentreX(this.getCentreX());
+            aFire.setCentreY(this.getCentreY());
+
             aFire.setVelocityX(tmpVelocityX);
             aFire.setVelocityY(tmpVelocityY);
             aFire.setRed(255);
@@ -52,16 +69,18 @@ public class PropelEngine extends Sprite
             AlphaToAction aAction = new AlphaToAction(aFire);
             aAction.alphaTo(0, 0.1f);
             aFire.addAction(aAction);
-            
-            this.parent.theScene.addSprite(aFire);
+
+            if (this.parent == null) break;
+            this.parent.addAChild(aFire);
         }
     }
 
     @Override
-    public void updateState(double currentTime)
+    public void actionPerformed(ActionEvent e)
     {
-        super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
-        
-        System.out.println("Child - CentreX: " + this.getCentreX() + "; CentreY: " + this.getCentreY() + "; Angel: " + this.getAngle());
+        if (e.getSource().equals(this.theTimerForEngine))
+        {
+            propel();
+        }
     }
 }
