@@ -59,7 +59,7 @@ public class Spaceship extends Sprite
         this.currentLife -= value;
         if (this.currentLife <= 0)
         {
-            this.setDead();
+            this.setShouldDie();
         }
     }
 

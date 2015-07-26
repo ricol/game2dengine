@@ -51,11 +51,4 @@ public class TestSpaceship extends Spaceship
     {
     }
 
-    @Override
-    public void updateState(double currentTime)
-    {
-        super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
-
-        System.out.println("Parent - CentreX: " + this.getCentreX() + "; CentreY: " + this.getCentreY() + "; Angel: " + this.getAngle());
-    }
 }

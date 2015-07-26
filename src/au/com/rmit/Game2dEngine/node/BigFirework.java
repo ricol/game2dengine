@@ -38,6 +38,8 @@ public class BigFirework extends Firework
     {
         super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
 
+        if (!this.isAlive()) return;
+        
         if (this.bDidBlast)
         {
             for (int i = 0; i < this.subFireworks; i++)
@@ -79,6 +81,8 @@ public class BigFirework extends Firework
 
                 this.theScene.addSprite(aObject);
             }
+            
+            this.setShouldDie();
         }
     }
 }

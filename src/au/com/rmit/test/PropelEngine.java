@@ -37,6 +37,8 @@ public class PropelEngine extends Sprite implements ActionListener
     {
         super.onDead(); //To change body of generated methods, choose Tools | Templates.
         theTimerForEngine.stop();
+        this.parent = null;
+        this.theScene = null;
     }
 
     public void propel()
@@ -71,14 +73,6 @@ public class PropelEngine extends Sprite implements ActionListener
             if (this.parent == null) break;
             this.parent.addAChild(aFire);
         }
-    }
-
-    @Override
-    public void updateState(double currentTime)
-    {
-        super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
-
-        System.out.println("Child - CentreX: " + this.getCentreX() + "; CentreY: " + this.getCentreY() + "; Angel: " + this.getAngle());
     }
 
     @Override

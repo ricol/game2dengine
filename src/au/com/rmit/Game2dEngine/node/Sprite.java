@@ -55,6 +55,7 @@ public class Sprite extends Node
     private double velocityY;
     private double currentLife = 0;
     private boolean isAlive = true;
+    private boolean bShouldDie = false;
 
     private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
     private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
@@ -116,6 +117,12 @@ public class Sprite extends Node
 
     public void updateState(double currentTime)
     {
+        if (bShouldDie)
+        {
+            this.setDead();
+            return;
+        }
+
         //how much time passed since last update
         double delta = currentTime - this.lastUpdateTime;
         double t = delta / 1000.0f; //in seconds
@@ -123,149 +130,146 @@ public class Sprite extends Node
 
         if (currentLife >= lifetime)
         {
-            this.setDead();
+            bShouldDie = true;
         }
 
-        if (this.isAlive())
+        //update state
+        if (this.g != null)
         {
-            //update state
-            if (this.g != null)
-            {
-                velocityX += this.g.GX * t;
-                velocityY += this.g.GY * t;
-            }
+            velocityX += this.g.GX * t;
+            velocityY += this.g.GY * t;
+        }
 
-            double IncX = velocityX * t;
-            double IncY = velocityY * t;
+        double IncX = velocityX * t;
+        double IncY = velocityY * t;
 
-            x += IncX;
-            y += IncY;
+        x += IncX;
+        y += IncY;
 
             //perform actions
-            //perform a set of actions in the queue one by one in sequence
-            Set<Action> theSetOfQueuedActions = this.theQueueOfActions.peek();
+        //perform a set of actions in the queue one by one in sequence
+        Set<Action> theSetOfQueuedActions = this.theQueueOfActions.peek();
 
-            if (theSetOfQueuedActions != null)
+        if (theSetOfQueuedActions != null)
+        {
+            if (theSetOfQueuedActions.size() > 0)
             {
-                if (theSetOfQueuedActions.size() > 0)
-                {
-                    for (Action aAction : theSetOfQueuedActions)
-                    {
-                        this.onActionRunning(aAction);
-                        aAction.perform(delta);
-
-                        if (aAction.bComplete)
-                        {
-                            theSetOfActionsInQueueWillDelete.add(aAction);
-                            this.onActionComplete(aAction);
-                        }
-                    }
-
-                    theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
-                    theSetOfActionsInQueueWillDelete.clear();
-                } else
-                {
-                    this.theQueueOfActions.remove(theSetOfQueuedActions);
-                }
-            }
-
-            //perform other actions
-            //add new actions
-            this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
-            this.theSetOfActionsWillAdd.clear();
-
-            if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
-            {
-                if (this.bDeadIfNoActions)
-                {
-                    this.setDead();
-                }
-            } else
-            {
-                //run actions
-                for (Action aAction : this.theSetOfActions)
+                for (Action aAction : theSetOfQueuedActions)
                 {
                     this.onActionRunning(aAction);
                     aAction.perform(delta);
 
                     if (aAction.bComplete)
                     {
-                        this.theSetOfActionsWillDelete.add(aAction);
+                        theSetOfActionsInQueueWillDelete.add(aAction);
                         this.onActionComplete(aAction);
                     }
                 }
-            }
 
-            //delete old actions
-            this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
-            this.theSetOfActionsWillDelete.clear();
-
-            //add new children
-            this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
-            this.theSetOfChildrenWillAdd.clear();
-
-            //update its children
-            for (Sprite aSprite : this.theSetOfChildren)
+                theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
+                theSetOfActionsInQueueWillDelete.clear();
+            } else
             {
-                aSprite.updateState(currentTime);
+                this.theQueueOfActions.remove(theSetOfQueuedActions);
+            }
+        }
 
-                if (!aSprite.isAlive)
+            //perform other actions
+        //add new actions
+        this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
+        this.theSetOfActionsWillAdd.clear();
+
+        if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
+        {
+            if (this.bDeadIfNoActions)
+            {
+                bShouldDie = true;
+            }
+        } else
+        {
+            //run actions
+            for (Action aAction : this.theSetOfActions)
+            {
+                this.onActionRunning(aAction);
+                aAction.perform(delta);
+
+                if (aAction.bComplete)
                 {
-                    this.theSetOfChildrenWillDelete.add(aSprite);
+                    this.theSetOfActionsWillDelete.add(aAction);
+                    this.onActionComplete(aAction);
                 }
             }
-
-            //delete old children
-            this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
-            this.theSetOfChildrenWillDelete.clear();
-
-            this.lastUpdateTime = currentTime;
         }
+
+        //delete old actions
+        this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
+        this.theSetOfActionsWillDelete.clear();
+
+        //add new children
+        this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
+        this.theSetOfChildrenWillAdd.clear();
+
+        //update its children
+        for (Sprite aSprite : this.theSetOfChildren)
+        {
+            aSprite.updateState(currentTime);
+
+            if (!aSprite.isAlive)
+            {
+                this.theSetOfChildrenWillDelete.add(aSprite);
+            }
+        }
+
+        //delete old children
+        this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
+        this.theSetOfChildrenWillDelete.clear();
+
+        this.lastUpdateTime = currentTime;
     }
 
     public void updateGUI(final Graphics2D g)
     {
-        int tmpX = (int) x;
-        int tmpY = (int) y;
-
-        int tmpSceneWidth;
-        int tmpSceneHeight;
-
-        if (bChild)
-        {
-            tmpSceneWidth = (int) this.parent.getWidth();
-            tmpSceneHeight = (int) this.parent.getHeight();
-        } else
-        {
-            tmpSceneWidth = this.theScene.getWidth();
-            tmpSceneHeight = this.theScene.getHeight();
-        }
-
-        int w = (int) width;
-        int h = (int) height;
-
-        if (tmpX + w < 0 || tmpY + h < 0)
-        {
-            return;
-        }
-
-        if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
-        {
-            return;
-        }
-
-        if (abs(w) <= 0.1 || abs(h) <= 0.1)
-        {
-            return;
-        }
-
-        if (g == null)
-        {
-            return;
-        }
-
         if (this.isAlive)
         {
+            int tmpX = (int) x;
+            int tmpY = (int) y;
+
+            int tmpSceneWidth;
+            int tmpSceneHeight;
+
+            if (bChild)
+            {
+                tmpSceneWidth = (int) this.parent.getWidth();
+                tmpSceneHeight = (int) this.parent.getHeight();
+            } else
+            {
+                tmpSceneWidth = this.theScene.getWidth();
+                tmpSceneHeight = this.theScene.getHeight();
+            }
+
+            int w = (int) width;
+            int h = (int) height;
+
+            if (tmpX + w < 0 || tmpY + h < 0)
+            {
+                return;
+            }
+
+            if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+            {
+                return;
+            }
+
+            if (abs(w) <= 0.1 || abs(h) <= 0.1)
+            {
+                return;
+            }
+
+            if (g == null)
+            {
+                return;
+            }
+
             if (bCustomDrawing)
             {
                 Graphics2D theGraphics2D = this.getTheImageGraphics();
@@ -361,6 +365,31 @@ public class Sprite extends Node
         }
     }
 
+    private void setDead()
+    {
+        this.isAlive = false;
+        this.onDead();
+    }
+    
+    protected void setShouldDie()
+    {
+        if (bShouldDie) return;
+        
+        bShouldDie = true;
+        
+        for (Sprite aSprite : this.theSetOfChildren)
+        {
+            aSprite.setShouldDie();
+        }
+        
+        this.onWillDead();
+    }
+    
+    public boolean getShouldDie()
+    {
+        return bShouldDie;
+    }
+    
     public void applyGravity(final Gravity g)
     {
         this.g = new Gravity(g.GX, g.GY);
@@ -533,13 +562,6 @@ public class Sprite extends Node
         this.angle = angle;
     }
 
-    public void setDead()
-    {
-        this.isAlive = false;
-        this.hashCollision.clear();
-        this.onDead();
-    }
-
     public Gravity getGravity()
     {
         return this.g;
@@ -628,10 +650,29 @@ public class Sprite extends Node
         theGraphics2D.clearRect(0, 0, (int) width, (int) height);
     }
 
+    public void onWillDead()
+    {
+        
+    }
+
     public void onDead()
     {
-        this.clearChildren();
         this.hashCollision.clear();
+
+        this.theSetOfActions.clear();
+        this.theSetOfActionsInQueueWillDelete.clear();
+        this.theSetOfActionsWillAdd.clear();
+        this.theSetOfActionsWillDelete.clear();
+        this.theSetOfChildren.clear();
+        this.theSetOfChildrenWillAdd.clear();
+        this.theSetOfChildrenWillDelete.clear();
+
+        this.theQueueOfActions.clear();
+
+        releaseTheImageCanvas();
+        
+        this.parent = null;
+        this.theScene = null;
     }
 
 }

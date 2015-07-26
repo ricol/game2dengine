@@ -100,7 +100,7 @@ public class TestScene extends Scene
 //                aExpandActionReverse.expandBy(-100, 5);
 //                aSetOfAction.add(aExpandActionReverse);
                 aShape.enQueueActions(aSetOfAction);
-
+//
                 SquareShape aFirstChild = new SquareShape();
                 aFirstChild.setWidth(100);
                 aFirstChild.setHeight(80);
@@ -112,7 +112,7 @@ public class TestScene extends Scene
                 PropelEngine aFirstChildEngine = new PropelEngine();
                 aFirstChild.addAChild(aFirstChildEngine);
 
-//
+
 //                RotateByAction aRotateByActionForFirst = new RotateByAction();
 //                aRotateByActionForFirst.rotateBy(Math.PI * 2, 5);
 //                aFirstChild.enQueueAction(aRotateByActionForFirst);
@@ -128,25 +128,25 @@ public class TestScene extends Scene
 //                ExpandByAction aExpandActionForFirstReverse = new ExpandByAction();
 //                aExpandActionForFirstReverse.expandBy(-50, 5);
 //                aFirstChild.enQueueAction(aExpandActionForFirstReverse);
-//                
-//                
-                SquareShape aFirstFirstChild = new SquareShape();
-                aFirstFirstChild.setWidth(40);
-                aFirstFirstChild.setHeight(30);
-                aFirstFirstChild.setCentreX(aFirstChild.getWidth() / 2);
-                aFirstFirstChild.setCentreY(aFirstChild.getHeight() / 2);
-                aFirstFirstChild.setRed(255);
-
-                PropelEngine aFirstFirstChildEngine = new PropelEngine();
-                aFirstFirstChild.addAChild(aFirstFirstChildEngine);
-
-                RotateByAction aActionForFirstFirst = new RotateByAction();
-                aActionForFirstFirst.rotateBy(-Math.PI * 10, 20);
-                aSetOfAction = new HashSet<>();
-                aSetOfAction.add(aActionForFirstFirst);
-                aFirstFirstChild.enQueueActions(aSetOfAction);
-
-                aFirstChild.addAChild(aFirstFirstChild);
+                
+                
+//                SquareShape aFirstFirstChild = new SquareShape();
+//                aFirstFirstChild.setWidth(40);
+//                aFirstFirstChild.setHeight(30);
+//                aFirstFirstChild.setCentreX(aFirstChild.getWidth() / 2);
+//                aFirstFirstChild.setCentreY(aFirstChild.getHeight() / 2);
+//                aFirstFirstChild.setRed(255);
+//
+//                PropelEngine aFirstFirstChildEngine = new PropelEngine();
+//                aFirstFirstChild.addAChild(aFirstFirstChildEngine);
+//
+//                RotateByAction aActionForFirstFirst = new RotateByAction();
+//                aActionForFirstFirst.rotateBy(-Math.PI * 10, 20);
+//                aSetOfAction = new HashSet<>();
+//                aSetOfAction.add(aActionForFirstFirst);
+//                aFirstFirstChild.enQueueActions(aSetOfAction);
+//
+//                aFirstChild.addAChild(aFirstFirstChild);
 
 //                SquareShape aSecondChild = new SquareShape();
 //                aSecondChild.setWidth(100);
@@ -160,37 +160,37 @@ public class TestScene extends Scene
 //                aActionForSecond.rotateBy(-Math.PI * 10, 10);
 //                aSecondChild.addAction(aActionForSecond);
 
-                /*
+                
                  //test label
-                 LabelSprite aLabel = new LabelSprite(0, 0, "This is a text", null);
-                 addSprite(aLabel);
-                 aLabel.setWidth(100);
-                 aLabel.setHeight(20);
-                 aLabel.setRed(255);
-                 aLabel.bTextFrame = false;
-                 aLabel.bDeadIfNoActions = true;
-
-                 aLabel.setCentreX(e.getX());
-                 aLabel.setCentreY(e.getY());
-
-                 new Timer(200, new ActionListener()
-                 {
-
-                 @Override
-                 public void actionPerformed(ActionEvent e)
-                 {
-                 String text = String.format("%d", abs(theRandom.nextInt()));
-                 aLabel.setText(text);
-                 }
-
-                 }).start();
-
-                 aLabel.setVelocityY(-300);
-
-                 AlphaToAction aAlphaAction = new AlphaToAction(aLabel);
-                 aAlphaAction.alphaTo(0, 3);
-                 aLabel.addAction(aAlphaAction);
-                 */
+//                 LabelSprite aLabel = new LabelSprite(0, 0, "This is a text", null);
+//                 addSprite(aLabel);
+//                 aLabel.setWidth(100);
+//                 aLabel.setHeight(20);
+//                 aLabel.setRed(255);
+//                 aLabel.bTextFrame = false;
+//                 aLabel.bDeadIfNoActions = true;
+//
+//                 aLabel.setCentreX(e.getX());
+//                 aLabel.setCentreY(e.getY());
+//
+//                 new Timer(200, new ActionListener()
+//                 {
+//
+//                 @Override
+//                 public void actionPerformed(ActionEvent e)
+//                 {
+//                 String text = String.format("%d", abs(theRandom.nextInt()));
+//                 aLabel.setText(text);
+//                 }
+//
+//                 }).start();
+//
+//                 aLabel.setVelocityY(-300);
+//
+//                 AlphaToAction aAlphaAction = new AlphaToAction(aLabel);
+//                 aAlphaAction.alphaTo(0, 3);
+//                 aLabel.addAction(aAlphaAction);
+                 
                 /*
                  TestSpaceship aObject;
 
