@@ -130,7 +130,7 @@ public class Sprite extends Node
 
         if (currentLife >= lifetime)
         {
-            bShouldDie = true;
+            this.setShouldDie();
         }
 
         //update state
@@ -183,7 +183,7 @@ public class Sprite extends Node
         {
             if (this.bDeadIfNoActions)
             {
-                bShouldDie = true;
+                this.setShouldDie();
             }
         } else
         {
