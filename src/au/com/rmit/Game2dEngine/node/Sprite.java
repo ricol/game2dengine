@@ -47,7 +47,7 @@ public class Sprite extends Node
     public static final long EVER = Long.MAX_VALUE;
     public boolean bDeadIfNoActions;
 
-    private int layer = 0;
+    private int layer = Scene.MIN_LAYER;
     private double lifetime = Sprite.EVER; //in seconds
     private double lastUpdateTime;
     private double starttime = System.currentTimeMillis();
@@ -449,6 +449,19 @@ public class Sprite extends Node
         return this.velocityY;
     }
 
+    public double getMass()
+    {
+        return this.mass;
+    }
+
+    public void setMass(double mass)
+    {
+        if (mass >= 0)
+        {
+            this.mass = mass;
+        }
+    }
+
     public boolean isAlive()
     {
         return this.isAlive;
@@ -468,15 +481,21 @@ public class Sprite extends Node
     @Override
     public void setWidth(double width)
     {
-        super.setWidth(width);
-        this.releaseTheImageCanvas();
+        if (width >= 0)
+        {
+            super.setWidth(width);
+            this.releaseTheImageCanvas();
+        }
     }
 
     @Override
     public void setHeight(double height)
     {
-        super.setHeight(height);
-        this.releaseTheImageCanvas();
+        if (height >= 0)
+        {
+            super.setHeight(height);
+            this.releaseTheImageCanvas();
+        }
     }
 
     public float getAlpha()
@@ -592,7 +611,10 @@ public class Sprite extends Node
 
     public void setLayer(int layer)
     {
-        this.layer = layer;
+        if (layer >= Scene.MIN_LAYER && layer <= Scene.MAX_LAYER)
+        {
+            this.layer = layer;
+        }
     }
 
     public double getLife()
