@@ -92,8 +92,6 @@ public class TestScene extends Scene
                 CircleSprite aSprite = new CircleSprite();
                 aSprite.setCentreX(e.getX());
                 aSprite.setCentreY(e.getY());
-                aSprite.setVelocityX(0);
-//                aSprite.setVelocityY(abs(theRandom.nextInt()) % 500);
                 addSprite(aSprite);
 
 //                VelocityXByAction aVelocityXByAction = new VelocityXByAction();
@@ -101,7 +99,7 @@ public class TestScene extends Scene
 //                aSprite.addAction(aVelocityXByAction);
 
                 VelocityXToAction aVelocityXToAction = new VelocityXToAction(aSprite);
-                aVelocityXToAction.velocityXTo(10000, 1);
+                aVelocityXToAction.velocityXTo(10000, 0.5f);
                 aSprite.addAction(aVelocityXToAction);
 //
 //                VelocityYByAction aVelocityYByAction = new VelocityYByAction();
@@ -109,7 +107,7 @@ public class TestScene extends Scene
 //                aSprite.addAction(aVelocityYByAction);
 //
                 VelocityYToAction aVelocityYToAction = new VelocityYToAction(aSprite);
-                aVelocityYToAction.velocityYTo(10000, 1);
+                aVelocityYToAction.velocityYTo(10000, 0.5f);
                 aSprite.addAction(aVelocityYToAction);
             }
 
