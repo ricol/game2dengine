@@ -163,11 +163,15 @@ public class Sprite extends Node
                     {
                         theSetOfActionsInQueueWillDelete.add(aAction);
                         this.onActionComplete(aAction);
+                        aAction.clearSprite();
                     }
                 }
 
-                theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
-                theSetOfActionsInQueueWillDelete.clear();
+                if (theSetOfActionsInQueueWillDelete.size() > 0)
+                {
+                    theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
+                    theSetOfActionsInQueueWillDelete.clear();
+                }
             } else
             {
                 this.theQueueOfActions.remove(theSetOfQueuedActions);
@@ -176,8 +180,11 @@ public class Sprite extends Node
 
         //perform other actions
         //add new actions
-        this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
-        this.theSetOfActionsWillAdd.clear();
+        if (this.theSetOfActionsWillAdd.size() > 0)
+        {
+            this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
+            this.theSetOfActionsWillAdd.clear();
+        }
 
         if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
         {
@@ -197,17 +204,24 @@ public class Sprite extends Node
                 {
                     this.theSetOfActionsWillDelete.add(aAction);
                     this.onActionComplete(aAction);
+                    aAction.clearSprite();
                 }
             }
         }
 
         //delete old actions
-        this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
-        this.theSetOfActionsWillDelete.clear();
+        if (this.theSetOfActionsWillDelete.size() > 0)
+        {
+            this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
+            this.theSetOfActionsWillDelete.clear();
+        }
 
         //add new children
-        this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
-        this.theSetOfChildrenWillAdd.clear();
+        if (this.theSetOfChildrenWillAdd.size() > 0)
+        {
+            this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
+            this.theSetOfChildrenWillAdd.clear();
+        }
 
         //update its children
         for (Sprite aSprite : this.theSetOfChildren)
@@ -221,8 +235,11 @@ public class Sprite extends Node
         }
 
         //delete old children
-        this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
-        this.theSetOfChildrenWillDelete.clear();
+        if (this.theSetOfChildrenWillDelete.size() > 0)
+        {
+            this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
+            this.theSetOfChildrenWillDelete.clear();
+        }
 
         this.lastUpdateTime = currentTime;
     }
@@ -407,12 +424,6 @@ public class Sprite extends Node
     {
         aAction.setSprite(this);
         this.theSetOfActionsWillAdd.add(aAction);
-    }
-
-    public void removeAction(Action aAction)
-    {
-        aAction.clearSprite();
-        this.theSetOfActionsWillDelete.remove(aAction);
     }
 
     public void enQueueActions(Set<Action> aSetOfActions)
