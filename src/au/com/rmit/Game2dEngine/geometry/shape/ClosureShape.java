@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.shape;
+package au.com.rmit.Game2dEngine.geometry.shape;
 
 /**
  *
@@ -22,6 +22,11 @@ public class ClosureShape extends Shape
     }
     
     public double getArea()
+    {
+        return 0;
+    }
+    
+    public double getCircumference()
     {
         return 0;
     }

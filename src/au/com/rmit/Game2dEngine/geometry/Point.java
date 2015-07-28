@@ -3,13 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.shape;
+package au.com.rmit.Game2dEngine.geometry;
 
 /**
  *
- * @author ricolwang
+ * @author Philology
  */
-public class Shape
+public class Point
 {
+    public double x, y;
     
+    public Point(double x, double y)
+    {
+        this.x = x;
+        this.y = y;
+    }
 }
