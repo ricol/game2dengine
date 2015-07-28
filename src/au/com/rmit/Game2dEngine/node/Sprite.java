@@ -53,6 +53,7 @@ public class Sprite extends Node
     private double starttime = System.currentTimeMillis();
     private double velocityX;
     private double velocityY;
+    private double velocityAngle;
     private double currentLife = 0;
     private boolean isAlive = true;
     private boolean bShouldDie = false;
@@ -89,6 +90,13 @@ public class Sprite extends Node
         this.velocityX = velocityX;
         this.velocityY = velocityY;
         this.lastUpdateTime = System.currentTimeMillis();
+    }
+
+    public Sprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY, double velocityAngle)
+    {
+        this(x, y, width, height, mass, velocityX, velocityY);
+
+        this.velocityAngle = velocityAngle;
     }
 
     public Sprite(String imagename)
@@ -145,6 +153,9 @@ public class Sprite extends Node
 
         x += IncX;
         y += IncY;
+        
+        double IncAngle = velocityAngle * t;
+        angle += IncAngle;
 
         //perform actions
         //perform a set of actions in the queue one by one in sequence
@@ -450,6 +461,11 @@ public class Sprite extends Node
         this.velocityY = value;
     }
 
+    public void setVelocityAngle(double value)
+    {
+        this.velocityAngle = value;
+    }
+
     public double getVelocityX()
     {
         return this.velocityX;
@@ -458,6 +474,11 @@ public class Sprite extends Node
     public double getVelocityY()
     {
         return this.velocityY;
+    }
+
+    public double getVelocityAngle()
+    {
+        return this.velocityAngle;
     }
 
     public double getMass()
