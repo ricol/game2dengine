@@ -5,6 +5,7 @@
  */
 package au.com.rmit.test;
 
+import au.com.rmit.Game2dEngine.action.VelocityXByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import au.com.rmit.test.WallSprite.WALLTYPE;
@@ -85,14 +86,14 @@ public class TestScene extends Scene
 //                    addSprite(theWall);
                 }
 
-//                CircleSprite aSprite = new CircleSprite();
-//                aSprite.setCentreX(e.getX());
-//                aSprite.setCentreY(e.getY());
-//                addSprite(aSprite);
+                CircleSprite aSprite = new CircleSprite();
+                aSprite.setCentreX(e.getX());
+                aSprite.setCentreY(e.getY());
+                addSprite(aSprite);
 
-//                VelocityXByAction aVelocityXByAction = new VelocityXByAction();
-//                aVelocityXByAction.velocityXBy(10000, 1);
-//                aSprite.addAction(aVelocityXByAction);
+                VelocityXByAction aVelocityXByAction = new VelocityXByAction();
+                aVelocityXByAction.velocityXBy(200, 1);
+                aSprite.addAction(aVelocityXByAction);
 
 //                VelocityXToAction aVelocityXToAction = new VelocityXToAction(aSprite);
 //                aVelocityXToAction.velocityXTo(10000, 0.5f);
@@ -106,10 +107,6 @@ public class TestScene extends Scene
 //                aVelocityYToAction.velocityYTo(10000, 0.5f);
 //                aSprite.addAction(aVelocityYToAction);
                 
-                TestSpaceship aShip = new TestSpaceship();
-                aShip.setCentreX(e.getX());
-                aShip.setCentreY(e.getY());
-                addSprite(aShip);
             }
 
             @Override
