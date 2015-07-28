@@ -12,22 +12,22 @@ import static java.lang.Math.abs;
  *
  * @author ricolwang
  */
-public class AlphaToAction extends AlphaAction
+public class MassToAction extends MassAction
 {
 
-    AlphaByAction theAlphaByAction;
+    MassByAction theMassByAction;
 
-    float alphaTo;
-    float alphaToDuration;
+    double massTo;
+    float massToDuration;
 
-    public AlphaToAction(Sprite theSprite)
+    public MassToAction(Sprite theSprite)
     {
         if (theSprite != null)
         {
             this.setSprite(theSprite);
 
-            this.alphaTo = this.theSprite.getAlpha();
-            this.alphaToDuration = 0;
+            this.massTo = this.theSprite.getMass();
+            this.massToDuration = 0;
 
         } else
         {
@@ -36,21 +36,21 @@ public class AlphaToAction extends AlphaAction
     }
 
     //duration in seconds
-    public void alphaTo(float x, float duration)
+    public void massTo(float x, float duration)
     {
         if (duration <= 0)
         {
             duration = 0;
         }
-        this.alphaTo = x;
-        this.alphaToDuration = abs(duration * 1000);
+        this.massTo = x;
+        this.massToDuration = abs(duration * 1000);
     }
 
     @Override
     public void clearSprite()
     {
-        this.theAlphaByAction.clearSprite();
-        this.theAlphaByAction = null;
+        this.theMassByAction.clearSprite();
+        this.theMassByAction = null;
         this.theSprite = null;
     }
 
@@ -62,16 +62,16 @@ public class AlphaToAction extends AlphaAction
             return;
         }
 
-        if (theAlphaByAction == null)
+        if (theMassByAction == null)
         {
-            theAlphaByAction = new AlphaByAction();
-            float alpha = this.theSprite.getAlpha();
-            theAlphaByAction.alphaBy(alphaTo - alpha, this.alphaToDuration / 1000.0f);
-            theAlphaByAction.setSprite(theSprite);
+            theMassByAction = new MassByAction();
+            double mass = this.theSprite.getMass();
+            theMassByAction.massBy(massTo - mass, this.massToDuration / 1000.0f);
+            theMassByAction.setSprite(theSprite);
         }
 
-        theAlphaByAction.perform(runningTime);
-        if (theAlphaByAction.bComplete)
+        theMassByAction.perform(runningTime);
+        if (theMassByAction.bComplete)
         {
             bComplete = true;
         }

@@ -47,12 +47,13 @@ public class Sprite extends Node
     public static final long EVER = Long.MAX_VALUE;
     public boolean bDeadIfNoActions;
 
-    private int layer = 0;
+    private int layer = Scene.MIN_LAYER;
     private double lifetime = Sprite.EVER; //in seconds
     private double lastUpdateTime;
     private double starttime = System.currentTimeMillis();
     private double velocityX;
     private double velocityY;
+    private double velocityAngle;
     private double currentLife = 0;
     private boolean isAlive = true;
     private boolean bShouldDie = false;
@@ -89,6 +90,13 @@ public class Sprite extends Node
         this.velocityX = velocityX;
         this.velocityY = velocityY;
         this.lastUpdateTime = System.currentTimeMillis();
+    }
+
+    public Sprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY, double velocityAngle)
+    {
+        this(x, y, width, height, mass, velocityX, velocityY);
+
+        this.velocityAngle = velocityAngle;
     }
 
     public Sprite(String imagename)
@@ -130,7 +138,7 @@ public class Sprite extends Node
 
         if (currentLife >= lifetime)
         {
-            bShouldDie = true;
+            this.setShouldDie();
         }
 
         //update state
@@ -145,8 +153,11 @@ public class Sprite extends Node
 
         x += IncX;
         y += IncY;
+        
+        double IncAngle = velocityAngle * t;
+        angle += IncAngle;
 
-            //perform actions
+        //perform actions
         //perform a set of actions in the queue one by one in sequence
         Set<Action> theSetOfQueuedActions = this.theQueueOfActions.peek();
 
@@ -163,27 +174,34 @@ public class Sprite extends Node
                     {
                         theSetOfActionsInQueueWillDelete.add(aAction);
                         this.onActionComplete(aAction);
+                        aAction.clearSprite();
                     }
                 }
 
-                theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
-                theSetOfActionsInQueueWillDelete.clear();
+                if (theSetOfActionsInQueueWillDelete.size() > 0)
+                {
+                    theSetOfQueuedActions.removeAll(theSetOfActionsInQueueWillDelete);
+                    theSetOfActionsInQueueWillDelete.clear();
+                }
             } else
             {
                 this.theQueueOfActions.remove(theSetOfQueuedActions);
             }
         }
 
-            //perform other actions
+        //perform other actions
         //add new actions
-        this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
-        this.theSetOfActionsWillAdd.clear();
+        if (this.theSetOfActionsWillAdd.size() > 0)
+        {
+            this.theSetOfActions.addAll(this.theSetOfActionsWillAdd);
+            this.theSetOfActionsWillAdd.clear();
+        }
 
         if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
         {
             if (this.bDeadIfNoActions)
             {
-                bShouldDie = true;
+                this.setShouldDie();
             }
         } else
         {
@@ -197,17 +215,24 @@ public class Sprite extends Node
                 {
                     this.theSetOfActionsWillDelete.add(aAction);
                     this.onActionComplete(aAction);
+                    aAction.clearSprite();
                 }
             }
         }
 
         //delete old actions
-        this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
-        this.theSetOfActionsWillDelete.clear();
+        if (this.theSetOfActionsWillDelete.size() > 0)
+        {
+            this.theSetOfActions.removeAll(this.theSetOfActionsWillDelete);
+            this.theSetOfActionsWillDelete.clear();
+        }
 
         //add new children
-        this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
-        this.theSetOfChildrenWillAdd.clear();
+        if (this.theSetOfChildrenWillAdd.size() > 0)
+        {
+            this.theSetOfChildren.addAll(this.theSetOfChildrenWillAdd);
+            this.theSetOfChildrenWillAdd.clear();
+        }
 
         //update its children
         for (Sprite aSprite : this.theSetOfChildren)
@@ -221,8 +246,11 @@ public class Sprite extends Node
         }
 
         //delete old children
-        this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
-        this.theSetOfChildrenWillDelete.clear();
+        if (this.theSetOfChildrenWillDelete.size() > 0)
+        {
+            this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
+            this.theSetOfChildrenWillDelete.clear();
+        }
 
         this.lastUpdateTime = currentTime;
     }
@@ -367,29 +395,37 @@ public class Sprite extends Node
 
     private void setDead()
     {
+        if (!this.isAlive)
+        {
+            return;
+        }
+
         this.isAlive = false;
         this.onDead();
     }
-    
+
     protected void setShouldDie()
     {
-        if (bShouldDie) return;
-        
+        if (bShouldDie)
+        {
+            return;
+        }
+
         bShouldDie = true;
-        
+
         for (Sprite aSprite : this.theSetOfChildren)
         {
             aSprite.setShouldDie();
         }
-        
+
         this.onWillDead();
     }
-    
+
     public boolean getShouldDie()
     {
         return bShouldDie;
     }
-    
+
     public void applyGravity(final Gravity g)
     {
         this.g = new Gravity(g.GX, g.GY);
@@ -399,12 +435,6 @@ public class Sprite extends Node
     {
         aAction.setSprite(this);
         this.theSetOfActionsWillAdd.add(aAction);
-    }
-
-    public void removeAction(Action aAction)
-    {
-        aAction.clearSprite();
-        this.theSetOfActionsWillDelete.remove(aAction);
     }
 
     public void enQueueActions(Set<Action> aSetOfActions)
@@ -431,6 +461,11 @@ public class Sprite extends Node
         this.velocityY = value;
     }
 
+    public void setVelocityAngle(double value)
+    {
+        this.velocityAngle = value;
+    }
+
     public double getVelocityX()
     {
         return this.velocityX;
@@ -439,6 +474,24 @@ public class Sprite extends Node
     public double getVelocityY()
     {
         return this.velocityY;
+    }
+
+    public double getVelocityAngle()
+    {
+        return this.velocityAngle;
+    }
+
+    public double getMass()
+    {
+        return this.mass;
+    }
+
+    public void setMass(double mass)
+    {
+        if (mass >= 0)
+        {
+            this.mass = mass;
+        }
     }
 
     public boolean isAlive()
@@ -460,15 +513,21 @@ public class Sprite extends Node
     @Override
     public void setWidth(double width)
     {
-        super.setWidth(width);
-        this.releaseTheImageCanvas();
+        if (width >= 0)
+        {
+            super.setWidth(width);
+            this.releaseTheImageCanvas();
+        }
     }
 
     @Override
     public void setHeight(double height)
     {
-        super.setHeight(height);
-        this.releaseTheImageCanvas();
+        if (height >= 0)
+        {
+            super.setHeight(height);
+            this.releaseTheImageCanvas();
+        }
     }
 
     public float getAlpha()
@@ -584,7 +643,10 @@ public class Sprite extends Node
 
     public void setLayer(int layer)
     {
-        this.layer = layer;
+        if (layer >= Scene.MIN_LAYER && layer <= Scene.MAX_LAYER)
+        {
+            this.layer = layer;
+        }
     }
 
     public double getLife()
@@ -652,7 +714,7 @@ public class Sprite extends Node
 
     public void onWillDead()
     {
-        
+
     }
 
     public void onDead()
@@ -670,7 +732,7 @@ public class Sprite extends Node
         this.theQueueOfActions.clear();
 
         releaseTheImageCanvas();
-        
+
         this.parent = null;
         this.theScene = null;
     }

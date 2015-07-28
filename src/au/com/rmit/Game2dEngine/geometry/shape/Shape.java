@@ -3,20 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test;
-
-import au.com.rmit.Game2dEngine.node.Sprite;
+package au.com.rmit.Game2dEngine.geometry.shape;
 
 /**
  *
  * @author ricolwang
  */
-public class SquareShape extends Sprite
+public class Shape
 {
-
-    public SquareShape()
-    {
-        super(0, 0, 100, 100);
-        this.bDrawFrame = true;
-    }
+    
 }

@@ -29,6 +29,9 @@ import javax.swing.Timer;
 public class Scene extends JPanel
 {
 
+    public static int MIN_LAYER = 0;
+    public static int MAX_LAYER = 9;
+
     public BufferedImage theImageBackground;
     private int red = 0;
     private int green = 0;
@@ -42,7 +45,7 @@ public class Scene extends JPanel
     static long LEFT_TEXT = 25;
     static long TOP_TEXT = 30;
     static long GAP_TEXT = 20;
-    static int MAX_LAYERS = 10;
+
     public boolean bShowMemoryUsage = true;
 
     long number = 0;
@@ -74,19 +77,7 @@ public class Scene extends JPanel
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            Runtime runtime = Runtime.getRuntime();
-
-            NumberFormat format = NumberFormat.getInstance();
-
-            StringBuilder sb = new StringBuilder();
-            long maxMemory = runtime.maxMemory();
-            long allocatedMemory = runtime.totalMemory();
-            long freeMemory = runtime.freeMemory();
-
-            strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
-            strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
-            strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
-            strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
+            collectMemoryInfo();
         }
     });
 
@@ -95,6 +86,8 @@ public class Scene extends JPanel
 
     public Scene()
     {
+        collectMemoryInfo();
+
         theTimer.start();
         theTimerForMemory.start();
 
@@ -171,7 +164,7 @@ public class Scene extends JPanel
 
     private void addSprite(Sprite aSprite, int zOrder)
     {
-        if (zOrder < 0 || zOrder > MAX_LAYERS)
+        if (zOrder < MIN_LAYER || zOrder > MAX_LAYER)
         {
             return;
         }
@@ -202,7 +195,7 @@ public class Scene extends JPanel
             number++;
 
             double currentTime = System.currentTimeMillis();
-            for (int i = 0; i <= MAX_LAYERS; i++)
+            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
@@ -258,7 +251,7 @@ public class Scene extends JPanel
                 theGraphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
 
-            for (int i = 0; i <= MAX_LAYERS; i++)
+            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
@@ -290,7 +283,7 @@ public class Scene extends JPanel
             int totalNodes = 0;
             int totalLayers = 0;
 
-            for (int i = 0; i <= MAX_LAYERS; i++)
+            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
@@ -372,7 +365,7 @@ public class Scene extends JPanel
     public void collisionDetect()
     {
         this.allNodes.clear();
-        for (int i = 0; i <= MAX_LAYERS; i++)
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
         {
             Layer aLayer = layers.get(i);
             if (aLayer == null)
@@ -440,5 +433,22 @@ public class Scene extends JPanel
         }
 
         this.allNodes.clear();
+    }
+
+    private void collectMemoryInfo()
+    {
+        Runtime runtime = Runtime.getRuntime();
+
+        NumberFormat format = NumberFormat.getInstance();
+
+        StringBuilder sb = new StringBuilder();
+        long maxMemory = runtime.maxMemory();
+        long allocatedMemory = runtime.totalMemory();
+        long freeMemory = runtime.freeMemory();
+
+        strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
+        strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
+        strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
+        strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
     }
 }
