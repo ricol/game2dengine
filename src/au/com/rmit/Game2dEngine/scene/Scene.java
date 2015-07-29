@@ -380,7 +380,6 @@ public class Scene extends JPanel
         {
             if (aSprite.bCollisionDetect)
             {
-                int source = aSprite.collisionCategory;
                 int target = aSprite.collisionTargetCategory;
 
                 for (Sprite aTargetSprite : this.allNodes)
@@ -441,7 +440,6 @@ public class Scene extends JPanel
 
         NumberFormat format = NumberFormat.getInstance();
 
-        StringBuilder sb = new StringBuilder();
         long maxMemory = runtime.maxMemory();
         long allocatedMemory = runtime.totalMemory();
         long freeMemory = runtime.freeMemory();

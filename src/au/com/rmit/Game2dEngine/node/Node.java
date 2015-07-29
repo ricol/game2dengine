@@ -5,8 +5,6 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
-import au.com.rmit.Game2dEngine.geometry.shape.CircleShape;
-import au.com.rmit.Game2dEngine.geometry.shape.Shape;
 import java.util.Random;
 
 /**
@@ -20,7 +18,7 @@ public class Node
     protected double y;
     protected double width;
     protected double height;
-    protected Shape theShape = new CircleShape(this.getCentreX(), this.getCentreY(), 0);
+    protected double radius;
 
     protected Random theRandom = new Random();
 
@@ -30,6 +28,7 @@ public class Node
         this.y = y;
         this.width = width;
         this.height = height;
+        radius = width > height ? width : height;
     }
 
     public double getX()
@@ -52,11 +51,6 @@ public class Node
         return height;
     }
 
-    public Shape getShape()
-    {
-        return this.theShape;
-    }
-
     public void setX(double x)
     {
         this.x = x;
@@ -70,21 +64,13 @@ public class Node
     public void setWidth(double width)
     {
         this.width = width;
+        radius = width > height ? width : height;
     }
 
     public void setHeight(double height)
     {
         this.height = height;
-    }
-
-    public void setTheShape(Shape theShape)
-    {
-        this.theShape = theShape;
-    }
-
-    public Shape getTheShape()
-    {
-        return this.theShape;
+        radius = width > height ? width : height;
     }
 
     public double getCentreX()
@@ -107,23 +93,17 @@ public class Node
         this.setY(value - height / 2.0);
     }
 
-    public boolean overlaps(float targetX, float targetY, float targetWidth, float targetHeight)
+    public boolean rectangleOverlaps(final Node target)
     {
-        return x < targetX + targetWidth && x + width > targetX && y < targetY + targetHeight && y + height > targetY;
+        return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
     }
-    
-    public boolean overlaps(Shape theTarget)
+
+    public boolean circleOverlaps(final Node theTarget)
     {
-        if ((theTarget instanceof CircleShape) && (theShape instanceof CircleShape))
-        {
-            CircleShape theTargetCircle = (CircleShape)theTarget;
-            CircleShape myself = (CircleShape)theShape;
-            double delX = theTargetCircle.centreX - myself.centreX;
-            double delY = theTargetCircle.centreY - myself.centreY;
-            double distance = Math.sqrt(delX * delX + delY * delY);
-            return distance <= theTargetCircle.radius + myself.radius;
-        }else
-            return false;
+        double delX = theTarget.getCentreX() - this.getCentreX();
+        double delY = theTarget.getCentreY() - this.getCentreY();
+        double distance = Math.sqrt(delX * delX + delY * delY);
+        return distance <= theTarget.radius + this.radius;
     }
 
 }

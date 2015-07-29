@@ -38,7 +38,9 @@ public class Sprite extends Node
     public Scene theScene;
 
     public boolean bDrawFrame = false;
+    public boolean bDrawCircle = false;
     public Color theColorOfFrame = Color.yellow;
+    public Color theColorOfCircle = Color.red;
     public boolean bCollisionDetect = false;
     public int collisionCategory = -1;
     public int collisionTargetCategory = -1;
@@ -308,7 +310,6 @@ public class Sprite extends Node
                 Graphics2D theGraphics2D = this.getTheImageGraphics();
                 theGraphics2D.setBackground(blackTransparent);
                 theGraphics2D.clearRect(0, 0, w, h);
-                this.drawFrame(theGraphics2D);
 
                 AffineTransform old = theGraphics2D.getTransform();
 
@@ -340,6 +341,9 @@ public class Sprite extends Node
 
                 //restore
                 theGraphics2D.setTransform(old);
+
+                this.drawFrame(theGraphics2D);
+                this.drawCircle(theGraphics2D);
             }
 
             if (theImageCanvas != null)
@@ -389,7 +393,17 @@ public class Sprite extends Node
     {
         if (this.bDrawFrame)
         {
+            theGraphics2D.setColor(theColorOfFrame);
             theGraphics2D.drawRect(0, 0, (int) width - 1, (int) height - 1);
+        }
+    }
+
+    private void drawCircle(final Graphics2D theGraphics2D)
+    {
+        if (this.bDrawCircle)
+        {
+            theGraphics2D.setColor(theColorOfCircle);
+            theGraphics2D.drawOval(0, 0, (int) this.radius - 1, (int) this.radius - 1);
         }
     }
 
@@ -613,7 +627,7 @@ public class Sprite extends Node
 
     public boolean collideWith(final Sprite target)
     {
-        return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
+        return super.circleOverlaps(target);
     }
 
     public int getLayer()
