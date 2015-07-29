@@ -11,8 +11,8 @@ package au.com.rmit.Game2dEngine.geometry.shape;
  */
 public class CircleShape extends ClosureShape
 {
-    double centreX, centreY;
-    double radius;
+    public double centreX, centreY;
+    public double radius;
     
     public CircleShape(double centreX, double centreY, double radius)
     {
