@@ -69,8 +69,42 @@ public class Node
         this.height = height;
     }
 
-    public boolean overlaps(float targetX, float targetY, float targetWidth, float targetHeight)
+    public double getRadius()
     {
-        return x < targetX + targetWidth && x + width > targetX && y < targetY + targetHeight && y + height > targetY;
+        return width > height ? width : height;
     }
+
+    public double getCentreX()
+    {
+        return this.x + width / 2.0;
+    }
+
+    public double getCentreY()
+    {
+        return this.y + height / 2.0;
+    }
+
+    public void setCentreX(double value)
+    {
+        this.setX(value - width / 2.0);
+    }
+
+    public void setCentreY(double value)
+    {
+        this.setY(value - height / 2.0);
+    }
+
+    public boolean rectangleOverlaps(final Node target)
+    {
+        return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
+    }
+
+    public boolean circleOverlaps(final Node theTarget)
+    {
+        double delX = theTarget.getCentreX() - this.getCentreX();
+        double delY = theTarget.getCentreY() - this.getCentreY();
+        double distance = Math.sqrt(delX * delX + delY * delY);
+        return distance <= theTarget.getRadius() + this.getRadius();
+    }
+
 }
