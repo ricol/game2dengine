@@ -153,7 +153,7 @@ public class Sprite extends Node
 
         x += IncX;
         y += IncY;
-        
+
         double IncAngle = velocityAngle * t;
         angle += IncAngle;
 
@@ -589,26 +589,6 @@ public class Sprite extends Node
     public Color getColor()
     {
         return this.theColor;
-    }
-
-    public double getCentreX()
-    {
-        return this.x + width / 2.0;
-    }
-
-    public double getCentreY()
-    {
-        return this.y + height / 2.0;
-    }
-
-    public void setCentreX(double value)
-    {
-        this.setX(value - width / 2.0);
-    }
-
-    public void setCentreY(double value)
-    {
-        this.setY(value - height / 2.0);
     }
 
     public double getAngle()
