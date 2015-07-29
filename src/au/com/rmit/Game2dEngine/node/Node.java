@@ -18,7 +18,6 @@ public class Node
     protected double y;
     protected double width;
     protected double height;
-    protected double radius;
 
     protected Random theRandom = new Random();
 
@@ -28,7 +27,6 @@ public class Node
         this.y = y;
         this.width = width;
         this.height = height;
-        radius = width > height ? width : height;
     }
 
     public double getX()
@@ -64,13 +62,16 @@ public class Node
     public void setWidth(double width)
     {
         this.width = width;
-        radius = width > height ? width : height;
     }
 
     public void setHeight(double height)
     {
         this.height = height;
-        radius = width > height ? width : height;
+    }
+
+    public double getRadius()
+    {
+        return width > height ? width : height;
     }
 
     public double getCentreX()
@@ -103,7 +104,7 @@ public class Node
         double delX = theTarget.getCentreX() - this.getCentreX();
         double delY = theTarget.getCentreY() - this.getCentreY();
         double distance = Math.sqrt(delX * delX + delY * delY);
-        return distance <= theTarget.radius + this.radius;
+        return distance <= theTarget.getRadius() + this.getRadius();
     }
 
 }

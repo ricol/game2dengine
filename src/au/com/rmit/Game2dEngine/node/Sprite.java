@@ -403,7 +403,7 @@ public class Sprite extends Node
         if (this.bDrawCircle)
         {
             theGraphics2D.setColor(theColorOfCircle);
-            theGraphics2D.drawOval(0, 0, (int) this.radius - 1, (int) this.radius - 1);
+            theGraphics2D.drawOval(0, 0, (int) this.getRadius() - 1, (int) this.getRadius() - 1);
         }
     }
 
@@ -627,7 +627,7 @@ public class Sprite extends Node
 
     public boolean collideWith(final Sprite target)
     {
-        return super.circleOverlaps(target);
+        return super.rectangleOverlaps(target);
     }
 
     public int getLayer()
