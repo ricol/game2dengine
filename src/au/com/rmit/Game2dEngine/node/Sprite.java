@@ -30,7 +30,7 @@ import javax.imageio.ImageIO;
  *
  * @author ricolwang
  */
-public class Sprite extends Node
+public abstract class Sprite extends Node
 {
 
     public boolean bChild;
@@ -627,7 +627,9 @@ public class Sprite extends Node
 
     public boolean collideWith(final Sprite target)
     {
-        return super.rectangleOverlaps(target);
+//        return super.rectangleOverlaps(target);
+//        return super.circleOverlaps(target)
+        return false;
     }
 
     public int getLayer()

@@ -83,5 +83,17 @@ public class CircleRed extends Sprite
             }
         }
     }
+    
+    @Override
+    public boolean collideWith(Sprite target)
+    {
+        if (target instanceof WallSprite)
+        {
+            return super.rectangleOverlaps(target);
+        } else
+        {
+            return super.circleOverlaps(target);
+        }
+    }
 
 }

@@ -30,7 +30,7 @@ public class CircleBlue extends Sprite
         this.bCollisionDetect = true;
 
         this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE_BLUE);
-        
+
         this.addTargetCollisionCategory(TestCommon.CATEGORY_WALL);
         this.addTargetCollisionCategory(TestCommon.CATEGORY_CIRCLE_RED);
     }
@@ -63,22 +63,35 @@ public class CircleBlue extends Sprite
             {
                 this.setVelocityY(-this.getVelocityY());
             }
-        }else if (target instanceof CircleRed)
+        } else if (target instanceof CircleRed)
         {
             {
                 AlphaToAction aAction = new AlphaToAction(this);
                 aAction.alphaTo(0, 0.1f);
-                Set<Action> aSet = new HashSet<Action>();
+                Set<Action> aSet = new HashSet<>();
                 aSet.add(aAction);
                 this.enQueueActions(aSet);
             }
             {
                 AlphaToAction aAction = new AlphaToAction(this);
                 aAction.alphaTo(1, 0.1f);
-                Set<Action> aSet = new HashSet<Action>();
+                Set<Action> aSet = new HashSet<>();
                 aSet.add(aAction);
                 this.enQueueActions(aSet);
             }
         }
     }
+
+    @Override
+    public boolean collideWith(Sprite target)
+    {
+        if (target instanceof WallSprite)
+        {
+            return super.rectangleOverlaps(target);
+        } else
+        {
+            return super.circleOverlaps(target);
+        }
+    }
+
 }
