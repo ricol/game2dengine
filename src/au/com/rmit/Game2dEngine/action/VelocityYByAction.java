@@ -13,6 +13,7 @@ import static java.lang.Math.abs;
  */
 public class VelocityYByAction extends VelocityAction
 {
+
     double velocityYBy;
     float velocityYByDuration;
     double velocityYBySpeed;

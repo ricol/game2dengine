@@ -11,5 +11,5 @@ package au.com.rmit.Game2dEngine.geometry.shape;
  */
 public class Shape
 {
-    
+
 }

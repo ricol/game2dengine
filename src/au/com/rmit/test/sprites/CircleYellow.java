@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test;
+package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.Action;
-import au.com.rmit.Game2dEngine.action.AlphaByAction;
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.node.Sprite;
-import au.com.rmit.test.WallSprite.WALLTYPE;
+import au.com.rmit.test.TestCommon;
+import au.com.rmit.test.sprites.WallSprite.WALLTYPE;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
 import java.util.HashSet;
@@ -19,17 +19,19 @@ import java.util.Set;
  *
  * @author ricolwang
  */
-public class CircleRed extends Sprite
+public class CircleYellow extends Sprite
 {
 
-    public CircleRed()
+    public CircleYellow()
     {
         this.setRed(255);
+        this.setGreen(255);
         this.setWidth(abs(theRandom.nextInt()) % 100 + 100);
         this.setHeight(this.getWidth());
 
         this.bCustomDrawing = true;
         this.bCollisionDetect = true;
+        this.bDrawCircle = true;
 
         this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE_RED);
 
@@ -83,7 +85,7 @@ public class CircleRed extends Sprite
             }
         }
     }
-    
+
     @Override
     public boolean collideWith(Sprite target)
     {

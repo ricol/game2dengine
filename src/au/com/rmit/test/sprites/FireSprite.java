@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test;
+package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.node.Sprite;
 
@@ -18,5 +18,5 @@ public class FireSprite extends Sprite
     {
         super(x, y, width, height, mass, velocityX, velocityY);
     }
-    
+
 }

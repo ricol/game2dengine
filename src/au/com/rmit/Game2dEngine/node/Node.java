@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.node;
 
+import au.com.rmit.Game2dEngine.geometry.shape.CircleShape;
 import java.util.Random;
 
 /**
@@ -20,6 +21,7 @@ public class Node
     protected double height;
 
     protected Random theRandom = new Random();
+    private CircleShape theCircleShape = new CircleShape(0, 0, 0); //coordinates are based on the node
 
     public Node(double x, double y, double width, double height)
     {
@@ -69,9 +71,14 @@ public class Node
         this.height = height;
     }
 
-    public double getRadius()
+    public CircleShape getTheCircleShape()
     {
-        return width > height ? width : height;
+        return this.theCircleShape;
+    }
+
+    public void setTheCircleShape(CircleShape theCircleShape)
+    {
+        this.theCircleShape = theCircleShape;
     }
 
     public double getCentreX()
@@ -104,7 +111,15 @@ public class Node
         double delX = theTarget.getCentreX() - this.getCentreX();
         double delY = theTarget.getCentreY() - this.getCentreY();
         double distance = Math.sqrt(delX * delX + delY * delY);
-        return distance <= theTarget.getRadius() + this.getRadius();
+        double targetRadius = theTarget.getTheCircleShape().radius;
+        double thisRadius = this.getTheCircleShape().radius;
+        return distance < targetRadius + thisRadius;
     }
 
+    public void rebuildTheCircleShape()
+    {
+        this.theCircleShape.centreX = this.width / 2.0f;
+        this.theCircleShape.centreY = this.height / 2.0f;
+        this.theCircleShape.radius = width > height ? (width / 2.0f) : (height / 2.0f);
+    }
 }

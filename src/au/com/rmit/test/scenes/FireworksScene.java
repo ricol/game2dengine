@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.allScenes;
+package au.com.rmit.test.scenes;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.Game2dEngine.node.Firework;
-import au.com.rmit.Game2dEngine.node.SmallFirework;
+import au.com.rmit.test.sprites.BigFirework;
+import au.com.rmit.test.sprites.Firework;
+import au.com.rmit.test.sprites.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,22 +20,22 @@ import javax.swing.Timer;
  *
  * @author ricolwang
  */
-public class FountainScene extends Scene
+public class FireworksScene extends Scene
 {
 
     Gravity g = new Gravity(0, 500);
 
-    Timer theTimer = new Timer(10, new ActionListener()
+    Timer theTimer = new Timer(200, new ActionListener()
     {
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            createParticles(10, (int) (size().width * (2.0 / 4.0)), (int) (size().height * (3.5 / 4.0)), g);
+            createParticles(1, (int) (size().width * (2.0 / 4.0)), (int) (size().height * (3.5 / 4.0)), g);
         }
     });
 
-    public FountainScene()
+    public FireworksScene()
     {
         super();
         this.setRed(0);
@@ -79,12 +80,32 @@ public class FountainScene extends Scene
             Firework aObject;
 
             double mass = theRandom.nextFloat() / 3.0f;
-            double velocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 200.0f;
-            double velocityY = -1 * theRandom.nextFloat() * 50.0f - 500.0f;
+            double velocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 50.0f;
+            double velocityY = -1 * theRandom.nextFloat() * 50.0f - 600.0f;
 
-            float size = abs(theRandom.nextInt()) % 7 + 3;
-            aObject = new SmallFirework(x, y, size, size, mass, velocityX, velocityY);
-            aObject.setLifeTime((abs(theRandom.nextInt()) % 100) / 50.0);
+            if (abs(theRandom.nextInt() % 10) > 5)
+            {
+                aObject = new BigFirework();
+                aObject.setX(x);
+                aObject.setY(y);
+                aObject.setVelocityX(velocityX);
+                aObject.setVelocityY(velocityY);
+
+                aObject.setLifeTime(100);
+                aObject.blastTime = (abs(theRandom.nextInt()) % 100) / 80.0 + 0.5;
+                ((BigFirework) aObject).subFireworks = 20;
+
+            } else
+            {
+                aObject = new SmallFirework();
+                aObject.setX(x);
+                aObject.setY(y);
+                aObject.setVelocityX(velocityX);
+                aObject.setVelocityY(velocityY);
+
+                aObject.setLifeTime(abs(theRandom.nextInt()) % 5 + 1);
+                aObject.setImage("starSmall.png");
+            }
 
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
@@ -94,13 +115,6 @@ public class FountainScene extends Scene
             aObject.setBlue(blueValue);
             aObject.applyGravity(g);
 
-//            if (abs(theRandom.nextInt()) % 100 > 50)
-//            {
-//                aObject.setImage("starSmall.png");
-//            } else
-//            {
-//                aObject.setImage("starBig.png");
-//            }
             this.addSprite(aObject);
         }
     }

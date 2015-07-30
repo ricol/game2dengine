@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test;
+package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.test.TestCommon;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class CircleBlue extends Sprite
 
         this.bCustomDrawing = true;
         this.bCollisionDetect = true;
+        this.bDrawCircle = true;
 
         this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE_BLUE);
 
@@ -63,7 +65,7 @@ public class CircleBlue extends Sprite
             {
                 this.setVelocityY(-this.getVelocityY());
             }
-        } else if (target instanceof CircleRed)
+        } else if (target instanceof CircleYellow)
         {
             {
                 AlphaToAction aAction = new AlphaToAction(this);

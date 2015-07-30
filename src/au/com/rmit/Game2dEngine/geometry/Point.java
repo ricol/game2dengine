@@ -11,8 +11,9 @@ package au.com.rmit.Game2dEngine.geometry;
  */
 public class Point
 {
+
     public double x, y;
-    
+
     public Point(double x, double y)
     {
         this.x = x;

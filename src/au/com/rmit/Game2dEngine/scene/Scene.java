@@ -391,7 +391,7 @@ public class Scene extends JPanel
                     if (aTargetSprite.bCollisionDetect)
                     {
                         //the target belongs to the group
-                        if (aSprite.isInTheTargetCollisionCategory( aTargetSprite.getCollisionCategory()))
+                        if (aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
                         {
                             //collide with this sprite or not.
                             if (aSprite.collideWith(aTargetSprite))

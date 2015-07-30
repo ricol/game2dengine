@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test;
+package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.VelocityXByAction;
 import au.com.rmit.Game2dEngine.action.VelocityYByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.node.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
-import au.com.rmit.test.WallSprite.WALLTYPE;
+import au.com.rmit.test.sprites.WallSprite.WALLTYPE;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -92,15 +92,17 @@ public class TestScene extends Scene
                 Sprite aCircle = null;
                 if (bFlag)
                 {
-                    aCircle = new CircleRed();
+                    aCircle = new CircleYellow();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
+                    aCircle.rebuildTheCircleShape();
                     addSprite(aCircle);
                 } else
                 {
                     aCircle = new CircleBlue();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
+                    aCircle.rebuildTheCircleShape();
                     addSprite(aCircle);
                 }
 

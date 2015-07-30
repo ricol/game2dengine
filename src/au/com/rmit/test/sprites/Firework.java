@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.node;
+package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.RotateByAction;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import static java.lang.Math.abs;
 
 /**
@@ -23,11 +24,11 @@ public abstract class Firework extends Sprite
     {
         super(x, y, width, height, mass, velocityX, velocityY);
     }
-    
+
     public Firework(String imagename)
     {
         super(imagename);
-        
+
         RotateByAction aAction = new RotateByAction();
         aAction.rotateBy(Math.PI * 2 * (theRandom.nextBoolean() ? 1 : -1), 2);
         this.addAction(aAction);

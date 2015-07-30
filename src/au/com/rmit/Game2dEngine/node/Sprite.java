@@ -330,7 +330,7 @@ public abstract class Sprite extends Node
                 {
                     //fill
                     theGraphics2D.setColor(theColor);
-                    theGraphics2D.fillRect(0, 0, w, h);
+                    theGraphics2D.drawRect(0, 0, w - 1, h - 1);
                 }
 
                 //draw its children
@@ -403,7 +403,10 @@ public abstract class Sprite extends Node
         if (this.bDrawCircle)
         {
             theGraphics2D.setColor(theColorOfCircle);
-            theGraphics2D.drawOval(0, 0, (int) this.getRadius() - 1, (int) this.getRadius() - 1);
+            int tmpRadius = (int) this.getTheCircleShape().radius;
+            int tmpX = (int) (this.getTheCircleShape().centreX - tmpRadius);
+            int tmpY = (int) (this.getTheCircleShape().centreY - tmpRadius);
+            theGraphics2D.drawOval(tmpX, tmpY, 2 * tmpRadius, 2 * tmpRadius);
         }
     }
 
