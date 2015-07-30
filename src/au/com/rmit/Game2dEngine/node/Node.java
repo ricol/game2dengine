@@ -118,7 +118,7 @@ public class Node
         return distance < targetRadius + thisRadius;
     }
 
-    public void rebuildTheCircleShape()
+    private void rebuildTheCircleShape()
     {
         this.theCircleShape.centreX = this.width / 2.0f;
         this.theCircleShape.centreY = this.height / 2.0f;

@@ -95,14 +95,12 @@ public class TestScene extends Scene
                     aCircle = new CircleYellow();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
-                    aCircle.rebuildTheCircleShape();
                     addSprite(aCircle);
                 } else
                 {
                     aCircle = new CircleBlue();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
-                    aCircle.rebuildTheCircleShape();
                     addSprite(aCircle);
                 }
 
