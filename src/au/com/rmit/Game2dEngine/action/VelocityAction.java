@@ -11,5 +11,5 @@ package au.com.rmit.Game2dEngine.action;
  */
 public class VelocityAction extends Action
 {
-    
+
 }

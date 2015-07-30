@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test;
+package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
-import au.com.rmit.Game2dEngine.action.RotateByAction;
 import au.com.rmit.Game2dEngine.node.Sprite;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,7 +51,7 @@ public class PropelEngine extends Sprite implements ActionListener
 
             int size = 6;
 
-            Sprite aFire = new Sprite(0, 0, size, size, 0, 0, 0);
+            Sprite aFire = new FireSprite(0, 0, size, size, 0, 0, 0);
 
             aFire.setCentreX(this.getCentreX());
             aFire.setCentreY(this.getCentreY());
@@ -70,7 +69,10 @@ public class PropelEngine extends Sprite implements ActionListener
             aAction.alphaTo(0, 0.1f);
             aFire.addAction(aAction);
 
-            if (this.parent == null) break;
+            if (this.parent == null)
+            {
+                break;
+            }
             this.parent.addAChild(aFire);
         }
     }

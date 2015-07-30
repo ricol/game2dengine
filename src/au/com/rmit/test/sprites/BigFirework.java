@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.node;
+package au.com.rmit.test.sprites;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.pow;
@@ -38,8 +38,11 @@ public class BigFirework extends Firework
     {
         super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
 
-        if (!this.isAlive()) return;
-        
+        if (!this.isAlive())
+        {
+            return;
+        }
+
         if (this.bDidBlast)
         {
             for (int i = 0; i < this.subFireworks; i++)
@@ -81,7 +84,7 @@ public class BigFirework extends Firework
 
                 this.theScene.addSprite(aObject);
             }
-            
+
             this.setShouldDie();
         }
     }

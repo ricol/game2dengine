@@ -66,7 +66,7 @@ public class LabelSprite extends Sprite
         if (bTextFrame)
         {
             theGraphics2D.setColor(textFrameColor);
-            theGraphics2D.drawRect(0, 0, (int) width - 1, (int) height - 1);
+            theGraphics2D.drawRect(0, 0, (int) getWidth() - 1, (int) getHeight() - 1);
         }
 
         theGraphics2D.setFont(textFont);

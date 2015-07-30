@@ -1,10 +1,10 @@
 package au.com.rmit.test;
 
-import au.com.rmit.Game2dEngine.allScenes.FireworksScene;
-import au.com.rmit.Game2dEngine.allScenes.FountainScene;
-import au.com.rmit.Game2dEngine.allScenes.RandomShapeScene;
-import au.com.rmit.Game2dEngine.allScenes.SpiralScene;
 import au.com.rmit.Game2dEngine.director.Director;
+import au.com.rmit.test.scenes.FireworksScene;
+import au.com.rmit.test.scenes.FountainScene;
+import au.com.rmit.test.scenes.RandomShapeScene;
+import au.com.rmit.test.sprites.TestScene;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

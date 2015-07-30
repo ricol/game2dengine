@@ -30,7 +30,7 @@ import javax.imageio.ImageIO;
  *
  * @author ricolwang
  */
-public class Sprite extends Node
+public abstract class Sprite extends Node
 {
 
     public boolean bChild;
@@ -42,8 +42,6 @@ public class Sprite extends Node
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfCircle = Color.red;
     public boolean bCollisionDetect = false;
-    public int collisionCategory = -1;
-    public int collisionTargetCategory = -1;
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
     public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
@@ -59,6 +57,8 @@ public class Sprite extends Node
     private double currentLife = 0;
     private boolean isAlive = true;
     private boolean bShouldDie = false;
+    private int collisionCategory = 0x00;
+    private int collisionTargetCategory = 0x00;
 
     private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
     private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
@@ -277,8 +277,8 @@ public class Sprite extends Node
                 tmpSceneHeight = this.theScene.getHeight();
             }
 
-            int w = (int) width;
-            int h = (int) height;
+            int w = (int) getWidth();
+            int h = (int) getHeight();
 
             if (tmpX + w < 0 || tmpY + h < 0)
             {
@@ -322,15 +322,15 @@ public class Sprite extends Node
                     //draw the image
                     int tmpImageWidth = this.theImage.getWidth();
                     int tmpImageHeight = this.theImage.getHeight();
-                    int tmpImagePosX = (int) ((width - tmpImageWidth) / 2.0f);
-                    int tmpImagePosY = (int) ((height - tmpImageHeight) / 2.0f);
+                    int tmpImagePosX = (int) ((getWidth() - tmpImageWidth) / 2.0f);
+                    int tmpImagePosY = (int) ((getHeight() - tmpImageHeight) / 2.0f);
                     theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
 
                 } else
                 {
                     //fill
                     theGraphics2D.setColor(theColor);
-                    theGraphics2D.fillRect(0, 0, w, h);
+                    theGraphics2D.drawRect(0, 0, w - 1, h - 1);
                 }
 
                 //draw its children
@@ -369,7 +369,7 @@ public class Sprite extends Node
     {
         if (theImageCanvas == null)
         {
-            theImageCanvas = new BufferedImage(abs((int) width), abs((int) height), BufferedImage.TYPE_INT_ARGB);
+            theImageCanvas = new BufferedImage(abs((int) getWidth()), abs((int) getHeight()), BufferedImage.TYPE_INT_ARGB);
         }
         return theImageCanvas;
     }
@@ -394,7 +394,7 @@ public class Sprite extends Node
         if (this.bDrawFrame)
         {
             theGraphics2D.setColor(theColorOfFrame);
-            theGraphics2D.drawRect(0, 0, (int) width - 1, (int) height - 1);
+            theGraphics2D.drawRect(0, 0, (int) getWidth() - 1, (int) getHeight() - 1);
         }
     }
 
@@ -403,7 +403,10 @@ public class Sprite extends Node
         if (this.bDrawCircle)
         {
             theGraphics2D.setColor(theColorOfCircle);
-            theGraphics2D.drawOval(0, 0, (int) this.getRadius() - 1, (int) this.getRadius() - 1);
+            int tmpRadius = (int) this.getTheCircleShape().radius;
+            int tmpX = (int) (this.getTheCircleShape().centreX - tmpRadius);
+            int tmpY = (int) (this.getTheCircleShape().centreY - tmpRadius);
+            theGraphics2D.drawOval(tmpX, tmpY, 2 * tmpRadius, 2 * tmpRadius);
         }
     }
 
@@ -627,7 +630,9 @@ public class Sprite extends Node
 
     public boolean collideWith(final Sprite target)
     {
-        return super.rectangleOverlaps(target);
+//        return super.rectangleOverlaps(target);
+//        return super.circleOverlaps(target)
+        return false;
     }
 
     public int getLayer()
@@ -667,6 +672,45 @@ public class Sprite extends Node
         aSprite.bChild = false;
     }
 
+    public void setCollisionCategory(int theCollisionCategory)
+    {
+        if (this.isValidCategory(theCollisionCategory))
+        {
+            this.collisionCategory = theCollisionCategory;
+        }
+    }
+
+    public int getCollisionCategory()
+    {
+        return this.collisionCategory;
+    }
+
+    public void addTargetCollisionCategory(int theTargetCollisionCategory)
+    {
+        if (this.isValidCategory(theTargetCollisionCategory))
+        {
+            this.collisionTargetCategory |= theTargetCollisionCategory;
+        }
+    }
+
+    public void removeTargetCollisionCategory(int theTargetCollisionCategory)
+    {
+        if (this.isInTheTargetCollisionCategory(theTargetCollisionCategory))
+        {
+            this.collisionTargetCategory ^= theTargetCollisionCategory;
+        }
+    }
+
+    public boolean isInTheTargetCollisionCategory(int theTargetCollisionCategory)
+    {
+        return (this.isValidCategory(theTargetCollisionCategory) && (this.collisionTargetCategory & theTargetCollisionCategory) > 0);
+    }
+
+    private boolean isValidCategory(int aCagegory)
+    {
+        return (aCagegory >= 0) && ((aCagegory % 2 == 0) || (aCagegory == 1));
+    }
+
     public void clearChildren()
     {
         this.theSetOfChildrenWillDelete.addAll(this.theSetOfChildren);
@@ -703,7 +747,7 @@ public class Sprite extends Node
     public void onCustomDraw(final Graphics2D theGraphics2D)
     {
         theGraphics2D.setBackground(blackTransparent);
-        theGraphics2D.clearRect(0, 0, (int) width, (int) height);
+        theGraphics2D.clearRect(0, 0, (int) getWidth(), (int) getHeight());
     }
 
     public void onWillDead()

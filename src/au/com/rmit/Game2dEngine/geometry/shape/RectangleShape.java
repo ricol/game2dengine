@@ -18,5 +18,5 @@ public class RectangleShape extends PolygonShape
     {
         super(data);
     }
-    
+
 }

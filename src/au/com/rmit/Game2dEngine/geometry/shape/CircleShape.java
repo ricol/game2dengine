@@ -11,34 +11,35 @@ package au.com.rmit.Game2dEngine.geometry.shape;
  */
 public class CircleShape extends ClosureShape
 {
+
     public double centreX, centreY;
     public double radius;
-    
+
     public CircleShape(double centreX, double centreY, double radius)
     {
         this.centreX = centreX;
         this.centreY = centreY;
         this.radius = radius;
     }
-    
+
     @Override
     public boolean intersect(ClosureShape theTarget)
     {
         return false;
     }
-    
+
     @Override
     public boolean contain(ClosureShape theTarget)
     {
         return false;
     }
-    
+
     @Override
     public double getCircumference()
     {
         return Math.PI * this.radius * 2;
     }
-    
+
     @Override
     public double getArea()
     {

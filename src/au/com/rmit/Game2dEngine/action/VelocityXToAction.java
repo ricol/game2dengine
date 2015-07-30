@@ -14,6 +14,7 @@ import static java.lang.Math.abs;
  */
 public class VelocityXToAction extends VelocityAction
 {
+
     VelocityXByAction theVelocityXByAction;
 
     double velocityXTo;

@@ -11,21 +11,22 @@ package au.com.rmit.Game2dEngine.geometry.shape;
  */
 public class ClosureShape extends Shape
 {
+
     public boolean intersect(ClosureShape theTarget)
     {
         return false;
     }
-    
+
     public boolean contain(ClosureShape theTarget)
     {
         return false;
     }
-    
+
     public double getArea()
     {
         return 0;
     }
-    
+
     public double getCircumference()
     {
         return 0;

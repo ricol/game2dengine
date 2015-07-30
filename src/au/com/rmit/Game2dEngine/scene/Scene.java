@@ -380,8 +380,6 @@ public class Scene extends JPanel
         {
             if (aSprite.bCollisionDetect)
             {
-                int target = aSprite.collisionTargetCategory;
-
                 for (Sprite aTargetSprite : this.allNodes)
                 {
                     if (aTargetSprite.equals(aSprite))
@@ -393,7 +391,7 @@ public class Scene extends JPanel
                     if (aTargetSprite.bCollisionDetect)
                     {
                         //the target belongs to the group
-                        if (target == aTargetSprite.collisionCategory)
+                        if (aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
                         {
                             //collide with this sprite or not.
                             if (aSprite.collideWith(aTargetSprite))

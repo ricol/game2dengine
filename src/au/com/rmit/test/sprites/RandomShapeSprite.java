@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.node;
+package au.com.rmit.test.sprites;
 
+import au.com.rmit.Game2dEngine.node.Sprite;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
 
@@ -30,7 +31,7 @@ public class RandomShapeSprite extends Sprite
         {
             g.setColor(this.getColor());
 
-            g.fill3DRect((int) this.x, (int) this.y, (int) this.width, (int) this.height, true);
+            g.fill3DRect((int) this.x, (int) this.y, (int) this.getWidth(), (int) this.getHeight(), true);
         }
     }
 
