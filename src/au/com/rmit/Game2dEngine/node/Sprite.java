@@ -42,8 +42,6 @@ public class Sprite extends Node
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfCircle = Color.red;
     public boolean bCollisionDetect = false;
-    public int collisionCategory = -1;
-    public int collisionTargetCategory = -1;
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
     public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
@@ -59,6 +57,8 @@ public class Sprite extends Node
     private double currentLife = 0;
     private boolean isAlive = true;
     private boolean bShouldDie = false;
+    private int collisionCategory = 0x00;
+    private int collisionTargetCategory = 0x00;
 
     private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
     private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
@@ -665,6 +665,45 @@ public class Sprite extends Node
         this.theSetOfChildrenWillDelete.add(aSprite);
         aSprite.parent = null;
         aSprite.bChild = false;
+    }
+
+    public void setCollisionCategory(int theCollisionCategory)
+    {
+        if (this.isValidCategory(theCollisionCategory))
+        {
+            this.collisionCategory = theCollisionCategory;
+        }
+    }
+
+    public int getCollisionCategory()
+    {
+        return this.collisionCategory;
+    }
+
+    public void addTargetCollisionCategory(int theTargetCollisionCategory)
+    {
+        if (this.isValidCategory(theTargetCollisionCategory))
+        {
+            this.collisionTargetCategory |= theTargetCollisionCategory;
+        }
+    }
+
+    public void removeTargetCollisionCategory(int theTargetCollisionCategory)
+    {
+        if (this.isInTheTargetCollisionCategory(theTargetCollisionCategory))
+        {
+            this.collisionTargetCategory ^= theTargetCollisionCategory;
+        }
+    }
+
+    public boolean isInTheTargetCollisionCategory(int theTargetCollisionCategory)
+    {
+        return (this.isValidCategory(theTargetCollisionCategory) && (this.collisionTargetCategory & theTargetCollisionCategory) > 0);
+    }
+
+    private boolean isValidCategory(int aCagegory)
+    {
+        return (aCagegory >= 0) && ((aCagegory % 2 == 0) || (aCagegory == 1));
     }
 
     public void clearChildren()

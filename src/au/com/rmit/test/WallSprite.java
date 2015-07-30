@@ -21,8 +21,7 @@ public class WallSprite extends Sprite
         super(x, y, width, height, mass, velocityX, velocityY);
         
         this.bCollisionDetect = true;
-        this.collisionCategory = 0;
-        this.collisionTargetCategory = 1;
+        this.setCollisionCategory(TestCommon.CATEGORY_WALL);
     }
 
 }

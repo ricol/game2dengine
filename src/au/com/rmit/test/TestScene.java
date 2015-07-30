@@ -6,7 +6,9 @@
 package au.com.rmit.test;
 
 import au.com.rmit.Game2dEngine.action.VelocityXByAction;
+import au.com.rmit.Game2dEngine.action.VelocityYByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
+import au.com.rmit.Game2dEngine.node.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import au.com.rmit.test.WallSprite.WALLTYPE;
 import java.awt.event.MouseEvent;
@@ -20,6 +22,7 @@ import java.awt.event.MouseMotionListener;
 public class TestScene extends Scene
 {
 
+    boolean bFlag;
     Gravity g = new Gravity(0, 0);
     float delta = 0;
     float GRAVITY_VALUE = 500;
@@ -86,27 +89,30 @@ public class TestScene extends Scene
 //                    addSprite(theWall);
                 }
 
-                CircleSprite aSprite = new CircleSprite();
-                aSprite.setCentreX(e.getX());
-                aSprite.setCentreY(e.getY());
-                addSprite(aSprite);
+                Sprite aCircle = null;
+                if (bFlag)
+                {
+                    aCircle = new CircleRed();
+                    aCircle.setCentreX(e.getX());
+                    aCircle.setCentreY(e.getY());
+                    addSprite(aCircle);
+                } else
+                {
+                    aCircle = new CircleBlue();
+                    aCircle.setCentreX(e.getX());
+                    aCircle.setCentreY(e.getY());
+                    addSprite(aCircle);
+                }
 
                 VelocityXByAction aVelocityXByAction = new VelocityXByAction();
-                aVelocityXByAction.velocityXBy(200, 1);
-                aSprite.addAction(aVelocityXByAction);
+                aVelocityXByAction.velocityXBy(1000, 1);
+                aCircle.addAction(aVelocityXByAction);
 
-//                VelocityXToAction aVelocityXToAction = new VelocityXToAction(aSprite);
-//                aVelocityXToAction.velocityXTo(10000, 0.5f);
-//                aSprite.addAction(aVelocityXToAction);
-//
-//                VelocityYByAction aVelocityYByAction = new VelocityYByAction();
-//                aVelocityYByAction.velocityYBy(10000, 1);
-//                aSprite.addAction(aVelocityYByAction);
-//
-//                VelocityYToAction aVelocityYToAction = new VelocityYToAction(aSprite);
-//                aVelocityYToAction.velocityYTo(10000, 0.5f);
-//                aSprite.addAction(aVelocityYToAction);
-                
+                VelocityYByAction aVelocityYByAction = new VelocityYByAction();
+                aVelocityYByAction.velocityYBy(1000, 1);
+                aCircle.addAction(aVelocityYByAction);
+
+                bFlag = !bFlag;
             }
 
             @Override
