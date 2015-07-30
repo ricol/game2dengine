@@ -17,8 +17,8 @@ public class Node
 
     protected double x;
     protected double y;
-    protected double width;
-    protected double height;
+    private double width;
+    private double height;
 
     protected Random theRandom = new Random();
     private CircleShape theCircleShape = new CircleShape(0, 0, 0); //coordinates are based on the node
@@ -64,11 +64,13 @@ public class Node
     public void setWidth(double width)
     {
         this.width = width;
+        this.rebuildTheCircleShape();
     }
 
     public void setHeight(double height)
     {
         this.height = height;
+        this.rebuildTheCircleShape();
     }
 
     public CircleShape getTheCircleShape()

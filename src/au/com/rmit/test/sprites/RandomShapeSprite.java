@@ -31,7 +31,7 @@ public class RandomShapeSprite extends Sprite
         {
             g.setColor(this.getColor());
 
-            g.fill3DRect((int) this.x, (int) this.y, (int) this.width, (int) this.height, true);
+            g.fill3DRect((int) this.x, (int) this.y, (int) this.getWidth(), (int) this.getHeight(), true);
         }
     }
 

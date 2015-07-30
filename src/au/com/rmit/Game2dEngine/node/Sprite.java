@@ -277,8 +277,8 @@ public abstract class Sprite extends Node
                 tmpSceneHeight = this.theScene.getHeight();
             }
 
-            int w = (int) width;
-            int h = (int) height;
+            int w = (int) getWidth();
+            int h = (int) getHeight();
 
             if (tmpX + w < 0 || tmpY + h < 0)
             {
@@ -322,8 +322,8 @@ public abstract class Sprite extends Node
                     //draw the image
                     int tmpImageWidth = this.theImage.getWidth();
                     int tmpImageHeight = this.theImage.getHeight();
-                    int tmpImagePosX = (int) ((width - tmpImageWidth) / 2.0f);
-                    int tmpImagePosY = (int) ((height - tmpImageHeight) / 2.0f);
+                    int tmpImagePosX = (int) ((getWidth() - tmpImageWidth) / 2.0f);
+                    int tmpImagePosY = (int) ((getHeight() - tmpImageHeight) / 2.0f);
                     theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
 
                 } else
@@ -369,7 +369,7 @@ public abstract class Sprite extends Node
     {
         if (theImageCanvas == null)
         {
-            theImageCanvas = new BufferedImage(abs((int) width), abs((int) height), BufferedImage.TYPE_INT_ARGB);
+            theImageCanvas = new BufferedImage(abs((int) getWidth()), abs((int) getHeight()), BufferedImage.TYPE_INT_ARGB);
         }
         return theImageCanvas;
     }
@@ -394,7 +394,7 @@ public abstract class Sprite extends Node
         if (this.bDrawFrame)
         {
             theGraphics2D.setColor(theColorOfFrame);
-            theGraphics2D.drawRect(0, 0, (int) width - 1, (int) height - 1);
+            theGraphics2D.drawRect(0, 0, (int) getWidth() - 1, (int) getHeight() - 1);
         }
     }
 
@@ -747,7 +747,7 @@ public abstract class Sprite extends Node
     public void onCustomDraw(final Graphics2D theGraphics2D)
     {
         theGraphics2D.setBackground(blackTransparent);
-        theGraphics2D.clearRect(0, 0, (int) width, (int) height);
+        theGraphics2D.clearRect(0, 0, (int) getWidth(), (int) getHeight());
     }
 
     public void onWillDead()
