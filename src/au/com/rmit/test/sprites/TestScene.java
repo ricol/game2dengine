@@ -12,6 +12,7 @@ import au.com.rmit.test.sprites.WallSprite.WALLTYPE;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import static java.lang.Math.abs;
 
 /**
  *
@@ -100,7 +101,8 @@ public class TestScene extends Scene
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
                     addSprite(aCircle);
-                    aCircle.setVelocityX(1000);
+                    aCircle.setVelocityX(abs(theRandom.nextInt()) % 1000 + 500);
+                    aCircle.setVelocityY(abs(theRandom.nextInt()) % 1000 + 500);
                 }
             }
 
