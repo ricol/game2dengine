@@ -73,4 +73,11 @@ public class Vector
         Vector C = new Vector(-x, -y);
         return C;
     }
+    
+    public Vector getProjectVectorOn(Vector B)
+    {
+        Vector C = B.getTheUnitVector();
+        return C.multiplyNumber(this.getMagitude() * this.getCosAngleForVector(B));
+    }
+    
 }

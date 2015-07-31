@@ -5,7 +5,6 @@
  */
 package au.com.rmit.test.sprites;
 
-import au.com.rmit.Game2dEngine.action.VelocityXByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
@@ -88,30 +87,21 @@ public class TestScene extends Scene
 //                    addSprite(theWall);
                 }
 
-                Sprite aCircle = null;
-                if (bFlag)
+                if (e.getButton() == MouseEvent.BUTTON3)
                 {
-                    aCircle = new CircleYellow();
+                    Sprite aCircle = new CircleBlue();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
                     addSprite(aCircle);
-                } else
+                } else if (e.getButton() == MouseEvent.BUTTON1)
                 {
-                    aCircle = new CircleBlue();
+
+                    Sprite aCircle = new CircleYellow();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
                     addSprite(aCircle);
+                    aCircle.setVelocityX(1000);
                 }
-
-                VelocityXByAction aVelocityXByAction = new VelocityXByAction();
-                aVelocityXByAction.velocityXBy(1000, 1);
-                aCircle.addAction(aVelocityXByAction);
-
-//                VelocityYByAction aVelocityYByAction = new VelocityYByAction();
-//                aVelocityYByAction.velocityYBy(1000, 1);
-//                aCircle.addAction(aVelocityYByAction);
-
-                bFlag = !bFlag;
             }
 
             @Override
