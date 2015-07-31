@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.geometry.shape;
 
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 
 /**
  *

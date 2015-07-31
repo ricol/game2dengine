@@ -5,15 +5,11 @@
  */
 package au.com.rmit.test.sprites;
 
-import au.com.rmit.Game2dEngine.action.Action;
-import au.com.rmit.Game2dEngine.action.AlphaToAction;
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import au.com.rmit.test.TestCommon;
 import au.com.rmit.test.sprites.WallSprite.WALLTYPE;
 import java.awt.Graphics2D;
-import static java.lang.Math.abs;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  *
@@ -26,7 +22,7 @@ public class CircleYellow extends Sprite
     {
         this.setRed(255);
         this.setGreen(255);
-        this.setWidth(abs(theRandom.nextInt()) % 100 + 100);
+        this.setWidth(50);
         this.setHeight(this.getWidth());
 
         this.bCustomDrawing = true;
@@ -56,33 +52,46 @@ public class CircleYellow extends Sprite
             WallSprite aWall = (WallSprite) target;
             if (aWall.wallType == WALLTYPE.LEFT)
             {
-                this.setVelocityX(-this.getVelocityX());
+                this.setVelocityX(-this.getVelocityX() + 1);
             } else if (aWall.wallType == WALLTYPE.RIGHT)
             {
-                this.setVelocityX(-this.getVelocityX());
+                this.setVelocityX(-this.getVelocityX() - 1);
             } else if (aWall.wallType == WALLTYPE.TOP)
             {
-                this.setVelocityY(-this.getVelocityY());
+                this.setVelocityY(-this.getVelocityY() + 1);
             } else if (aWall.wallType == WALLTYPE.BOTTOM)
             {
-                this.setVelocityY(-this.getVelocityY());
+                this.setVelocityY(-this.getVelocityY() - 1);
             }
         } else if (target instanceof CircleBlue)
         {
-            {
-                AlphaToAction aAction = new AlphaToAction(this);
-                aAction.alphaTo(0, 0.1f);
-                Set<Action> aSet = new HashSet<>();
-                aSet.add(aAction);
-                this.enQueueActions(aSet);
-            }
-            {
-                AlphaToAction aAction = new AlphaToAction(this);
-                aAction.alphaTo(1, 0.1f);
-                Set<Action> aSet = new HashSet<>();
-                aSet.add(aAction);
-                this.enQueueActions(aSet);
-            }
+//            {
+//                AlphaToAction aAction = new AlphaToAction(this);
+//                aAction.alphaTo(0, 0.1f);
+//                Set<Action> aSet = new HashSet<>();
+//                aSet.add(aAction);
+//                this.enQueueActions(aSet);
+//            }
+//            {
+//                AlphaToAction aAction = new AlphaToAction(this);
+//                aAction.alphaTo(1, 0.1f);
+//                Set<Action> aSet = new HashSet<>();
+//                aSet.add(aAction);
+//                this.enQueueActions(aSet);
+//            }
+
+            Vector V_A = new Vector(this.getVelocityX(), this.getVelocityY());
+            Vector Unit_V_A = V_A.getTheUnitVector();
+            Vector AB = new Vector(target.getCentreX() - this.getCentreX(), target.getCentreY() - this.getCentreY());
+            Vector Unit_AB = AB.getTheUnitVector();
+            Vector BC = Unit_V_A.subVector(Unit_AB);
+            Vector Unit_BC = BC.getTheUnitVector();
+            Vector V_A_AB = V_A.getProjectVectorOn(Unit_AB);
+            Vector V_A_BC = V_A.getProjectVectorOn(Unit_BC);
+            Vector New_V_A = V_A_BC.addVector(V_A_AB.getNegativeVector());
+
+            this.setVelocityX(New_V_A.x);
+            this.setVelocityY(New_V_A.y);
         }
     }
 
