@@ -5,7 +5,7 @@
  */
 package au.com.rmit.test.sprites;
 
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.node;
+package au.com.rmit.Game2dEngine.sprite;
 
 import java.awt.Color;
 import java.awt.Font;

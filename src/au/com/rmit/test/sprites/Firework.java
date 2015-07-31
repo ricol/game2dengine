@@ -6,7 +6,7 @@
 package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.RotateByAction;
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import static java.lang.Math.abs;
 
 /**

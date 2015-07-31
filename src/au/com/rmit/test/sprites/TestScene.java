@@ -6,10 +6,9 @@
 package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.VelocityXByAction;
-import au.com.rmit.Game2dEngine.action.VelocityYByAction;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.Game2dEngine.node.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import au.com.rmit.test.sprites.WallSprite.WALLTYPE;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -108,9 +107,9 @@ public class TestScene extends Scene
                 aVelocityXByAction.velocityXBy(1000, 1);
                 aCircle.addAction(aVelocityXByAction);
 
-                VelocityYByAction aVelocityYByAction = new VelocityYByAction();
-                aVelocityYByAction.velocityYBy(1000, 1);
-                aCircle.addAction(aVelocityYByAction);
+//                VelocityYByAction aVelocityYByAction = new VelocityYByAction();
+//                aVelocityYByAction.velocityYBy(1000, 1);
+//                aCircle.addAction(aVelocityYByAction);
 
                 bFlag = !bFlag;
             }

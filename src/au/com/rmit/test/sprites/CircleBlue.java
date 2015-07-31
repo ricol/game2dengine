@@ -7,7 +7,8 @@ package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import au.com.rmit.test.TestCommon;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
@@ -81,6 +82,16 @@ public class CircleBlue extends Sprite
                 aSet.add(aAction);
                 this.enQueueActions(aSet);
             }
+
+            Vector V_A = new Vector(this.getVelocityX(), this.getVelocityY());
+            Vector Unit_V_A = V_A.getTheUnitVector();
+            Vector AB = new Vector(target.getCentreX() - this.getCentreX(), target.getCentreY() - this.getCentreY());
+            Vector Unit_AB = AB.getTheUnitVector();
+            double cos = Unit_V_A.getCosAngleForVector(Unit_AB);
+            double sin = Math.sqrt(1 - cos * cos);
+            Vector New_V_A = V_A.multiplyNumber(sin - cos);
+            this.setVelocityX(New_V_A.x);
+            this.setVelocityY(New_V_A.y);
         }
     }
 
