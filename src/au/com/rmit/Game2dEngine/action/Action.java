@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.action;
 
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.util.Random;
 
 /**

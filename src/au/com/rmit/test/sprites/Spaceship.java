@@ -6,7 +6,7 @@
 package au.com.rmit.test.sprites;
 
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

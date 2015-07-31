@@ -7,7 +7,7 @@ package au.com.rmit.test.scenes;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.test.sprites.RandomShapeSprite;
-import au.com.rmit.Game2dEngine.node.Sprite;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
