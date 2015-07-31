@@ -52,16 +52,16 @@ public class CircleYellow extends Sprite
             WallSprite aWall = (WallSprite) target;
             if (aWall.wallType == WALLTYPE.LEFT)
             {
-                this.setVelocityX(-this.getVelocityX() + 1);
+                this.setVelocityX(-this.getVelocityX() + 100);
             } else if (aWall.wallType == WALLTYPE.RIGHT)
             {
-                this.setVelocityX(-this.getVelocityX() - 1);
+                this.setVelocityX(-this.getVelocityX() - 100);
             } else if (aWall.wallType == WALLTYPE.TOP)
             {
-                this.setVelocityY(-this.getVelocityY() + 1);
+                this.setVelocityY(-this.getVelocityY() + 100);
             } else if (aWall.wallType == WALLTYPE.BOTTOM)
             {
-                this.setVelocityY(-this.getVelocityY() - 1);
+                this.setVelocityY(-this.getVelocityY() - 100);
             }
         } else if (target instanceof CircleBlue)
         {
