@@ -52,39 +52,29 @@ public class CircleYellow extends Sprite
             WallSprite aWall = (WallSprite) target;
             if (aWall.wallType == WALLTYPE.LEFT)
             {
-                this.setVelocityX(-this.getVelocityX() + 100);
+                this.setVelocityX(-this.getVelocityX());
             } else if (aWall.wallType == WALLTYPE.RIGHT)
             {
-                this.setVelocityX(-this.getVelocityX() - 100);
+                this.setVelocityX(-this.getVelocityX());
             } else if (aWall.wallType == WALLTYPE.TOP)
             {
-                this.setVelocityY(-this.getVelocityY() + 100);
+                this.setVelocityY(-this.getVelocityY());
             } else if (aWall.wallType == WALLTYPE.BOTTOM)
             {
-                this.setVelocityY(-this.getVelocityY() - 100);
+                this.setVelocityY(-this.getVelocityY());
             }
         } else if (target instanceof CircleBlue)
         {
-//            {
-//                AlphaToAction aAction = new AlphaToAction(this);
-//                aAction.alphaTo(0, 0.1f);
-//                Set<Action> aSet = new HashSet<>();
-//                aSet.add(aAction);
-//                this.enQueueActions(aSet);
-//            }
-//            {
-//                AlphaToAction aAction = new AlphaToAction(this);
-//                aAction.alphaTo(1, 0.1f);
-//                Set<Action> aSet = new HashSet<>();
-//                aSet.add(aAction);
-//                this.enQueueActions(aSet);
-//            }
-
             Vector V_A = new Vector(this.getVelocityX(), this.getVelocityY());
             Vector Unit_V_A = V_A.getTheUnitVector();
             Vector AB = new Vector(target.getCentreX() - this.getCentreX(), target.getCentreY() - this.getCentreY());
             Vector Unit_AB = AB.getTheUnitVector();
-            Vector BC = Unit_V_A.subVector(Unit_AB);
+            Vector BC = AB.getPerpendicularUnitVectorClockwise();
+            double cosBC_V_A = BC.getCosAngleForVector(V_A);
+            if (cosBC_V_A < 0)
+            {
+                BC = AB.getPerpendicularUnitVectorCounterClockwise();
+            }
             Vector Unit_BC = BC.getTheUnitVector();
             Vector V_A_AB = V_A.getProjectVectorOn(Unit_AB);
             Vector V_A_BC = V_A.getProjectVectorOn(Unit_BC);
@@ -92,6 +82,7 @@ public class CircleYellow extends Sprite
 
             this.setVelocityX(New_V_A.x);
             this.setVelocityY(New_V_A.y);
+            System.out.println("|Velocity|: " + New_V_A.getMagitude());
         }
     }
 
