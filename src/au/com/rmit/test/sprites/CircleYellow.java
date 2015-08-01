@@ -65,24 +65,27 @@ public class CircleYellow extends Sprite
             }
         } else if (target instanceof CircleBlue)
         {
-            Vector V_A = new Vector(this.getVelocityX(), this.getVelocityY());
-            Vector Unit_V_A = V_A.getTheUnitVector();
             Vector AB = new Vector(target.getCentreX() - this.getCentreX(), target.getCentreY() - this.getCentreY());
-            Vector Unit_AB = AB.getTheUnitVector();
+            Vector UNIT_AB = AB.getTheUnitVector();
             Vector BC = AB.getPerpendicularUnitVectorClockwise();
+            
+            Vector V_A = new Vector(this.getVelocityX(), this.getVelocityY());
             double cosBC_V_A = BC.getCosAngleForVector(V_A);
             if (cosBC_V_A < 0)
             {
                 BC = AB.getPerpendicularUnitVectorCounterClockwise();
             }
-            Vector Unit_BC = BC.getTheUnitVector();
-            Vector V_A_AB = V_A.getProjectVectorOn(Unit_AB);
-            Vector V_A_BC = V_A.getProjectVectorOn(Unit_BC);
-            Vector New_V_A = V_A_BC.addVector(V_A_AB.getNegativeVector());
+            
+            Vector UNIT_BC = BC.getTheUnitVector();
+            
+            Vector V_A_AB = V_A.getProjectVectorOn(UNIT_AB);
+            Vector V_A_BC = V_A.getProjectVectorOn(UNIT_BC);
+            
+            Vector RESULT_V_A = V_A_BC.addVector(V_A_AB.getNegativeVector());
 
-            this.setVelocityX(New_V_A.x);
-            this.setVelocityY(New_V_A.y);
-            System.out.println("|Velocity|: " + New_V_A.getMagitude());
+            this.setVelocityX(RESULT_V_A.x);
+            this.setVelocityY(RESULT_V_A.y);
+            System.out.println("|Velocity|: " + RESULT_V_A.getMagitude());
         }
     }
 
