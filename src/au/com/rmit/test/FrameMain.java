@@ -118,7 +118,7 @@ public class FrameMain extends javax.swing.JFrame
             }
         });
 
-        btnTest.setText("Test");
+        btnTest.setText("Physic Engine");
         btnTest.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -136,7 +136,7 @@ public class FrameMain extends javax.swing.JFrame
                 .addComponent(btnPause)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnStop)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 284, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 232, Short.MAX_VALUE)
                 .addComponent(btnTest)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFireworks)

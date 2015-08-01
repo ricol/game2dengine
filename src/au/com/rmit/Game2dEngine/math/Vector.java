@@ -80,4 +80,18 @@ public class Vector
         return C.multiplyNumber(this.getMagitude() * this.getCosAngleForVector(B));
     }
     
+    public Vector getPerpendicularUnitVectorCounterClockwise()
+    {
+        double tmpY = -1 * Math.sqrt((x * x) / (x * x + y * y));
+        Vector C = new Vector(-1 * (y / x) * tmpY, tmpY);
+        return C;
+    }
+    
+    public Vector getPerpendicularUnitVectorClockwise()
+    {
+        double tmpY = Math.sqrt((x * x) / (x * x + y * y));
+        Vector C = new Vector(-1 * (y / x) * tmpY, tmpY);
+        return C;
+    }
+    
 }
