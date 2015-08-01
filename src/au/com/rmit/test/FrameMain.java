@@ -4,7 +4,7 @@ import au.com.rmit.Game2dEngine.director.Director;
 import au.com.rmit.test.scenes.FireworksScene;
 import au.com.rmit.test.scenes.FountainScene;
 import au.com.rmit.test.scenes.RandomShapeScene;
-import au.com.rmit.test.sprites.TestScene;
+import au.com.rmit.test.scenes.TestScene;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

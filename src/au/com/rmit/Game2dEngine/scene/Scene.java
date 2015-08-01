@@ -60,6 +60,7 @@ public class Scene extends JPanel
 
     HashMap<Integer, Layer> layers = new HashMap();
     ArrayList<Sprite> allNodes = new ArrayList();
+    ArrayList<Sprite> allNodesRequestCollisionDetect = new ArrayList<>();
 
     Timer theTimer = new Timer(10, new ActionListener()
     {
@@ -365,6 +366,8 @@ public class Scene extends JPanel
     public void collisionDetect()
     {
         this.allNodes.clear();
+        this.allNodesRequestCollisionDetect.clear();
+
         for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
         {
             Layer aLayer = layers.get(i);
@@ -378,58 +381,84 @@ public class Scene extends JPanel
 
         for (Sprite aSprite : this.allNodes)
         {
-            if (aSprite.bCollisionDetect)
+            if (aSprite.getCollisionTargetCategory() > 0 && aSprite.bCollisionDetect)
             {
-                for (Sprite aTargetSprite : this.allNodes)
+                this.allNodesRequestCollisionDetect.add(aSprite);
+            }
+        }
+
+        while (this.allNodesRequestCollisionDetect.size() > 0)
+        {
+            Sprite aSprite = this.allNodesRequestCollisionDetect.get(0);
+
+            this.allNodesRequestCollisionDetect.remove(0);
+
+            Sprite aCopy = (Sprite) aSprite.getCopy();
+            Game2dEngineShared.TypeCollisionDetection value;
+
+            int index = -1;
+
+            for (Sprite aTargetSprite : this.allNodes)
+            {
+                if (aSprite.equals(aTargetSprite))
                 {
-                    if (aTargetSprite.equals(aSprite))
+                    index = this.allNodes.indexOf(aTargetSprite);
+                    continue;
+                }
+                //the target allows to be detected
+                if (!aTargetSprite.bCollisionDetect)
+                {
+                    continue;
+                }
+
+                //the target belongs to the group
+                if (!aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
+                {
+                    continue;
+                }
+
+                //collide with this sprite or not.
+                if (aSprite.collideWith(aTargetSprite))
+                {
+                    //collide
+                    value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
+                    if (aSprite.hashCollision.get(aTargetSprite) != value)
                     {
-                        continue;
+                        aSprite.onCollideWith(aTargetSprite);
+                        aSprite.hashCollision.put(aTargetSprite, value);
                     }
 
-                    //the target allows to be detected
-                    if (aTargetSprite.bCollisionDetect)
+                    if (aTargetSprite.hashCollision.get(aSprite) != value)
                     {
-                        //the target belongs to the group
-                        if (aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
-                        {
-                            //collide with this sprite or not.
-                            if (aSprite.collideWith(aTargetSprite))
-                            {
-                                //collide
-                                if (aSprite.hashCollision.get(aTargetSprite) != Game2dEngineShared.TypeCollisionDetection.COLLIDED)
-                                {
-                                    aSprite.onCollideWith(aTargetSprite);
-                                    aSprite.hashCollision.put(aTargetSprite, Game2dEngineShared.TypeCollisionDetection.COLLIDED);
-                                }
+                        aTargetSprite.onCollideWith(aCopy);
+                        aTargetSprite.hashCollision.put(aSprite, value);
+                    }
+                } else
+                {
+                    //uncollide
+                    value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
+                    if (aSprite.hashCollision.get(aTargetSprite) != value)
+                    {
+                        aSprite.onNotCollideWith(aTargetSprite);
+                        aSprite.hashCollision.put(aTargetSprite, value);
+                    }
 
-                                if (aTargetSprite.hashCollision.get(aSprite) != Game2dEngineShared.TypeCollisionDetection.COLLIDED)
-                                {
-                                    aTargetSprite.onCollideWith(aSprite);
-                                    aTargetSprite.hashCollision.put(aSprite, Game2dEngineShared.TypeCollisionDetection.COLLIDED);
-                                }
-                            } else
-                            {
-                                //uncollide
-                                if (aSprite.hashCollision.get(aTargetSprite) != Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED)
-                                {
-                                    aSprite.onNotCollideWith(aTargetSprite);
-                                    aSprite.hashCollision.put(aTargetSprite, Game2dEngineShared.TypeCollisionDetection.UNDECTED);
-                                }
-
-                                if (aTargetSprite.hashCollision.get(aSprite) != Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED)
-                                {
-                                    aTargetSprite.onNotCollideWith(aSprite);
-                                    aTargetSprite.hashCollision.put(aSprite, Game2dEngineShared.TypeCollisionDetection.UNDECTED);
-                                }
-                            }
-                        }
+                    if (aTargetSprite.hashCollision.get(aSprite) != value)
+                    {
+                        aTargetSprite.onNotCollideWith(aCopy);
+                        aTargetSprite.hashCollision.put(aSprite, value);
                     }
                 }
+            }
+
+            if (index >= 0)
+            {
+                this.allNodes.remove(index);
             }
         }
 
         this.allNodes.clear();
+        this.allNodesRequestCollisionDetect.clear();
     }
 
     private void collectMemoryInfo()

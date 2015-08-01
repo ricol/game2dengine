@@ -8,6 +8,7 @@ package au.com.rmit.Game2dEngine.sprite;
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
+import au.com.rmit.Game2dEngine.interfaces.ICopy;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.AlphaComposite;
@@ -30,7 +31,7 @@ import javax.imageio.ImageIO;
  *
  * @author ricolwang
  */
-public abstract class Sprite extends Node
+public class Sprite extends Node implements ICopy
 {
 
     public boolean bChild;
@@ -628,6 +629,48 @@ public abstract class Sprite extends Node
         return this.starttime;
     }
 
+    @Override
+    public Object getCopy()
+    {
+        final Sprite aCopy;
+        aCopy = new Sprite(this.x, this.y, this.getWidth(), this.getHeight(), this.mass, this.velocityX, this.velocityY);
+        aCopy.red = this.red;
+        aCopy.green = this.green;
+        aCopy.blue = this.blue;
+        aCopy.angle = this.angle;
+
+        aCopy.bChild = this.bChild;
+        aCopy.parent = this.parent;
+        aCopy.theScene = this.theScene;
+
+        aCopy.bDrawFrame = this.bDrawFrame;
+        aCopy.bDrawCircle = this.bDrawCircle;
+        aCopy.theColorOfFrame = this.theColorOfFrame;
+        aCopy.theColorOfCircle = this.theColorOfCircle;
+        aCopy.bCollisionDetect = this.bCollisionDetect;
+        aCopy.bCustomDrawing = this.bCustomDrawing;
+        aCopy.bDeadIfNoActions = this.bDeadIfNoActions;
+
+        aCopy.layer = this.layer;
+        aCopy.lifetime = this.lifetime;
+        aCopy.lastUpdateTime = this.lastUpdateTime;
+        aCopy.starttime = this.starttime;
+        aCopy.velocityAngle = this.velocityAngle;
+        aCopy.currentLife = this.currentLife;
+        aCopy.isAlive = this.isAlive;
+        aCopy.bShouldDie = this.bShouldDie;
+        aCopy.collisionCategory = this.collisionCategory;
+        aCopy.collisionTargetCategory = this.collisionTargetCategory;
+
+        if (this.g != null)
+        {
+            aCopy.g = (Gravity) this.g.getCopy();
+        }
+        aCopy.alpha = this.alpha;
+
+        return aCopy;
+    }
+
     public boolean collideWith(final Sprite target)
     {
 //        return super.rectangleOverlaps(target);
@@ -653,6 +696,11 @@ public abstract class Sprite extends Node
         return this.lifetime;
     }
 
+    public int getCollisionTargetCategory()
+    {
+        return this.collisionTargetCategory;
+    }
+    
     public void setLifeTime(double life)
     {
         this.lifetime = life;
