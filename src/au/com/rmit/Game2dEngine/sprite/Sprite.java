@@ -140,9 +140,7 @@ public abstract class Sprite extends Node implements ICopy
         currentLife += t;
 
         if (currentLife >= lifetime)
-        {
             this.setShouldDie();
-        }
 
         //update state
         if (this.g != null)
@@ -187,9 +185,7 @@ public abstract class Sprite extends Node implements ICopy
                     theSetOfActionsInQueueWillDelete.clear();
                 }
             } else
-            {
                 this.theQueueOfActions.remove(theSetOfQueuedActions);
-            }
         }
 
         //perform other actions
@@ -203,9 +199,7 @@ public abstract class Sprite extends Node implements ICopy
         if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
         {
             if (this.bDeadIfNoActions)
-            {
                 this.setShouldDie();
-            }
         } else
         {
             //run actions
@@ -243,9 +237,7 @@ public abstract class Sprite extends Node implements ICopy
             aSprite.updateState(currentTime);
 
             if (!aSprite.isAlive)
-            {
                 this.theSetOfChildrenWillDelete.add(aSprite);
-            }
         }
 
         //delete old children
@@ -282,24 +274,16 @@ public abstract class Sprite extends Node implements ICopy
             int h = (int) getHeight();
 
             if (tmpX + w < 0 || tmpY + h < 0)
-            {
                 return;
-            }
 
             if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
-            {
                 return;
-            }
 
             if (abs(w) <= 0.1 || abs(h) <= 0.1)
-            {
                 return;
-            }
 
             if (g == null)
-            {
                 return;
-            }
 
             if (bCustomDrawing)
             {
@@ -336,9 +320,7 @@ public abstract class Sprite extends Node implements ICopy
 
                 //draw its children
                 for (Sprite aSprite : this.theSetOfChildren)
-                {
                     aSprite.updateGUI(theGraphics2D);
-                }
 
                 //restore
                 theGraphics2D.setTransform(old);
@@ -369,18 +351,14 @@ public abstract class Sprite extends Node implements ICopy
     private BufferedImage getTheImageCanvas()
     {
         if (theImageCanvas == null)
-        {
             theImageCanvas = new BufferedImage(abs((int) getWidth()), abs((int) getHeight()), BufferedImage.TYPE_INT_ARGB);
-        }
         return theImageCanvas;
     }
 
     private Graphics2D getTheImageGraphics()
     {
         if (theGraphics == null)
-        {
             theGraphics = this.getTheImageCanvas().createGraphics();
-        }
         return theGraphics;
     }
 
@@ -414,9 +392,7 @@ public abstract class Sprite extends Node implements ICopy
     private void setDead()
     {
         if (!this.isAlive)
-        {
             return;
-        }
 
         this.isAlive = false;
         this.onDead();
@@ -425,16 +401,12 @@ public abstract class Sprite extends Node implements ICopy
     protected void setShouldDie()
     {
         if (bShouldDie)
-        {
             return;
-        }
 
         bShouldDie = true;
 
         for (Sprite aSprite : this.theSetOfChildren)
-        {
             aSprite.setShouldDie();
-        }
 
         this.onWillDead();
     }
@@ -458,9 +430,7 @@ public abstract class Sprite extends Node implements ICopy
     public void enQueueActions(Set<Action> aSetOfActions)
     {
         for (Action aAction : aSetOfActions)
-        {
             aAction.setSprite(this);
-        }
         this.theQueueOfActions.add(aSetOfActions);
     }
 
@@ -507,9 +477,7 @@ public abstract class Sprite extends Node implements ICopy
     public void setMass(double mass)
     {
         if (mass >= 0)
-        {
             this.mass = mass;
-        }
     }
 
     public boolean isAlive()
@@ -639,9 +607,7 @@ public abstract class Sprite extends Node implements ICopy
     public void copyContent(Object theObject)
     {
         if (!(theObject instanceof Sprite))
-        {
             return;
-        }
 
         Sprite aCopy = (Sprite) theObject;
 
@@ -682,9 +648,7 @@ public abstract class Sprite extends Node implements ICopy
         aCopy.identifier = this.identifier;
 
         if (this.g != null)
-        {
             aCopy.g = (Gravity) this.g.getACopy();
-        }
     }
 
     public boolean collideWith(final Sprite target)
@@ -702,9 +666,7 @@ public abstract class Sprite extends Node implements ICopy
     public void setLayer(int layer)
     {
         if (layer >= Scene.MIN_LAYER && layer <= Scene.MAX_LAYER)
-        {
             this.layer = layer;
-        }
     }
 
     public double getLife()
@@ -739,9 +701,7 @@ public abstract class Sprite extends Node implements ICopy
     public void setCollisionCategory(int theCollisionCategory)
     {
         if (this.isValidCategory(theCollisionCategory))
-        {
             this.collisionCategory = theCollisionCategory;
-        }
     }
 
     public int getCollisionCategory()
@@ -752,17 +712,13 @@ public abstract class Sprite extends Node implements ICopy
     public void addTargetCollisionCategory(int theTargetCollisionCategory)
     {
         if (this.isValidCategory(theTargetCollisionCategory))
-        {
             this.collisionTargetCategory |= theTargetCollisionCategory;
-        }
     }
 
     public void removeTargetCollisionCategory(int theTargetCollisionCategory)
     {
         if (this.isInTheTargetCollisionCategory(theTargetCollisionCategory))
-        {
             this.collisionTargetCategory ^= theTargetCollisionCategory;
-        }
     }
 
     public boolean isInTheTargetCollisionCategory(int theTargetCollisionCategory)
@@ -838,16 +794,16 @@ public abstract class Sprite extends Node implements ICopy
         this.parent = null;
         this.theScene = null;
     }
-    
+
     @Override
     public String toString()
     {
         return "class: " + this.getClass() + "; identifier: " + this.identifier;
     }
-    
+
     public void print(String title)
     {
         System.out.println(title + this);
     }
-        
+
 }
