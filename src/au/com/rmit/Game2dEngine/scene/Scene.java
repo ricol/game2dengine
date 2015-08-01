@@ -363,104 +363,6 @@ public class Scene extends JPanel
         return this.blue;
     }
 
-    public void collisionDetect()
-    {
-        this.allNodes.clear();
-        this.allNodesRequestCollisionDetect.clear();
-
-        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
-        {
-            Layer aLayer = layers.get(i);
-            if (aLayer == null)
-            {
-                continue;
-            }
-
-            this.allNodes.addAll(aLayer.AllObjects);
-        }
-
-        for (Sprite aSprite : this.allNodes)
-        {
-            if (aSprite.getCollisionTargetCategory() > 0 && aSprite.bCollisionDetect)
-            {
-                this.allNodesRequestCollisionDetect.add(aSprite);
-            }
-        }
-
-        while (this.allNodesRequestCollisionDetect.size() > 0)
-        {
-            Sprite aSprite = this.allNodesRequestCollisionDetect.get(0);
-
-            this.allNodesRequestCollisionDetect.remove(0);
-
-            Sprite aCopy = (Sprite) aSprite.getCopy();
-            Game2dEngineShared.TypeCollisionDetection value;
-
-            int index = -1;
-
-            for (Sprite aTargetSprite : this.allNodes)
-            {
-                if (aSprite.equals(aTargetSprite))
-                {
-                    index = this.allNodes.indexOf(aTargetSprite);
-                    continue;
-                }
-                //the target allows to be detected
-                if (!aTargetSprite.bCollisionDetect)
-                {
-                    continue;
-                }
-
-                //the target belongs to the group
-                if (!aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
-                {
-                    continue;
-                }
-
-                //collide with this sprite or not.
-                if (aSprite.collideWith(aTargetSprite))
-                {
-                    //collide
-                    value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
-                    if (aSprite.hashCollision.get(aTargetSprite) != value)
-                    {
-                        aSprite.onCollideWith(aTargetSprite);
-                        aSprite.hashCollision.put(aTargetSprite, value);
-                    }
-
-                    if (aTargetSprite.hashCollision.get(aSprite) != value)
-                    {
-                        aTargetSprite.onCollideWith(aCopy);
-                        aTargetSprite.hashCollision.put(aSprite, value);
-                    }
-                } else
-                {
-                    //uncollide
-                    value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
-                    if (aSprite.hashCollision.get(aTargetSprite) != value)
-                    {
-                        aSprite.onNotCollideWith(aTargetSprite);
-                        aSprite.hashCollision.put(aTargetSprite, value);
-                    }
-
-                    if (aTargetSprite.hashCollision.get(aSprite) != value)
-                    {
-                        aTargetSprite.onNotCollideWith(aCopy);
-                        aTargetSprite.hashCollision.put(aSprite, value);
-                    }
-                }
-            }
-
-            if (index >= 0)
-            {
-                this.allNodes.remove(index);
-            }
-        }
-
-        this.allNodes.clear();
-        this.allNodesRequestCollisionDetect.clear();
-    }
-
     private void collectMemoryInfo()
     {
         Runtime runtime = Runtime.getRuntime();
@@ -476,4 +378,190 @@ public class Scene extends JPanel
         strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
         strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
     }
+
+//    private void collisionDetect()
+//    {
+//        this.allNodes.clear();
+//        this.allNodesRequestCollisionDetect.clear();
+//
+//        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+//        {
+//            Layer aLayer = layers.get(i);
+//            if (aLayer == null)
+//            {
+//                continue;
+//            }
+//
+//            this.allNodes.addAll(aLayer.AllObjects);
+//        }
+//
+//        for (Sprite aSprite : this.allNodes)
+//        {
+//            if (aSprite.getCollisionTargetCategory() > 0 && aSprite.bCollisionDetect)
+//            {
+//                this.allNodesRequestCollisionDetect.add(aSprite);
+//            }
+//        }
+//
+//        while (this.allNodesRequestCollisionDetect.size() > 0)
+//        {
+//            Sprite aSprite = this.allNodesRequestCollisionDetect.get(0);
+//
+//            this.allNodesRequestCollisionDetect.remove(0);
+//
+//            Sprite aCopy = (Sprite) aSprite.getACopy();
+//            Game2dEngineShared.TypeCollisionDetection value;
+//
+//            int index = -1;
+//
+//            for (Sprite aTargetSprite : this.allNodes)
+//            {
+//                if (aSprite.equals(aTargetSprite))
+//                {
+//                    index = this.allNodes.indexOf(aTargetSprite);
+//                    continue;
+//                }
+//                //the target allows to be detected
+//                if (!aTargetSprite.bCollisionDetect)
+//                {
+//                    continue;
+//                }
+//
+//                //the target belongs to the group
+//                if (!aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
+//                {
+//                    continue;
+//                }
+//
+//                //collide with this sprite or not.
+//                if (aSprite.collideWith(aTargetSprite))
+//                {
+//                    //collide
+//                    value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
+//                    if (aSprite.hashCollision.get(aTargetSprite) != value)
+//                    {
+//                        aSprite.onCollideWith(aTargetSprite);
+//                        aSprite.hashCollision.put(aTargetSprite, value);
+//                        //the state of aSprite may change
+//                    }
+//
+//                    if (aTargetSprite.hashCollision.get(aSprite) != value)
+//                    {
+//                        if (aCopy != null)
+//                        {
+//                            aTargetSprite.onCollideWith(aCopy);
+//                        }
+//                        aTargetSprite.hashCollision.put(aSprite, value);
+//                    }
+//                } else
+//                {
+//                    //uncollide
+//                    value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
+//                    if (aSprite.hashCollision.get(aTargetSprite) != value)
+//                    {
+//                        aSprite.onNotCollideWith(aTargetSprite);
+//                        aSprite.hashCollision.put(aTargetSprite, value);
+//                    }
+//
+//                    if (aTargetSprite.hashCollision.get(aSprite) != value)
+//                    {
+//                        if (aCopy != null)
+//                        {
+//                            aTargetSprite.onNotCollideWith(aCopy);
+//                        }
+//                        aTargetSprite.hashCollision.put(aSprite, value);
+//                    }
+//                }
+//            }
+//
+//            if (index >= 0)
+//            {
+//                this.allNodes.remove(index);
+//            }
+//        }
+//
+//        this.allNodes.clear();
+//        this.allNodesRequestCollisionDetect.clear();
+//    }
+    
+    private void collisionDetect()
+    {
+        this.allNodes.clear();
+
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+        {
+            Layer aLayer = layers.get(i);
+            if (aLayer == null)
+            {
+                continue;
+            }
+
+            this.allNodes.addAll(aLayer.AllObjects);
+        }
+
+        for (Sprite aSprite : this.allNodes)
+        {
+            if (!aSprite.bCollisionDetect) continue;
+            
+            if (aSprite.getCollisionTargetCategory() <= 0) continue;
+            
+            Sprite aCopy = (Sprite) aSprite.getACopy();
+            Game2dEngineShared.TypeCollisionDetection value;
+
+            for (Sprite aTargetSprite : this.allNodes)
+            {
+                if (aSprite.equals(aTargetSprite)) continue;
+                
+                //the target allows to be detected
+                if (!aTargetSprite.bCollisionDetect) continue;
+
+                //the target belongs to the group
+                if (!aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory())) continue;
+
+                //collide with this sprite or not.
+                if (aSprite.collideWith(aTargetSprite))
+                {
+                    //collide
+                    value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
+                    if (aSprite.hashCollision.get(aTargetSprite) != value)
+                    {
+                        aSprite.onCollideWith(aTargetSprite);
+                        aSprite.hashCollision.put(aTargetSprite, value);
+                        //the state of aSprite may change
+                    }
+
+                    if (aTargetSprite.hashCollision.get(aSprite) != value)
+                    {
+                        if (aCopy != null)
+                        {
+                            aTargetSprite.onCollideWith(aCopy);
+                        }
+                        aTargetSprite.hashCollision.put(aSprite, value);
+                    }
+                } else
+                {
+                    //uncollide
+                    value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
+                    if (aSprite.hashCollision.get(aTargetSprite) != value)
+                    {
+                        aSprite.onNotCollideWith(aTargetSprite);
+                        aSprite.hashCollision.put(aTargetSprite, value);
+                    }
+
+                    if (aTargetSprite.hashCollision.get(aSprite) != value)
+                    {
+                        if (aCopy != null)
+                        {
+                            aTargetSprite.onNotCollideWith(aCopy);
+                        }
+                        aTargetSprite.hashCollision.put(aSprite, value);
+                    }
+                }
+            }
+
+        }
+
+        this.allNodes.clear();
+    }
+
 }

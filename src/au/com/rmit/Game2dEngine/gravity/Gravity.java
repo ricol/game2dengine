@@ -24,7 +24,18 @@ public class Gravity implements ICopy
     }
 
     @Override
-    public Object getCopy()
+    public void copyContent(Object theObject)
+    {
+        if (theObject instanceof Gravity)
+        {
+            Gravity theGravity = (Gravity)theObject;
+            theGravity.GX = this.GX;
+            theGravity.GY = this.GY;
+        }
+    }
+
+    @Override
+    public Object getACopy()
     {
         final Gravity g = new Gravity(this.GX, this.GY);
         return g;

@@ -115,7 +115,7 @@ public class Vector
     @Override
     public String toString()
     {
-        return "Vector[X: " + x + "; Y: " + y + "]";
+        return "Vector[X: " + x + "; Y: " + y + "; Magnitude: " + this.getMagnitude() + "]";
     }
 
     public void print(String title)

@@ -55,7 +55,7 @@ public class TestScene extends Scene
             @Override
             public void mouseClicked(MouseEvent e)
             {
-                
+
             }
 
             @Override
@@ -85,24 +85,29 @@ public class TestScene extends Scene
                     aSprite.wallType = WallSprite.WALLTYPE.RIGHT;
                     addSprite(aSprite);
                 }
-                
+
                 if (e.getButton() == MouseEvent.BUTTON3)
                 {
                     Sprite aCircle = new CircleBlue();
                     aCircle.setCentreX(e.getX());
-                    aCircle.setCentreY(e.getY());
-                    aCircle.setMass(500);
+//                    aCircle.setCentreY(e.getY());
+                    aCircle.setCentreY(getHeight() / 2.0f);
+                    aCircle.setMass(600);
                     addSprite(aCircle);
+                    
                 } else if (e.getButton() == MouseEvent.BUTTON1)
                 {
 
                     Sprite aCircle = new CircleYellow();
                     aCircle.setCentreX(e.getX());
-                    aCircle.setCentreY(e.getY());
-                    aCircle.setMass(200);
+//                    aCircle.setCentreY(e.getY());
+                    aCircle.setCentreY(getHeight() / 2.0f);
+                    aCircle.setMass(300);
                     addSprite(aCircle);
+                    
                     aCircle.setVelocityX(abs(theRandom.nextInt()) % 1000 + 500);
-                    aCircle.setVelocityY(abs(theRandom.nextInt()) % 1000 + 500);
+//                    aCircle.setVelocityY(abs(theRandom.nextInt()) % 1000 + 500);
+                    
                 }
             }
 

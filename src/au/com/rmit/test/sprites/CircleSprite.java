@@ -8,6 +8,7 @@ package au.com.rmit.test.sprites;
 import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
+import java.awt.Graphics2D;
 
 /**
  *
@@ -15,9 +16,54 @@ import au.com.rmit.Game2dEngine.sprite.Sprite;
  */
 public class CircleSprite extends Sprite
 {
+    @Override
+    public void onCustomDraw(Graphics2D theGraphics2D)
+    {
+        super.onCustomDraw(theGraphics2D); //To change body of generated methods, choose Tools | Templates.
+
+        theGraphics2D.setColor(this.getColor());
+        theGraphics2D.fillArc(0, 0, (int) this.getWidth(), (int) this.getHeight(), 0, 360);
+    }
+    
+    @Override
+    public void onCollideWith(Sprite target)
+    {
+        if (target instanceof WallSprite)
+        {
+            WallSprite aWall = (WallSprite) target;
+            if (aWall.wallType == WallSprite.WALLTYPE.LEFT)
+            {
+                this.setVelocityX(-this.getVelocityX());
+            } else if (aWall.wallType == WallSprite.WALLTYPE.RIGHT)
+            {
+                this.setVelocityX(-this.getVelocityX());
+            } else if (aWall.wallType == WallSprite.WALLTYPE.TOP)
+            {
+                this.setVelocityY(-this.getVelocityY());
+            } else if (aWall.wallType == WallSprite.WALLTYPE.BOTTOM)
+            {
+                this.setVelocityY(-this.getVelocityY());
+            }
+        } else
+            this.processCollision(target);
+    }
+    
+    @Override
+    public boolean collideWith(Sprite target)
+    {
+        if (target instanceof WallSprite)
+        {
+            return super.rectangleOverlaps(target);
+        } else
+        {
+            return super.circleOverlaps(target);
+        }
+    }
 
     public void processCollision(Sprite target)
     {
+        System.out.println(this.identifier + " collide with " + target.identifier);
+
         Vector AB = new Vector(target.getCentreX() - this.getCentreX(), target.getCentreY() - this.getCentreY());
         if (AB.getMagnitude() <= 0)
         {
@@ -36,11 +82,9 @@ public class CircleSprite extends Sprite
 
         Vector UNIT_AB = AB.getTheUnitVector();
         Vector V_A_AB = V_A.getProjectVectorOn(UNIT_AB);
-        V_A_AB.print("V_A_AB");
 
         Vector V_B = new Vector(target.getVelocityX(), target.getVelocityY());
         Vector V_B_AB = V_B.getProjectVectorOn(UNIT_AB);
-        V_B_AB.print("V_B_AB");
 
         double absV_A_AB = V_A_AB.getMagnitude();
 
@@ -63,10 +107,16 @@ public class CircleSprite extends Sprite
 
         Vector V_A_BC = V_A.getProjectVectorOn(UNIT_BC);
         Vector RESULT_V_A = RESULT_V_A_AB.addVector(V_A_BC);
-        
+
         RESULT_V_A.print("RESULT_V_A");
-            
+
         this.setVelocityX(RESULT_V_A.x);
         this.setVelocityY(RESULT_V_A.y);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Class: " + this.getClass() + "; identifier: " + this.identifier + "; velocityX: " + this.getVelocityX() + "; velocityY: " + this.getVelocityY();
     }
 }

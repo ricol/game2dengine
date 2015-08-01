@@ -31,7 +31,7 @@ import javax.imageio.ImageIO;
  *
  * @author ricolwang
  */
-public class Sprite extends Node implements ICopy
+public abstract class Sprite extends Node implements ICopy
 {
 
     public boolean bChild;
@@ -630,14 +630,32 @@ public class Sprite extends Node implements ICopy
     }
 
     @Override
-    public Object getCopy()
+    public Object getACopy()
     {
-        final Sprite aCopy;
-        aCopy = new Sprite(this.x, this.y, this.getWidth(), this.getHeight(), this.mass, this.velocityX, this.velocityY);
+        return null;
+    }
+
+    @Override
+    public void copyContent(Object theObject)
+    {
+        if (!(theObject instanceof Sprite))
+        {
+            return;
+        }
+
+        Sprite aCopy = (Sprite) theObject;
+
+        aCopy.x = this.x;
+        aCopy.y = this.y;
+        aCopy.setWidth(this.getWidth());
+        aCopy.setHeight(this.getHeight());
+        aCopy.velocityX = this.velocityX;
+        aCopy.velocityY = this.velocityY;
         aCopy.red = this.red;
         aCopy.green = this.green;
         aCopy.blue = this.blue;
         aCopy.angle = this.angle;
+        aCopy.alpha = this.alpha;
 
         aCopy.bChild = this.bChild;
         aCopy.parent = this.parent;
@@ -661,14 +679,12 @@ public class Sprite extends Node implements ICopy
         aCopy.bShouldDie = this.bShouldDie;
         aCopy.collisionCategory = this.collisionCategory;
         aCopy.collisionTargetCategory = this.collisionTargetCategory;
+        aCopy.identifier = this.identifier;
 
         if (this.g != null)
         {
-            aCopy.g = (Gravity) this.g.getCopy();
+            aCopy.g = (Gravity) this.g.getACopy();
         }
-        aCopy.alpha = this.alpha;
-
-        return aCopy;
     }
 
     public boolean collideWith(final Sprite target)
@@ -700,7 +716,7 @@ public class Sprite extends Node implements ICopy
     {
         return this.collisionTargetCategory;
     }
-    
+
     public void setLifeTime(double life)
     {
         this.lifetime = life;
@@ -822,5 +838,16 @@ public class Sprite extends Node implements ICopy
         this.parent = null;
         this.theScene = null;
     }
-
+    
+    @Override
+    public String toString()
+    {
+        return "class: " + this.getClass() + "; identifier: " + this.identifier;
+    }
+    
+    public void print(String title)
+    {
+        System.out.println(title + this);
+    }
+        
 }
