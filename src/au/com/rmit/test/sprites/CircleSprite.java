@@ -8,6 +8,7 @@ package au.com.rmit.test.sprites;
 import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
+import au.com.rmit.test.TestCommon;
 import java.awt.Graphics2D;
 
 /**
@@ -16,6 +17,15 @@ import java.awt.Graphics2D;
  */
 public class CircleSprite extends Sprite
 {
+
+    public CircleSprite()
+    {
+        this.bCollisionDetect = true;
+        this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE);
+        this.addTargetCollisionCategory(TestCommon.CATEGORY_WALL);
+        this.bCollisionArbitrary = true;
+        this.bCustomDrawing = true;
+    }
 
     @Override
     public void onCustomDraw(Graphics2D theGraphics2D)
@@ -110,8 +120,8 @@ public class CircleSprite extends Sprite
         RESULT_V_B.print("RESULT_V_B");
         target.setVelocityX(RESULT_V_B.x);
         target.setVelocityY(RESULT_V_B.y);
-        
-//        this.setTargetCollisionProcessed(true);
+
+        this.setTargetCollisionProcessed(true);
     }
 
     @Override
