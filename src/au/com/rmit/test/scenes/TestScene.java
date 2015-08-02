@@ -8,8 +8,7 @@ package au.com.rmit.test.scenes;
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
-import au.com.rmit.test.sprites.CircleBlue;
-import au.com.rmit.test.sprites.CircleYellow;
+import au.com.rmit.test.sprites.CircleSprite;
 import au.com.rmit.test.sprites.WallSprite;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -86,31 +85,42 @@ public class TestScene extends Scene
                     addSprite(aSprite);
                 }
 
+                float maxmass = 1000;
+                float size = 100;
+
                 if (e.getButton() == MouseEvent.BUTTON3)
                 {
-                    Sprite aCircle = new CircleBlue();
+                    Sprite aCircle = new CircleSprite();
+
+                    aCircle.setBlue(255);
+
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
-//                    aCircle.setCentreY(getHeight() / 2.0f);
-                    aCircle.setMass(10000);
-                    addSprite(aCircle);
-                    
-                } else if (e.getButton() == MouseEvent.BUTTON1)
-                {
-                    float maxmass = 1000;
-                    float size = 100;
-                    Sprite aCircle = new CircleYellow();
-                    aCircle.setCentreX(e.getX());
-                    aCircle.setCentreY(e.getY());
-//                    aCircle.setCentreY(getHeight() / 2.0f);
+
                     aCircle.setMass(abs(theRandom.nextInt()) % 900 + 100);
-                    addSprite(aCircle);
-                    
                     aCircle.setVelocityX(abs(theRandom.nextInt()) % 200 + 200);
                     aCircle.setVelocityY(abs(theRandom.nextInt()) % 200 + 200);
                     aCircle.setWidth((aCircle.getMass() / maxmass) * size);
                     aCircle.setHeight(aCircle.getWidth());
-                    
+
+                    addSprite(aCircle);
+
+                } else if (e.getButton() == MouseEvent.BUTTON1)
+                {
+                    Sprite aCircle = new CircleSprite();
+
+                    aCircle.setGreen(255);
+
+                    aCircle.setCentreX(e.getX());
+                    aCircle.setCentreY(e.getY());
+
+                    aCircle.setMass(abs(theRandom.nextInt()) % 900 + 100);
+                    aCircle.setVelocityX(abs(theRandom.nextInt()) % 200 + 200);
+                    aCircle.setVelocityY(abs(theRandom.nextInt()) % 200 + 200);
+                    aCircle.setWidth((aCircle.getMass() / maxmass) * size);
+                    aCircle.setHeight(aCircle.getWidth());
+
+                    addSprite(aCircle);
                 }
             }
 

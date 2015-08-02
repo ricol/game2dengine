@@ -17,6 +17,12 @@ import java.awt.Graphics2D;
 public class CircleSprite extends Sprite
 {
 
+    public CircleSprite()
+    {
+        this.bCollisionArbitrary = true;
+        this.bCustomDrawing = true;
+    }
+
     @Override
     public void onCustomDraw(Graphics2D theGraphics2D)
     {
@@ -110,8 +116,8 @@ public class CircleSprite extends Sprite
         RESULT_V_B.print("RESULT_V_B");
         target.setVelocityX(RESULT_V_B.x);
         target.setVelocityY(RESULT_V_B.y);
-        
-//        this.setTargetCollisionProcessed(true);
+
+        this.setTargetCollisionProcessed(true);
     }
 
     @Override
