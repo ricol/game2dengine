@@ -111,7 +111,7 @@ public class CircleSprite extends Sprite
         target.setVelocityX(RESULT_V_B.x);
         target.setVelocityY(RESULT_V_B.y);
         
-        this.setTargetCollisionProcessed(true);
+//        this.setTargetCollisionProcessed(true);
     }
 
     @Override

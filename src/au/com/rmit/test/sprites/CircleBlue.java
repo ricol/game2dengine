@@ -5,8 +5,6 @@
  */
 package au.com.rmit.test.sprites;
 
-import au.com.rmit.test.TestCommon;
-
 /**
  *
  * @author Philology
@@ -24,11 +22,12 @@ public class CircleBlue extends CircleSprite
         this.bCollisionDetect = true;
         this.bDrawCircle = true;
         this.identifier = "CircleBlue";
+        this.bCollisionArbitrary = true;
 
-        this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE_BLUE);
-
-        this.addTargetCollisionCategory(TestCommon.CATEGORY_WALL);
-        this.addTargetCollisionCategory(TestCommon.CATEGORY_CIRCLE_RED);
+//        this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE_BLUE);
+//
+//        this.addTargetCollisionCategory(TestCommon.CATEGORY_WALL);
+//        this.addTargetCollisionCategory(TestCommon.CATEGORY_CIRCLE_RED);
     }
 
     @Override

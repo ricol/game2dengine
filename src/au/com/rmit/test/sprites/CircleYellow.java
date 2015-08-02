@@ -5,8 +5,6 @@
  */
 package au.com.rmit.test.sprites;
 
-import au.com.rmit.test.TestCommon;
-
 /**
  *
  * @author ricolwang
@@ -18,18 +16,19 @@ public class CircleYellow extends CircleSprite
     {
         this.setRed(255);
         this.setGreen(255);
-        this.setWidth(50);
+        this.setWidth(100);
         this.setHeight(this.getWidth());
 
         this.bCustomDrawing = true;
         this.bCollisionDetect = true;
         this.bDrawCircle = true;
         this.identifier = "CircleYellow";
+        this.bCollisionArbitrary = true;
 
-        this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE_RED);
-
-        this.addTargetCollisionCategory(TestCommon.CATEGORY_WALL);
-        this.addTargetCollisionCategory(TestCommon.CATEGORY_CIRCLE_BLUE);
+//        this.setCollisionCategory(TestCommon.CATEGORY_CIRCLE_RED);
+//
+//        this.addTargetCollisionCategory(TestCommon.CATEGORY_WALL);
+//        this.addTargetCollisionCategory(TestCommon.CATEGORY_CIRCLE_BLUE);
     }
 
     @Override

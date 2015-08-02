@@ -370,7 +370,16 @@ public class Scene extends JPanel
             this.allNodes.addAll(aLayer.AllObjects);
         }
 
-        for (Sprite aSprite : this.allNodes)
+        this.collisionDetectionArbitrary(this.allNodes);
+
+        this.collisionDetectionBasedOnCategory(this.allNodes);
+
+        this.allNodes.clear();
+    }
+
+    private void collisionDetectionBasedOnCategory(ArrayList<Sprite> nodes)
+    {
+        for (Sprite aSprite : nodes)
         {
             if (!aSprite.bCollisionDetect)
                 continue;
@@ -378,9 +387,7 @@ public class Scene extends JPanel
             if (aSprite.getCollisionTargetCategory() <= 0)
                 continue;
 
-            Game2dEngineShared.TypeCollisionDetection value;
-
-            for (Sprite aTargetSprite : this.allNodes)
+            for (Sprite aTargetSprite : nodes)
             {
                 if (aSprite.equals(aTargetSprite))
                     continue;
@@ -392,53 +399,81 @@ public class Scene extends JPanel
                 //the target belongs to the group
                 if (!aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
                     continue;
-                
-                //collide with this sprite or not.
-                if (aSprite.collideWith(aTargetSprite))
-                {
-                    //collide
-                    value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
-                    if (aSprite.hashCollision.get(aTargetSprite) != value)
-                    {
-                        aSprite.onCollideWith(aTargetSprite);
-                        aSprite.hashCollision.put(aTargetSprite, value);
-                        //the velocity of aSprite
-                    }
 
-                    if (aTargetSprite.hashCollision.get(aSprite) != value)
-                    {
-                        aTargetSprite.hashCollision.put(aSprite, value);
-                        
-                        if (!aSprite.getTargetCollisionProcessed())
-                            aTargetSprite.onCollideWith(aSprite);
-                        
-                        aSprite.setTargetCollisionProcessed(false);
-                    }
-                } else
-                {
-                    //uncollide
-                    value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
-                    if (aSprite.hashCollision.get(aTargetSprite) != value)
-                    {
-                        aSprite.onNotCollideWith(aTargetSprite);
-                        aSprite.hashCollision.put(aTargetSprite, value);
-                    }
-                    
-                    if (aTargetSprite.hashCollision.get(aSprite) != value)
-                    {
-                        aTargetSprite.hashCollision.put(aSprite, value);
-                        
-                        if (!aSprite.getTargetCollisionProcessed())
-                            aTargetSprite.onNotCollideWith(aSprite);
-                        
-                        aSprite.setTargetCollisionProcessed(false);
-                    }
-                }
+                //collide with this sprite or not.
+                this.processCollision(aSprite, aTargetSprite);
+            }
+        }
+    }
+
+    private void collisionDetectionArbitrary(ArrayList<Sprite> nodes)
+    {
+        for (Sprite aSprite : nodes)
+        {
+            if (!aSprite.bCollisionArbitrary)
+                continue;
+
+            Game2dEngineShared.TypeCollisionDetection value;
+
+            for (Sprite aTargetSprite : nodes)
+            {
+                if (aSprite.equals(aTargetSprite))
+                    continue;
+
+                //the target allows to be detected
+                if (!aTargetSprite.bCollisionArbitrary)
+                    continue;
+
+                //collide with this sprite or not.
+                this.processCollision(aSprite, aTargetSprite);
+            }
+        }
+    }
+
+    private void processCollision(Sprite theSprite, Sprite theTarget)
+    {
+        Game2dEngineShared.TypeCollisionDetection value;
+
+        if (theSprite.collideWith(theTarget))
+        {
+            //collide
+            value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
+            if (theSprite.hashCollision.get(theTarget) != value)
+            {
+                theSprite.onCollideWith(theTarget);
+                theSprite.hashCollision.put(theTarget, value);
+                //the velocity of aSprite
             }
 
-        }
+            if (theTarget.hashCollision.get(theSprite) != value)
+            {
+                theTarget.hashCollision.put(theSprite, value);
 
-        this.allNodes.clear();
+                if (!theSprite.getTargetCollisionProcessed())
+                    theTarget.onCollideWith(theSprite);
+
+                theSprite.setTargetCollisionProcessed(false);
+            }
+        } else
+        {
+            //uncollide
+            value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
+            if (theSprite.hashCollision.get(theTarget) != value)
+            {
+                theSprite.onNotCollideWith(theTarget);
+                theSprite.hashCollision.put(theTarget, value);
+            }
+
+            if (theTarget.hashCollision.get(theSprite) != value)
+            {
+                theTarget.hashCollision.put(theSprite, value);
+
+                if (!theSprite.getTargetCollisionProcessed())
+                    theTarget.onNotCollideWith(theSprite);
+
+                theSprite.setTargetCollisionProcessed(false);
+            }
+        }
     }
 
 }
