@@ -1,10 +1,11 @@
 package au.com.rmit.test;
 
 import au.com.rmit.Game2dEngine.director.Director;
-import au.com.rmit.test.scenes.FireworksScene;
-import au.com.rmit.test.scenes.FountainScene;
-import au.com.rmit.test.scenes.RandomShapeScene;
-import au.com.rmit.test.scenes.TestScene;
+import au.com.rmit.test.ball.BallScene;
+import au.com.rmit.test.fireworks.FireworksScene;
+import au.com.rmit.test.fountain.FountainScene;
+import au.com.rmit.test.physicengine.TestScene;
+import au.com.rmit.test.spiralDemo.SpiralScene;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -50,6 +51,7 @@ public class FrameMain extends javax.swing.JFrame
         btnSpiral = new javax.swing.JButton();
         btnFireworks = new javax.swing.JButton();
         btnTest = new javax.swing.JButton();
+        btnBall = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter()
@@ -127,6 +129,15 @@ public class FrameMain extends javax.swing.JFrame
             }
         });
 
+        btnBall.setText("Ball");
+        btnBall.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnBallActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,7 +147,9 @@ public class FrameMain extends javax.swing.JFrame
                 .addComponent(btnPause)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnStop)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 232, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
+                .addComponent(btnBall)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTest)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFireworks)
@@ -159,7 +172,8 @@ public class FrameMain extends javax.swing.JFrame
                     .addComponent(btnFountain)
                     .addComponent(btnSpiral)
                     .addComponent(btnFireworks)
-                    .addComponent(btnTest))
+                    .addComponent(btnTest)
+                    .addComponent(btnBall))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -200,7 +214,7 @@ public class FrameMain extends javax.swing.JFrame
     private void btnSpiralActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnSpiralActionPerformed
     {//GEN-HEADEREND:event_btnSpiralActionPerformed
         // TODO add your handling code here:
-        Director.getSharedInstance().showScene(new RandomShapeScene());
+        Director.getSharedInstance().showScene(new SpiralScene());
     }//GEN-LAST:event_btnSpiralActionPerformed
 
     private void btnFireworksActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnFireworksActionPerformed
@@ -215,7 +229,14 @@ public class FrameMain extends javax.swing.JFrame
         Director.getSharedInstance().showScene(new TestScene());
     }//GEN-LAST:event_btnTestActionPerformed
 
+    private void btnBallActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnBallActionPerformed
+    {//GEN-HEADEREND:event_btnBallActionPerformed
+        // TODO add your handling code here:
+        Director.getSharedInstance().showScene(new BallScene());
+    }//GEN-LAST:event_btnBallActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBall;
     private javax.swing.JButton btnFireworks;
     private javax.swing.JButton btnFountain;
     private javax.swing.JButton btnPause;

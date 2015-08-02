@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test.scenes;
+package au.com.rmit.test.physicengine;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
-import au.com.rmit.test.sprites.CircleSprite;
-import au.com.rmit.test.sprites.WallSprite;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;

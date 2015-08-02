@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test.sprites;
+package au.com.rmit.test.physicengine;
 
+import au.com.rmit.test.physicengine.WallSprite;
 import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.sprite.Sprite;

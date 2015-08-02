@@ -31,7 +31,9 @@
               <Component id="btnPause" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnStop" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="232" max="32767" attributes="0"/>
+              <EmptySpace pref="182" max="32767" attributes="0"/>
+              <Component id="btnBall" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="btnTest" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnFireworks" min="-2" max="-2" attributes="0"/>
@@ -58,6 +60,7 @@
                   <Component id="btnSpiral" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnFireworks" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnTest" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnBall" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="panelGame" min="-2" max="-2" attributes="0"/>
@@ -133,6 +136,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTestActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnBall">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ball"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBallActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
