@@ -19,4 +19,11 @@ public class SquareShape extends Sprite
         super(0, 0, 100, 100);
         this.bDrawFrame = true;
     }
+
+    @Override
+    public Object getACopy()
+    {
+        Object aCopy = new SquareShape();
+        return aCopy;
+    }
 }

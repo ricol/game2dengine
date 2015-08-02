@@ -88,4 +88,5 @@ public class BigFirework extends Firework
             this.setShouldDie();
         }
     }
+    
 }

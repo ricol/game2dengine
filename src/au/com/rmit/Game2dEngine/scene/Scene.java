@@ -97,9 +97,7 @@ public class Scene extends JPanel
             public void componentResized(ComponentEvent evt)
             {
                 if (theImage == null)
-                {
                     return;
-                }
 
                 theImage = null;
                 theGraphics2D = null;
@@ -148,9 +146,7 @@ public class Scene extends JPanel
         Loop();
 
         if (theImage != null)
-        {
             g.drawImage(theImage, 0, 0, null);
-        }
 
         try
         {
@@ -165,9 +161,7 @@ public class Scene extends JPanel
     private void addSprite(Sprite aSprite, int zOrder)
     {
         if (zOrder < MIN_LAYER || zOrder > MAX_LAYER)
-        {
             return;
-        }
 
         Layer theLayer = layers.get(zOrder);
 
@@ -177,9 +171,7 @@ public class Scene extends JPanel
             theLayer.addSprite(aSprite);
             layers.put(zOrder, theLayer);
         } else
-        {
             theLayer.addSprite(aSprite);
-        }
     }
 
     public void addSprite(Sprite aSprite)
@@ -199,15 +191,11 @@ public class Scene extends JPanel
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
-                {
                     continue;
-                }
 
                 //remove all dead sprites
                 for (Sprite aSprite : aLayer.DeadObjects)
-                {
                     aSprite.theScene = null;
-                }
 
                 aLayer.AllObjects.removeAll(aLayer.DeadObjects);
                 aLayer.DeadObjects.clear();
@@ -219,9 +207,7 @@ public class Scene extends JPanel
                     aSprite.updateState(currentTime);
 
                     if (aSprite instanceof Sprite)
-                    {
                         actionCount += ((Sprite) aSprite).getActionCount();
-                    }
 
                     if (!aSprite.isAlive())
                     {
@@ -243,9 +229,8 @@ public class Scene extends JPanel
         if (theGraphics2D != null)
         {
             if (theImageBackground != null)
-            {
                 theGraphics2D.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight(), null);
-            } else
+            else
             {
                 theGraphics2D.setColor(theBackgroundColor);
                 theGraphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -255,14 +240,10 @@ public class Scene extends JPanel
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
-                {
                     continue;
-                }
 
                 for (Sprite aSprite : aLayer.AllObjects)
-                {
                     aSprite.updateGUI(theGraphics2D);
-                }
             }
 
             long time = System.currentTimeMillis();
@@ -287,9 +268,7 @@ public class Scene extends JPanel
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
-                {
                     continue;
-                }
 
                 totalLayers++;
                 totalNodes += aLayer.AllObjects.size();
@@ -362,76 +341,6 @@ public class Scene extends JPanel
         return this.blue;
     }
 
-    public void collisionDetect()
-    {
-        this.allNodes.clear();
-        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
-        {
-            Layer aLayer = layers.get(i);
-            if (aLayer == null)
-            {
-                continue;
-            }
-
-            this.allNodes.addAll(aLayer.AllObjects);
-        }
-
-        for (Sprite aSprite : this.allNodes)
-        {
-            if (aSprite.bCollisionDetect)
-            {
-                for (Sprite aTargetSprite : this.allNodes)
-                {
-                    if (aTargetSprite.equals(aSprite))
-                    {
-                        continue;
-                    }
-
-                    //the target allows to be detected
-                    if (aTargetSprite.bCollisionDetect)
-                    {
-                        //the target belongs to the group
-                        if (aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
-                        {
-                            //collide with this sprite or not.
-                            if (aSprite.collideWith(aTargetSprite))
-                            {
-                                //collide
-                                if (aSprite.hashCollision.get(aTargetSprite) != Game2dEngineShared.TypeCollisionDetection.COLLIDED)
-                                {
-                                    aSprite.onCollideWith(aTargetSprite);
-                                    aSprite.hashCollision.put(aTargetSprite, Game2dEngineShared.TypeCollisionDetection.COLLIDED);
-                                }
-
-                                if (aTargetSprite.hashCollision.get(aSprite) != Game2dEngineShared.TypeCollisionDetection.COLLIDED)
-                                {
-                                    aTargetSprite.onCollideWith(aSprite);
-                                    aTargetSprite.hashCollision.put(aSprite, Game2dEngineShared.TypeCollisionDetection.COLLIDED);
-                                }
-                            } else
-                            {
-                                //uncollide
-                                if (aSprite.hashCollision.get(aTargetSprite) != Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED)
-                                {
-                                    aSprite.onNotCollideWith(aTargetSprite);
-                                    aSprite.hashCollision.put(aTargetSprite, Game2dEngineShared.TypeCollisionDetection.UNDECTED);
-                                }
-
-                                if (aTargetSprite.hashCollision.get(aSprite) != Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED)
-                                {
-                                    aTargetSprite.onNotCollideWith(aSprite);
-                                    aTargetSprite.hashCollision.put(aSprite, Game2dEngineShared.TypeCollisionDetection.UNDECTED);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        this.allNodes.clear();
-    }
-
     private void collectMemoryInfo()
     {
         Runtime runtime = Runtime.getRuntime();
@@ -447,4 +356,89 @@ public class Scene extends JPanel
         strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
         strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
     }
+
+    private void collisionDetect()
+    {
+        this.allNodes.clear();
+
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+        {
+            Layer aLayer = layers.get(i);
+            if (aLayer == null)
+                continue;
+
+            this.allNodes.addAll(aLayer.AllObjects);
+        }
+
+        for (Sprite aSprite : this.allNodes)
+        {
+            if (!aSprite.bCollisionDetect)
+                continue;
+
+            if (aSprite.getCollisionTargetCategory() <= 0)
+                continue;
+
+            Game2dEngineShared.TypeCollisionDetection value;
+
+            for (Sprite aTargetSprite : this.allNodes)
+            {
+                if (aSprite.equals(aTargetSprite))
+                    continue;
+
+                //the target allows to be detected
+                if (!aTargetSprite.bCollisionDetect)
+                    continue;
+
+                //the target belongs to the group
+                if (!aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
+                    continue;
+                
+                //collide with this sprite or not.
+                if (aSprite.collideWith(aTargetSprite))
+                {
+                    //collide
+                    value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
+                    if (aSprite.hashCollision.get(aTargetSprite) != value)
+                    {
+                        aSprite.onCollideWith(aTargetSprite);
+                        aSprite.hashCollision.put(aTargetSprite, value);
+                        //the velocity of aSprite
+                    }
+
+                    if (aTargetSprite.hashCollision.get(aSprite) != value)
+                    {
+                        aTargetSprite.hashCollision.put(aSprite, value);
+                        
+                        if (!aSprite.getTargetCollisionProcessed())
+                            aTargetSprite.onCollideWith(aSprite);
+                        
+                        aSprite.setTargetCollisionProcessed(false);
+                    }
+                } else
+                {
+                    //uncollide
+                    value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
+                    if (aSprite.hashCollision.get(aTargetSprite) != value)
+                    {
+                        aSprite.onNotCollideWith(aTargetSprite);
+                        aSprite.hashCollision.put(aTargetSprite, value);
+                    }
+                    
+                    if (aTargetSprite.hashCollision.get(aSprite) != value)
+                    {
+                        aTargetSprite.hashCollision.put(aSprite, value);
+                        
+                        if (!aSprite.getTargetCollisionProcessed())
+                            aTargetSprite.onNotCollideWith(aSprite);
+                        
+                        aSprite.setTargetCollisionProcessed(false);
+                    }
+                }
+            }
+
+        }
+
+        this.allNodes.clear();
+    }
+
 }
