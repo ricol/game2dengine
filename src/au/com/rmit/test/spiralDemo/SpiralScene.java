@@ -6,9 +6,8 @@
 package au.com.rmit.test.spiralDemo;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.test.fireworks.Firework;
-import au.com.rmit.test.fireworks.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
+import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Math.abs;
@@ -30,14 +29,14 @@ public class SpiralScene extends Scene
     Gravity g2 = new Gravity(0, 0);
     float delta2 = 0;
 
-    Timer theTimer = new Timer(10, new ActionListener()
+    Timer theTimer = new Timer(50, new ActionListener()
     {
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            createParticles(1, (int) (size().width * (1.0 / 4.0)), (int) (size().height / 2.25f), g1);
-            createParticles(1, (int) (size().width * (3.0 / 4.0)), (int) (size().height / 2.25f), g1);
+            createParticles(1, (int) (size().width * (1.0 / 2.0)), (int) (size().height / 2.25f), g1);
+//            createParticles(1, (int) (size().width * (3.0 / 4.0)), (int) (size().height / 2.25f), g1);
         }
     });
 
@@ -96,9 +95,9 @@ public class SpiralScene extends Scene
     {
         for (int i = 0; i < number; i++)
         {
-            Firework aObject;
+            Sprite aObject;
 
-            aObject = new SmallFirework(x, y, 10, 10, 0, 0, 0);
+            aObject = new RectangleShape(x, y, 50, 50, 0, 0, 0);
             aObject.setLifeTime(10);
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
