@@ -13,6 +13,5 @@ public class TestCommon
 {
 
     public static int CATEGORY_WALL = 1;
-    public static int CATEGORY_CIRCLE_RED = 2;
-    public static int CATEGORY_CIRCLE_BLUE = 4;
+    public static int CATEGORY_CIRCLE = 2;
 }

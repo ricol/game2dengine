@@ -410,6 +410,9 @@ public class Scene extends JPanel
     {
         for (Sprite aSprite : nodes)
         {
+            if (!aSprite.bCollisionDetect)
+                continue;
+
             if (!aSprite.bCollisionArbitrary)
                 continue;
 
