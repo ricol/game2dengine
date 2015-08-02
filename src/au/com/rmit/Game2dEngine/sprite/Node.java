@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class Node
 {
-
+    public String identifier;
     protected double x;
     protected double y;
     private double width;

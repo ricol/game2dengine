@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test.sprites;
+package au.com.rmit.test.scenes;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
-import au.com.rmit.test.sprites.WallSprite.WALLTYPE;
+import au.com.rmit.test.sprites.CircleBlue;
+import au.com.rmit.test.sprites.CircleYellow;
+import au.com.rmit.test.sprites.WallSprite;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -65,27 +67,23 @@ public class TestScene extends Scene
 
                     WallSprite aSprite = new WallSprite(0, 0, getWidth(), 5, 0, 0, 0);
                     aSprite.setBlue(255);
-                    aSprite.wallType = WALLTYPE.TOP;
+                    aSprite.wallType = WallSprite.WALLTYPE.TOP;
                     addSprite(aSprite);
 
                     aSprite = new WallSprite(0, getHeight() - 5, getWidth(), 5, 0, 0, 0);
                     aSprite.setBlue(255);
-                    aSprite.wallType = WALLTYPE.BOTTOM;
+                    aSprite.wallType = WallSprite.WALLTYPE.BOTTOM;
                     addSprite(aSprite);
 
                     aSprite = new WallSprite(0, 0, 5, getHeight(), 0, 0, 0);
                     aSprite.setBlue(255);
-                    aSprite.wallType = WALLTYPE.LEFT;
+                    aSprite.wallType = WallSprite.WALLTYPE.LEFT;
                     addSprite(aSprite);
 
                     aSprite = new WallSprite(getWidth() - 5, 0, 5, getHeight(), 0, 0, 0);
                     aSprite.setBlue(255);
-                    aSprite.wallType = WALLTYPE.RIGHT;
+                    aSprite.wallType = WallSprite.WALLTYPE.RIGHT;
                     addSprite(aSprite);
-
-//                    theWall.setRed(255);
-//                    theWall.setLayer(1);
-//                    addSprite(theWall);
                 }
 
                 if (e.getButton() == MouseEvent.BUTTON3)
@@ -93,16 +91,23 @@ public class TestScene extends Scene
                     Sprite aCircle = new CircleBlue();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
+//                    aCircle.setCentreY(getHeight() / 2.0f);
+                    aCircle.setMass(1000);
                     addSprite(aCircle);
+                    
                 } else if (e.getButton() == MouseEvent.BUTTON1)
                 {
 
                     Sprite aCircle = new CircleYellow();
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
+//                    aCircle.setCentreY(getHeight() / 2.0f);
+                    aCircle.setMass(250);
                     addSprite(aCircle);
+                    
                     aCircle.setVelocityX(abs(theRandom.nextInt()) % 1000 + 500);
                     aCircle.setVelocityY(abs(theRandom.nextInt()) % 1000 + 500);
+                    
                 }
             }
 
