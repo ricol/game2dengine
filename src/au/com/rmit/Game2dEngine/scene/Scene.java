@@ -416,8 +416,6 @@ public class Scene extends JPanel
             if (!aSprite.bCollisionArbitrary)
                 continue;
 
-            Game2dEngineShared.TypeCollisionDetection value;
-
             for (Sprite aTargetSprite : nodes)
             {
                 if (aSprite.equals(aTargetSprite))
@@ -445,7 +443,6 @@ public class Scene extends JPanel
             {
                 theSprite.onCollideWith(theTarget);
                 theSprite.hashCollision.put(theTarget, value);
-                //the velocity of aSprite
             }
 
             if (theTarget.hashCollision.get(theSprite) != value)
