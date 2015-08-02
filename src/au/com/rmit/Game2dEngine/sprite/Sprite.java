@@ -61,6 +61,7 @@ public abstract class Sprite extends Node implements ICopy
     private boolean bShouldDie = false;
     private int collisionCategory = 0x00;
     private int collisionTargetCategory = 0x00;
+    public boolean bCollisionArbitrary = false;
 
     private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
     private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
