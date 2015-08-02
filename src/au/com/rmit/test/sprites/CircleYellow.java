@@ -18,7 +18,7 @@ public class CircleYellow extends CircleSprite
     {
         this.setRed(255);
         this.setGreen(255);
-        this.setWidth(100);
+        this.setWidth(50);
         this.setHeight(this.getWidth());
 
         this.bCustomDrawing = true;

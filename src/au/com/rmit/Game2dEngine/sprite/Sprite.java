@@ -47,6 +47,7 @@ public abstract class Sprite extends Node implements ICopy
     public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
     public boolean bDeadIfNoActions;
+    private boolean bTargetCollisionProcessed = false;
 
     private int layer = Scene.MIN_LAYER;
     private double lifetime = Sprite.EVER; //in seconds
@@ -672,6 +673,16 @@ public abstract class Sprite extends Node implements ICopy
     public double getLife()
     {
         return this.lifetime;
+    }
+    
+    public boolean getTargetCollisionProcessed()
+    {
+        return this.bTargetCollisionProcessed;
+    }
+    
+    public void setTargetCollisionProcessed(boolean value)
+    {
+        this.bTargetCollisionProcessed = value;
     }
 
     public int getCollisionTargetCategory()
