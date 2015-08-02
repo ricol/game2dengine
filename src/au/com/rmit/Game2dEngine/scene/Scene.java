@@ -370,9 +370,9 @@ public class Scene extends JPanel
             this.allNodes.addAll(aLayer.AllObjects);
         }
 
-        this.collisionDetectionArbitrary(this.allNodes);
-
         this.collisionDetectionBasedOnCategory(this.allNodes);
+        
+        this.collisionDetectionArbitrary(this.allNodes);
 
         this.allNodes.clear();
     }

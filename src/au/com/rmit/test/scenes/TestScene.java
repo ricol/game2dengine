@@ -97,7 +97,8 @@ public class TestScene extends Scene
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
 
-                    aCircle.setMass(abs(theRandom.nextInt()) % 900 + 100);
+//                    aCircle.setMass(abs(theRandom.nextInt()) % 900 + 100);
+                    aCircle.setMass(500);
                     aCircle.setVelocityX(abs(theRandom.nextInt()) % 200 + 200);
                     aCircle.setVelocityY(abs(theRandom.nextInt()) % 200 + 200);
                     aCircle.setWidth((aCircle.getMass() / maxmass) * size);
@@ -109,12 +110,13 @@ public class TestScene extends Scene
                 {
                     Sprite aCircle = new CircleSprite();
 
-                    aCircle.setGreen(255);
+                    aCircle.setRed(255);
 
                     aCircle.setCentreX(e.getX());
                     aCircle.setCentreY(e.getY());
 
-                    aCircle.setMass(abs(theRandom.nextInt()) % 900 + 100);
+//                    aCircle.setMass(abs(theRandom.nextInt()) % 900 + 100);
+                    aCircle.setMass(1000);
                     aCircle.setVelocityX(abs(theRandom.nextInt()) % 200 + 200);
                     aCircle.setVelocityY(abs(theRandom.nextInt()) % 200 + 200);
                     aCircle.setWidth((aCircle.getMass() / maxmass) * size);

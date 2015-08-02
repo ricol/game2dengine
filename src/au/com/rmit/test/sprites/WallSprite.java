@@ -28,7 +28,6 @@ public class WallSprite extends Sprite
 
         this.bCollisionDetect = true;
         this.setCollisionCategory(TestCommon.CATEGORY_WALL);
-        this.bCollisionArbitrary = true;
     }
 
 }
