@@ -32,6 +32,7 @@ public abstract class Firework extends Sprite
         RotateByAction aAction = new RotateByAction();
         aAction.rotateBy(Math.PI * 2 * (theRandom.nextBoolean() ? 1 : -1), 2);
         this.addAction(aAction);
+        this.enableGravity();
     }
 
     @Override

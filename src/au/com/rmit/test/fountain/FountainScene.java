@@ -6,8 +6,6 @@
 package au.com.rmit.test.fountain;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.test.fireworks.Firework;
-import au.com.rmit.test.fireworks.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,14 +74,14 @@ public class FountainScene extends Scene
     {
         for (int i = 0; i < number; i++)
         {
-            Firework aObject;
+            FountainSprite aObject;
 
             double mass = theRandom.nextFloat() / 3.0f;
             double velocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 200.0f;
             double velocityY = -1 * theRandom.nextFloat() * 50.0f - 500.0f;
 
             float size = abs(theRandom.nextInt()) % 7 + 3;
-            aObject = new SmallFirework(x, y, size, size, mass, velocityX, velocityY);
+            aObject = new FountainSprite(x, y, size, size, mass, velocityX, velocityY);
             aObject.setLifeTime((abs(theRandom.nextInt()) % 100) / 50.0);
 
             int redValue = abs(theRandom.nextInt()) % 255;
@@ -93,6 +91,7 @@ public class FountainScene extends Scene
             aObject.setGreen(greenValue);
             aObject.setBlue(blueValue);
             aObject.applyGravity(g);
+            aObject.enableGravity();
 
 //            if (abs(theRandom.nextInt()) % 100 > 50)
 //            {
