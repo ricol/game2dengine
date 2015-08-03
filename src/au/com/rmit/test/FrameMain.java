@@ -5,6 +5,7 @@ import au.com.rmit.test.ball.BallScene;
 import au.com.rmit.test.fireworks.FireworksScene;
 import au.com.rmit.test.fountain.FountainScene;
 import au.com.rmit.test.physicengine.TestScene;
+import au.com.rmit.test.realworld.RealWorldScene;
 import au.com.rmit.test.spiralDemo.SpiralScene;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
@@ -52,6 +53,7 @@ public class FrameMain extends javax.swing.JFrame
         btnFireworks = new javax.swing.JButton();
         btnTest = new javax.swing.JButton();
         btnBall = new javax.swing.JButton();
+        btnRealWorld = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter()
@@ -138,6 +140,15 @@ public class FrameMain extends javax.swing.JFrame
             }
         });
 
+        btnRealWorld.setText("Real World");
+        btnRealWorld.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnRealWorldActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,7 +158,9 @@ public class FrameMain extends javax.swing.JFrame
                 .addComponent(btnPause)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnStop)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 182, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addComponent(btnRealWorld)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBall)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnTest)
@@ -173,7 +186,8 @@ public class FrameMain extends javax.swing.JFrame
                     .addComponent(btnSpiral)
                     .addComponent(btnFireworks)
                     .addComponent(btnTest)
-                    .addComponent(btnBall))
+                    .addComponent(btnBall)
+                    .addComponent(btnRealWorld))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -235,11 +249,18 @@ public class FrameMain extends javax.swing.JFrame
         Director.getSharedInstance().showScene(new BallScene());
     }//GEN-LAST:event_btnBallActionPerformed
 
+    private void btnRealWorldActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnRealWorldActionPerformed
+    {//GEN-HEADEREND:event_btnRealWorldActionPerformed
+        // TODO add your handling code here:
+        Director.getSharedInstance().showScene(new RealWorldScene());
+    }//GEN-LAST:event_btnRealWorldActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBall;
     private javax.swing.JButton btnFireworks;
     private javax.swing.JButton btnFountain;
     private javax.swing.JButton btnPause;
+    private javax.swing.JButton btnRealWorld;
     private javax.swing.JButton btnSpiral;
     private javax.swing.JButton btnStop;
     private javax.swing.JButton btnTest;
