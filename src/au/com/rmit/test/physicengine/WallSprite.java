@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test.sprites;
+package au.com.rmit.test.physicengine;
 
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 import au.com.rmit.test.TestCommon;
@@ -28,7 +28,6 @@ public class WallSprite extends Sprite
 
         this.bCollisionDetect = true;
         this.setCollisionCategory(TestCommon.CATEGORY_WALL);
-        this.bCollisionArbitrary = true;
     }
 
 }

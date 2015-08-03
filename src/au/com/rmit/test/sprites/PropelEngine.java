@@ -5,6 +5,7 @@
  */
 package au.com.rmit.test.sprites;
 
+import au.com.rmit.test.fireworks.FireSprite;
 import au.com.rmit.Game2dEngine.action.AlphaToAction;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.awt.event.ActionEvent;

@@ -74,6 +74,7 @@ public abstract class Sprite extends Node implements ICopy
     private Set<Sprite> theSetOfChildrenWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfChildren = new HashSet<>();
 
+    private boolean bEnableGravity;
     private double mass;
     private Gravity g;
     private float alpha = 1;
@@ -145,7 +146,7 @@ public abstract class Sprite extends Node implements ICopy
             this.setShouldDie();
 
         //update state
-        if (this.g != null)
+        if (this.g != null && this.bEnableGravity)
         {
             velocityX += this.g.GX * t;
             velocityY += this.g.GY * t;
@@ -418,9 +419,12 @@ public abstract class Sprite extends Node implements ICopy
         return bShouldDie;
     }
 
-    public void applyGravity(final Gravity g)
+    public void applyGravity(final Gravity theG)
     {
-        this.g = new Gravity(g.GX, g.GY);
+        if (theG != null)
+            this.g = new Gravity(theG.GX, theG.GY);
+        else
+            this.g = null;
     }
 
     public void addAction(Action aAction)
@@ -676,11 +680,26 @@ public abstract class Sprite extends Node implements ICopy
         return this.lifetime;
     }
     
+    public boolean isGravityEnabled()
+    {
+        return this.bEnableGravity;
+    }
+    
+    public void enableGravity()
+    {
+        this.bEnableGravity = true;
+    }
+    
+    public void disableGravity()
+    {
+        this.bEnableGravity = false;
+    }
+
     public boolean getTargetCollisionProcessed()
     {
         return this.bTargetCollisionProcessed;
     }
-    
+
     public void setTargetCollisionProcessed(boolean value)
     {
         this.bTargetCollisionProcessed = value;
