@@ -55,6 +55,7 @@ public class Scene extends JPanel
     long actionCount = 0;
     String strFreeMemory = "";
     String strAllocatedMemory = "";
+    String strMemoryUsage = "";
     String strMaxMemory = "";
     String strTotalFreeMemory = "";
 
@@ -291,10 +292,11 @@ public class Scene extends JPanel
 
             if (bShowMemoryUsage)
             {
-                theGraphics2D.drawString(strFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
-                theGraphics2D.drawString(strAllocatedMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 3);
-                theGraphics2D.drawString(strMaxMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 4);
-                theGraphics2D.drawString(strTotalFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 5);
+                theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
+//                theGraphics2D.drawString(strFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
+//                theGraphics2D.drawString(strAllocatedMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 3);
+//                theGraphics2D.drawString(strMaxMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 4);
+//                theGraphics2D.drawString(strTotalFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 5);
             }
         }
     }
@@ -353,6 +355,7 @@ public class Scene extends JPanel
 
         strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
         strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
+        strMemoryUsage = "MEM: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
         strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
         strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
     }
