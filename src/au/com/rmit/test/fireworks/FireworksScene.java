@@ -3,54 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test.scenes;
+package au.com.rmit.test.fireworks;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.test.sprites.RandomShapeSprite;
-import au.com.rmit.Game2dEngine.sprite.Sprite;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Math.abs;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static java.lang.Math.pow;
 import javax.swing.Timer;
 
 /**
  *
  * @author ricolwang
  */
-public class RandomShapeScene extends Scene
+public class FireworksScene extends Scene
 {
 
-    static float GRAVITY_VALUE = 100;
-    Gravity g = new Gravity(0, 0);
-    float delta = 0;
+    Gravity g = new Gravity(0, 500);
 
-    Timer theTimer = new Timer(50, new ActionListener()
+    Timer theTimer = new Timer(200, new ActionListener()
     {
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            createParticles(1, (int) (size().width * (1.0 / 2.0)), (int) (size().height / 2.25f), g);
+            createParticles(1, (int) (size().width * (2.0 / 4.0)), (int) (size().height * (3.5 / 4.0)), g);
         }
     });
 
-    Timer theTimerForGravity = new Timer(10, new ActionListener()
-    {
-
-        @Override
-        public synchronized void actionPerformed(ActionEvent e)
-        {
-            g.GX = (float) sin(delta) * GRAVITY_VALUE;
-            g.GY = (float) cos(delta) * GRAVITY_VALUE;
-            delta += 0.1;
-        }
-
-    });
-
-    public RandomShapeScene()
+    public FireworksScene()
     {
         super();
         this.setRed(0);
@@ -64,7 +46,6 @@ public class RandomShapeScene extends Scene
         super.start();
 
         this.theTimer.start();
-        this.theTimerForGravity.start();
     }
 
     @Override
@@ -75,11 +56,9 @@ public class RandomShapeScene extends Scene
         if (bPaused)
         {
             this.theTimer.stop();
-            this.theTimerForGravity.stop();
         } else
         {
             this.theTimer.start();
-            this.theTimerForGravity.start();
         }
     }
 
@@ -87,7 +66,6 @@ public class RandomShapeScene extends Scene
     public void stop()
     {
         this.theTimer.stop();
-        this.theTimerForGravity.stop();
 
         super.stop();
     }
@@ -96,10 +74,36 @@ public class RandomShapeScene extends Scene
     {
         for (int i = 0; i < number; i++)
         {
-            Sprite aObject;
+            Firework aObject;
 
-            aObject = new RandomShapeSprite(x, y, 50, 50, 0, 0, 0);
-            aObject.setLifeTime(10);
+            double mass = theRandom.nextFloat() / 3.0f;
+            double velocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 50.0f;
+            double velocityY = -1 * theRandom.nextFloat() * 50.0f - 600.0f;
+
+            if (abs(theRandom.nextInt() % 10) > 5)
+            {
+                aObject = new BigFirework();
+                aObject.setX(x);
+                aObject.setY(y);
+                aObject.setVelocityX(velocityX);
+                aObject.setVelocityY(velocityY);
+
+                aObject.setLifeTime(100);
+                aObject.blastTime = (abs(theRandom.nextInt()) % 100) / 80.0 + 0.5;
+                ((BigFirework) aObject).subFireworks = 20;
+
+            } else
+            {
+                aObject = new SmallFirework();
+                aObject.setX(x);
+                aObject.setY(y);
+                aObject.setVelocityX(velocityX);
+                aObject.setVelocityY(velocityY);
+
+                aObject.setLifeTime(abs(theRandom.nextInt()) % 5 + 1);
+                aObject.setImage("starSmall.png");
+            }
+
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
             int blueValue = abs(theRandom.nextInt()) % 255;

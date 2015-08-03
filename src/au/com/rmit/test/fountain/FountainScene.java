@@ -3,32 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.test.scenes;
+package au.com.rmit.test.fountain;
 
 import au.com.rmit.Game2dEngine.gravity.Gravity;
-import au.com.rmit.test.sprites.Firework;
-import au.com.rmit.test.sprites.SmallFirework;
+import au.com.rmit.test.fireworks.Firework;
+import au.com.rmit.test.fireworks.SmallFirework;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Math.abs;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static java.lang.Math.pow;
 import javax.swing.Timer;
 
 /**
  *
  * @author ricolwang
  */
-public class SpiralScene extends Scene
+public class FountainScene extends Scene
 {
 
-    static float GRAVITY_VALUE = 100;
-    Gravity g1 = new Gravity(0, 0);
-    float delta1 = 0;
-
-    Gravity g2 = new Gravity(0, 0);
-    float delta2 = 0;
+    Gravity g = new Gravity(0, 500);
 
     Timer theTimer = new Timer(10, new ActionListener()
     {
@@ -36,27 +30,17 @@ public class SpiralScene extends Scene
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            createParticles(1, (int) (size().width * (1.0 / 4.0)), (int) (size().height / 2.25f), g1);
-            createParticles(1, (int) (size().width * (3.0 / 4.0)), (int) (size().height / 2.25f), g1);
+            createParticles(10, (int) (size().width * (2.0 / 4.0)), (int) (size().height * (3.5 / 4.0)), g);
         }
     });
 
-    Timer theTimerForGravity = new Timer(10, new ActionListener()
+    public FountainScene()
     {
-
-        @Override
-        public synchronized void actionPerformed(ActionEvent e)
-        {
-            g1.GX = (float) sin(delta1) * GRAVITY_VALUE;
-            g1.GY = (float) cos(delta1) * GRAVITY_VALUE;
-            delta1 += 0.1;
-
-            g2.GX = (float) sin(delta2) * GRAVITY_VALUE;
-            g2.GY = (float) cos(delta2) * GRAVITY_VALUE;
-            delta2 -= 0.1;
-        }
-
-    });
+        super();
+        this.setRed(0);
+        this.setGreen(0);
+        this.setBlue(0);
+    }
 
     @Override
     public void start()
@@ -64,7 +48,6 @@ public class SpiralScene extends Scene
         super.start();
 
         this.theTimer.start();
-        this.theTimerForGravity.start();
     }
 
     @Override
@@ -75,11 +58,9 @@ public class SpiralScene extends Scene
         if (bPaused)
         {
             this.theTimer.stop();
-            this.theTimerForGravity.stop();
         } else
         {
             this.theTimer.start();
-            this.theTimerForGravity.start();
         }
     }
 
@@ -87,7 +68,6 @@ public class SpiralScene extends Scene
     public void stop()
     {
         this.theTimer.stop();
-        this.theTimerForGravity.stop();
 
         super.stop();
     }
@@ -98,8 +78,14 @@ public class SpiralScene extends Scene
         {
             Firework aObject;
 
-            aObject = new SmallFirework(x, y, 10, 10, 0, 0, 0);
-            aObject.setLifeTime(10);
+            double mass = theRandom.nextFloat() / 3.0f;
+            double velocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 200.0f;
+            double velocityY = -1 * theRandom.nextFloat() * 50.0f - 500.0f;
+
+            float size = abs(theRandom.nextInt()) % 7 + 3;
+            aObject = new SmallFirework(x, y, size, size, mass, velocityX, velocityY);
+            aObject.setLifeTime((abs(theRandom.nextInt()) % 100) / 50.0);
+
             int redValue = abs(theRandom.nextInt()) % 255;
             int greenValue = abs(theRandom.nextInt()) % 255;
             int blueValue = abs(theRandom.nextInt()) % 255;
@@ -108,6 +94,13 @@ public class SpiralScene extends Scene
             aObject.setBlue(blueValue);
             aObject.applyGravity(g);
 
+//            if (abs(theRandom.nextInt()) % 100 > 50)
+//            {
+//                aObject.setImage("starSmall.png");
+//            } else
+//            {
+//                aObject.setImage("starBig.png");
+//            }
             this.addSprite(aObject);
         }
     }
