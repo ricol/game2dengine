@@ -8,7 +8,7 @@ package au.com.rmit.test.realworld;
 import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
-import au.com.rmit.test.TestCommon;
+import au.com.rmit.test.gui.TestCommon;
 import au.com.rmit.test.physicengine.WallSprite;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;

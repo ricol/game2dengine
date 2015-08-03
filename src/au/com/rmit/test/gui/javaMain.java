@@ -1,4 +1,4 @@
-package au.com.rmit.test;
+package au.com.rmit.test.gui;
 
 import javax.swing.SwingUtilities;
 
