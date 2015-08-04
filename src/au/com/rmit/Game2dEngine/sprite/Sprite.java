@@ -55,6 +55,10 @@ public abstract class Sprite extends Node implements ICopy
     private double starttime = System.currentTimeMillis();
     private double velocityX;
     private double velocityY;
+    private double velocityXChange;
+    private double velocityYChange;
+    private double xChange;
+    private double yChange;
     private double velocityAngle;
     private double currentLife = 0;
     private boolean isAlive = true;
@@ -148,16 +152,18 @@ public abstract class Sprite extends Node implements ICopy
         //update state
         if (this.g != null && this.bEnableGravity)
         {
-            velocityX += this.g.GX * t;
-            velocityY += this.g.GY * t;
+            velocityXChange = this.g.GX * t;
+            velocityYChange = this.g.GY * t;
+            velocityX += velocityXChange;
+            velocityY += velocityYChange;
         }
 
-        double IncX = velocityX * t;
-        double IncY = velocityY * t;
+        xChange = velocityX * t;
+        yChange = velocityY * t;
 
-        x += IncX;
-        y += IncY;
-
+        x += xChange;
+        y += yChange;
+        
         double IncAngle = velocityAngle * t;
         angle += IncAngle;
 
@@ -837,4 +843,27 @@ public abstract class Sprite extends Node implements ICopy
         System.out.println(title + this);
     }
 
+    public void restoreVelocityX()
+    {
+        velocityX -= velocityXChange;
+        velocityXChange = 0;
+    }
+    
+    public void restoreVelocityY()
+    {
+        velocityY -= velocityYChange;
+        velocityYChange = 0;
+    }
+    
+    public void restoreX()
+    {
+        x -= xChange;
+        xChange = 0;
+    }
+    
+    public void restoreY()
+    {
+        y -= yChange;
+        yChange = 0;
+    }
 }

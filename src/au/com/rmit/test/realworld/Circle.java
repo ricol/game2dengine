@@ -61,6 +61,7 @@ public class Circle extends Sprite
                 this.setVelocityY(-this.getVelocityY());
             } else if (aWall.wallType == WallSprite.WALLTYPE.BOTTOM)
             {
+                this.restoreY();
                 this.setVelocityY(-this.getVelocityY());
             }
             
