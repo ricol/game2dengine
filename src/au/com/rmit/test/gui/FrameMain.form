@@ -31,7 +31,9 @@
               <Component id="btnPause" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnStop" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="90" max="32767" attributes="0"/>
+              <EmptySpace pref="151" max="32767" attributes="0"/>
+              <Component id="btnGravity" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="btnRealWorld" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="btnBall" min="-2" max="-2" attributes="0"/>
@@ -64,10 +66,11 @@
                   <Component id="btnTest" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnBall" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnRealWorld" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnGravity" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelGame" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="19" max="32767" attributes="0"/>
+              <Component id="panelGame" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -104,7 +107,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="435" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="613" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -155,6 +158,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRealWorldActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnGravity">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Universe"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGravityActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

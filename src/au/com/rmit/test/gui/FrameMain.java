@@ -7,6 +7,7 @@ import au.com.rmit.test.fountain.FountainScene;
 import au.com.rmit.test.physicengine.TestScene;
 import au.com.rmit.test.realworld.RealWorldScene;
 import au.com.rmit.test.spiralDemo.SpiralScene;
+import au.com.rmit.test.universe.GravityDemoScene;
 import java.awt.Dimension;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -54,6 +55,7 @@ public class FrameMain extends javax.swing.JFrame
         btnTest = new javax.swing.JButton();
         btnBall = new javax.swing.JButton();
         btnRealWorld = new javax.swing.JButton();
+        btnGravity = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter()
@@ -92,7 +94,7 @@ public class FrameMain extends javax.swing.JFrame
         );
         panelGameLayout.setVerticalGroup(
             panelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 435, Short.MAX_VALUE)
+            .addGap(0, 613, Short.MAX_VALUE)
         );
 
         btnFountain.setText("Fountain");
@@ -149,6 +151,15 @@ public class FrameMain extends javax.swing.JFrame
             }
         });
 
+        btnGravity.setText("Universe");
+        btnGravity.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnGravityActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -158,7 +169,9 @@ public class FrameMain extends javax.swing.JFrame
                 .addComponent(btnPause)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnStop)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                .addComponent(btnGravity)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRealWorld)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBall)
@@ -187,10 +200,11 @@ public class FrameMain extends javax.swing.JFrame
                     .addComponent(btnFireworks)
                     .addComponent(btnTest)
                     .addComponent(btnBall)
-                    .addComponent(btnRealWorld))
+                    .addComponent(btnRealWorld)
+                    .addComponent(btnGravity))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelGame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(panelGame, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -255,10 +269,17 @@ public class FrameMain extends javax.swing.JFrame
         Director.getSharedInstance().showScene(new RealWorldScene());
     }//GEN-LAST:event_btnRealWorldActionPerformed
 
+    private void btnGravityActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnGravityActionPerformed
+    {//GEN-HEADEREND:event_btnGravityActionPerformed
+        // TODO add your handling code here:
+        Director.getSharedInstance().showScene(new GravityDemoScene());
+    }//GEN-LAST:event_btnGravityActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBall;
     private javax.swing.JButton btnFireworks;
     private javax.swing.JButton btnFountain;
+    private javax.swing.JButton btnGravity;
     private javax.swing.JButton btnPause;
     private javax.swing.JButton btnRealWorld;
     private javax.swing.JButton btnSpiral;
