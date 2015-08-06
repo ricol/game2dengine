@@ -14,10 +14,10 @@ import au.com.rmit.Game2dEngine.interfaces.ICopy;
 public class Gravity implements ICopy
 {
 
-    public float GX = 9.8f;
-    public float GY = 0f;
+    public double GX = 9.8f;
+    public double GY = 0f;
 
-    public Gravity(float gx, float gy)
+    public Gravity(double gx, double gy)
     {
         this.GX = gx;
         this.GY = gy;
