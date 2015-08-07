@@ -42,7 +42,10 @@ public class Entity extends Sprite
     {
         super.updateState(currentTime); //To change body of generated methods, choose Tools | Templates.
 
-        this.adjustGravity();
+        if (this.gravityEnabled())
+        {
+            this.adjustGravity();
+        }
     }
 
     synchronized void adjustGravity()
@@ -75,17 +78,17 @@ public class Entity extends Sprite
     {
         this.otherObjects.add(aEntity);
     }
-    
+
     synchronized public void removeEntity(Entity aEntity)
     {
         this.otherObjects.remove(aEntity);
     }
-    
+
     synchronized public void addEntities(Set<Entity> all)
     {
         this.otherObjects.addAll(all);
     }
-    
+
     synchronized public void removeEntities(Set<Entity> all)
     {
         this.otherObjects.removeAll(all);

@@ -491,6 +491,11 @@ public abstract class Sprite extends Node implements ICopy
         if (mass >= 0)
             this.mass = mass;
     }
+    
+    public boolean gravityEnabled()
+    {
+        return this.bEnableGravity;
+    }
 
     public boolean isAlive()
     {
