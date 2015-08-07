@@ -76,7 +76,6 @@ public class FireworksScene extends Scene
         {
             Firework aObject;
 
-            double mass = theRandom.nextFloat() / 3.0f;
             double velocityX = pow(-1, theRandom.nextInt() % 10) * theRandom.nextFloat() * 50.0f;
             double velocityY = -1 * theRandom.nextFloat() * 50.0f - 600.0f;
 

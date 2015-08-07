@@ -40,10 +40,11 @@ public class GravityDemoScene extends Scene
                 {
                     Sun aSun = new Sun();
                     aSun.setMass(MassOfSun);
-                    aSun.setWidth(30);
+                    aSun.setWidth(50);
                     aSun.setHeight(aSun.getWidth());
                     aSun.setCentreX(e.getX());
                     aSun.setCentreY(e.getY());
+                    aSun.setLayer(1);
                     addSprite(aSun);
                     
                     Set<Entity> all = getAllEntities();
@@ -70,6 +71,7 @@ public class GravityDemoScene extends Scene
                     aPlanet.setCentreX(e.getX());
                     aPlanet.setCentreY(e.getY());
                     aPlanet.setVelocityY(500);
+                    aPlanet.setLayer(2);
                     
                     aPlanet.addEntities(getAllEntities());
                     

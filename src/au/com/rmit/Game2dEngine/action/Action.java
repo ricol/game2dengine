@@ -32,9 +32,9 @@ public abstract class Action
         bComplete = theRandom.nextBoolean();
     }
 
-    public void setSprite(Sprite theSprite)
+    public void setSprite(Sprite aSprite)
     {
-        this.theSprite = theSprite;
+        this.theSprite = aSprite;
     }
 
     public void clearSprite()
@@ -46,5 +46,10 @@ public abstract class Action
     public String toString()
     {
         return "Action: " + this.getClass().getName() + " - id: " + identifer;
+    }
+    
+    public Sprite getTheSprite()
+    {
+        return this.theSprite;
     }
 }
