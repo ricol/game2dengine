@@ -93,4 +93,5 @@ public class Entity extends Sprite
     {
         this.otherObjects.removeAll(all);
     }
+
 }

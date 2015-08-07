@@ -5,6 +5,8 @@
  */
 package au.com.rmit.test.universe;
 
+import static java.lang.Math.abs;
+
 /**
  *
  * @author ricolwang
@@ -15,7 +17,9 @@ public class Planet extends Entity
     {
         super();
         
-        this.setGreen(255);
+        this.setGreen(abs(theRandom.nextInt()) % 255);
+        this.setRed(abs(theRandom.nextInt()) % 255);
+        this.setBlue(abs(theRandom.nextInt()) % 255);
         this.enableGravity();
     }
 }

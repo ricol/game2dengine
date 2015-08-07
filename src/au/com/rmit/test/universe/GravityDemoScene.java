@@ -7,6 +7,8 @@ package au.com.rmit.test.universe;
 
 import au.com.rmit.Game2dEngine.scene.Scene;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
+import au.com.rmit.test.gui.TestCommon;
+import au.com.rmit.test.physicengine.WallSprite;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import static java.lang.Math.abs;
@@ -21,8 +23,12 @@ import java.util.Set;
  */
 public class GravityDemoScene extends Scene
 {
+    boolean bAlreadyRun;
+    
     public GravityDemoScene()
     {
+        this.enableCollisionDetect();
+        
         this.addMouseListener(new MouseListener()
         {
             double MassOfSun = 10.0f * pow(10, 17);
@@ -36,15 +42,46 @@ public class GravityDemoScene extends Scene
             @Override
             public void mousePressed(MouseEvent e)
             {
+                if (!bAlreadyRun)
+                {
+                    bAlreadyRun = true;
+
+                    WallSprite aSprite = new WallSprite(0, 0, getWidth(), 5, 0, 0, 0);
+                    aSprite.setBlue(255);
+                    aSprite.wallType = WallSprite.WALLTYPE.TOP;
+                    addSprite(aSprite);
+
+                    aSprite = new WallSprite(0, getHeight() - 5, getWidth(), 5, 0, 0, 0);
+                    aSprite.setBlue(255);
+                    aSprite.wallType = WallSprite.WALLTYPE.BOTTOM;
+                    addSprite(aSprite);
+
+                    aSprite = new WallSprite(0, 0, 5, getHeight(), 0, 0, 0);
+                    aSprite.setBlue(255);
+                    aSprite.wallType = WallSprite.WALLTYPE.LEFT;
+                    addSprite(aSprite);
+
+                    aSprite = new WallSprite(getWidth() - 5, 0, 5, getHeight(), 0, 0, 0);
+                    aSprite.setBlue(255);
+                    aSprite.wallType = WallSprite.WALLTYPE.RIGHT;
+                    addSprite(aSprite);
+                }
+                
                 if (e.getButton() == MouseEvent.BUTTON3)
                 {
                     Sun aSun = new Sun();
+                    aSun.bCollisionDetect = true;
+                    aSun.setCollisionCategory(TestCommon.CATEGORY_CIRCLE);
+                    aSun.addTargetCollisionCategory(TestCommon.CATEGORY_WALL);
+                    aSun.bCollisionArbitrary = true;
                     aSun.setMass(MassOfSun);
                     aSun.setWidth(50);
                     aSun.setHeight(aSun.getWidth());
                     aSun.setCentreX(e.getX());
                     aSun.setCentreY(e.getY());
                     aSun.setLayer(1);
+                    aSun.setVelocityX(abs(theRandom.nextInt()) % 10 + 20);
+                    aSun.setVelocityY(abs(theRandom.nextInt()) % 10 + 20);
                     addSprite(aSun);
                     
                     Set<Entity> all = getAllEntities();
@@ -60,7 +97,7 @@ public class GravityDemoScene extends Scene
                     
                 } else if (e.getButton() == MouseEvent.BUTTON1)
                 {
-                    double MaxMassOfPlanet = MassOfSun / 10.0f;
+                    double MaxMassOfPlanet = MassOfSun / 100000000000.0f;
                     double MaxWidthPlanet = 50;
 
                     Planet aPlanet = new Planet();
