@@ -7,8 +7,14 @@ package au.com.rmit.test.universe;
 
 /**
  *
- * @author ricolwang
+ * @author Philology
  */
-public class Sun extends Star
+public class Star extends Entity
 {
+    public Star()
+    {
+        super();
+        
+        this.setRed(255);
+    }
 }
