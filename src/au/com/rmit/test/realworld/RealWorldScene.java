@@ -30,6 +30,8 @@ public class RealWorldScene extends Scene
 
     public RealWorldScene()
     {
+        this.enableCollisionDetect();
+        
         this.addMouseMotionListener(new MouseMotionListener()
         {
 

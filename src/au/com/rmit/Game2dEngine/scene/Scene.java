@@ -40,6 +40,7 @@ public class Scene extends JPanel
 
     protected Random theRandom = new Random();
     public boolean bPaused;
+    private boolean bEnableCollisionDetect = false;
     static long INTERVAL = 500;
     static long DELAY = 5;
     static long LEFT_TEXT = 25;
@@ -237,7 +238,10 @@ public class Scene extends JPanel
 
             updateState();
 
-            collisionDetect();
+            if (this.bEnableCollisionDetect)
+            {
+                collisionDetect();
+            }
         }
 
         //update GUI
@@ -362,6 +366,21 @@ public class Scene extends JPanel
     public int getBlue()
     {
         return this.blue;
+    }
+
+    public boolean collisionDetectEnabled()
+    {
+        return this.bEnableCollisionDetect;
+    }
+
+    public void enableCollisionDetect()
+    {
+        this.bEnableCollisionDetect = true;
+    }
+
+    public void disableCollisionDetect()
+    {
+        this.bEnableCollisionDetect = false;
     }
 
     public ArrayList<Sprite> getAllSprites()

@@ -31,6 +31,8 @@ public class BallScene extends Scene
 
     public BallScene()
     {
+        this.enableCollisionDetect();
+        
         this.addMouseMotionListener(new MouseMotionListener()
         {
 

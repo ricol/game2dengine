@@ -30,6 +30,8 @@ public class TestScene extends Scene
 
     public TestScene()
     {
+        this.enableCollisionDetect();
+        
         this.addMouseMotionListener(new MouseMotionListener()
         {
 
