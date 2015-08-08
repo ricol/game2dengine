@@ -9,7 +9,7 @@ import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.shape.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.shape.Shape;
-import au.com.rmit.Game2dEngine.gravity.Gravity;
+import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.interfaces.ICopy;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;

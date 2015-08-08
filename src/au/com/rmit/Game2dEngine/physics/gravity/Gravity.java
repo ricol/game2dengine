@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.gravity;
+package au.com.rmit.Game2dEngine.physics.gravity;
 
 import au.com.rmit.Game2dEngine.interfaces.ICopy;
 
