@@ -24,7 +24,7 @@ public class RectangleShape extends ClosureShape
         this.width = width;
         this.height = height;
     }
-    
+
     @Override
     public void refresh()
     {
@@ -42,7 +42,7 @@ public class RectangleShape extends ClosureShape
         if (theShape instanceof CircleShape)
         {
             CircleShape theCircleShape = (CircleShape) theShape;
-            return Shape.RectangleCollideWithCircle(this, theCircleShape);
+            return Shape.RectangleCollideWithRectangle(this, theCircleShape.getTheSquareShape());
         } else if (theShape instanceof RectangleShape)
         {
             RectangleShape theRectangleShape = (RectangleShape) theShape;
@@ -55,7 +55,7 @@ public class RectangleShape extends ClosureShape
     public void draw(Graphics2D theGraphicsInTheScene, Color theColor)
     {
         theGraphicsInTheScene.setColor(theColor);
-        theGraphicsInTheScene.drawRect((int)this.left, (int)this.top, (int) width - 1, (int) height - 1);
+        theGraphicsInTheScene.drawRect((int) this.left, (int) this.top, (int) width - 1, (int) height - 1);
     }
 
     @Override

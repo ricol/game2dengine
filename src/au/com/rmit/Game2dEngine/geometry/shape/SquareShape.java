@@ -5,25 +5,16 @@
  */
 package au.com.rmit.Game2dEngine.geometry.shape;
 
-import au.com.rmit.Game2dEngine.sprite.Sprite;
-
 /**
  *
  * @author ricolwang
  */
-public class SquareShape extends Sprite
+public class SquareShape extends RectangleShape
 {
 
-    public SquareShape()
+    public SquareShape(double left, double top, double width, double height)
     {
-        super(0, 0, 100, 100);
-        this.bDrawFrame = true;
+        super(left, top, width, height);
     }
 
-    @Override
-    public Object getACopy()
-    {
-        Object aCopy = new SquareShape();
-        return aCopy;
-    }
 }

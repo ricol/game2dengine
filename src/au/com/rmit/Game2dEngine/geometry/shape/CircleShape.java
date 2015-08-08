@@ -14,9 +14,10 @@ import java.awt.Graphics2D;
  */
 public class CircleShape extends ClosureShape
 {
+
     public double centreX, centreY;
     public double radius;
-    RectangleShape theRectangleShape = new RectangleShape(0, 0, 0, 0);
+    SquareShape theSquareShape = new SquareShape(0, 0, 0, 0);
 
     public CircleShape(double centreX, double centreY, double radius)
     {
@@ -58,7 +59,7 @@ public class CircleShape extends ClosureShape
             return Shape.CircleCollideWithCircle(this, theCircleShape);
         } else if (theShape instanceof RectangleShape)
         {
-            return Shape.RectangleCollideWithRectangle(this.theRectangleShape, (RectangleShape) theShape);
+            return Shape.RectangleCollideWithRectangle(this.theSquareShape, (RectangleShape) theShape);
         } else
             return false;
     }
@@ -70,11 +71,12 @@ public class CircleShape extends ClosureShape
 
         this.centreX = theNode.getCentreX();
         this.centreY = theNode.getCentreY();
-        
-        this.theRectangleShape.left = this.centreX - this.radius;
-        this.theRectangleShape.top = this.centreY - this.radius;
-        this.theRectangleShape.width = this.radius * 2;
-        this.theRectangleShape.height = this.radius * 2;
+        this.radius = theNode.getWidth() > theNode.getHeight() ? theNode.getWidth() / 2.0f : theNode.getHeight() / 2.0f;
+
+        this.theSquareShape.left = this.centreX - this.radius;
+        this.theSquareShape.top = this.centreY - this.radius;
+        this.theSquareShape.width = this.radius * 2;
+        this.theSquareShape.height = this.radius * 2;
     }
 
     @Override
@@ -91,5 +93,10 @@ public class CircleShape extends ClosureShape
     public void print(String text)
     {
         System.out.println(text + " - CircleShape: Radius: " + radius + " at centre: " + centreX + " : " + centreY);
+    }
+
+    public SquareShape getTheSquareShape()
+    {
+        return this.theSquareShape;
     }
 }
