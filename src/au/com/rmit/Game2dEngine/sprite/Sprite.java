@@ -266,7 +266,9 @@ public abstract class Sprite extends Node implements ICopy
         if (this.isAlive)
         {
             int tmpX = (int) this.getX();
-            int tmpY = (int) this.getX();
+            int tmpY = (int) this.getY();
+            int tmpW = (int) getWidth();
+            int tmpH = (int) getHeight();
 
             int tmpSceneWidth;
             int tmpSceneHeight;
@@ -281,16 +283,13 @@ public abstract class Sprite extends Node implements ICopy
                 tmpSceneHeight = this.theScene.getHeight();
             }
 
-            int w = (int) getWidth();
-            int h = (int) getHeight();
-
-            if (tmpX + w < 0 || tmpY + h < 0)
+            if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
                 return;
 
             if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
                 return;
 
-            if (abs(w) <= 0.1 || abs(h) <= 0.1)
+            if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
                 return;
 
             if (theGraphicsInTheScene == null)
@@ -304,12 +303,12 @@ public abstract class Sprite extends Node implements ICopy
             {
                 //clear background
                 theGraphics2D.setBackground(blackTransparent);
-                theGraphics2D.clearRect(0, 0, w, h);
+                theGraphics2D.clearRect(0, 0, tmpW, tmpH);
 
                 AffineTransform old = theGraphics2D.getTransform();
 
                 //rotate the angle
-                theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
+                theGraphics2D.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
 
                 //draw itself
                 if (this.theImage != null)
@@ -325,7 +324,7 @@ public abstract class Sprite extends Node implements ICopy
                 {
                     //fill
                     theGraphics2D.setColor(theColor);
-                    theGraphics2D.drawRect(0, 0, w - 1, h - 1);
+                    theGraphics2D.drawRect(0, 0, tmpW - 1, tmpH - 1);
                 }
 
                 //draw its children
@@ -335,7 +334,7 @@ public abstract class Sprite extends Node implements ICopy
                 //restore
                 theGraphics2D.setTransform(old);
             }
-            
+
             this.drawFrame(theGraphics2D);
             this.drawShape(theGraphicsInTheScene);
 
