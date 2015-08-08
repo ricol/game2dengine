@@ -6,6 +6,7 @@
 package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.geometry.shape.CircleShape;
+import au.com.rmit.Game2dEngine.geometry.shape.Shape;
 import java.util.Random;
 
 /**
@@ -14,14 +15,15 @@ import java.util.Random;
  */
 public class Node
 {
+
     public String identifier;
-    protected double x;
-    protected double y;
+    private double x;
+    private double y;
     private double width;
     private double height;
 
     protected Random theRandom = new Random();
-    private CircleShape theCircleShape = new CircleShape(0, 0, 0); //coordinates are based on the node
+    private Shape theShape = null;
 
     public Node(double x, double y, double width, double height)
     {
@@ -54,33 +56,36 @@ public class Node
     public void setX(double x)
     {
         this.x = x;
+        this.refreshShape();
     }
 
     public void setY(double y)
     {
         this.y = y;
+        this.refreshShape();
     }
 
     public void setWidth(double width)
     {
         this.width = width;
-        this.rebuildTheCircleShape();
+        this.refreshShape();
     }
 
     public void setHeight(double height)
     {
         this.height = height;
-        this.rebuildTheCircleShape();
+        this.refreshShape();
     }
 
-    public CircleShape getTheCircleShape()
+    public Shape getTheShape()
     {
-        return this.theCircleShape;
+        return this.theShape;
     }
 
-    public void setTheCircleShape(CircleShape theCircleShape)
+    public void setTheShape(Shape theShape)
     {
-        this.theCircleShape = theCircleShape;
+        this.theShape = theShape;
+        this.theShape.setTheNode(this);
     }
 
     public double getCentreX()
@@ -103,25 +108,17 @@ public class Node
         this.setY(value - height / 2.0);
     }
 
-    public boolean rectangleOverlaps(final Node target)
+    void refreshShape()
     {
-        return x < target.x + target.width && x + width > target.x && y < target.y + target.height && y + height > target.y;
-    }
-
-    public boolean circleOverlaps(final Node theTarget)
-    {
-        double delX = theTarget.getCentreX() - this.getCentreX();
-        double delY = theTarget.getCentreY() - this.getCentreY();
-        double distance = Math.sqrt(delX * delX + delY * delY);
-        double targetRadius = theTarget.getTheCircleShape().radius;
-        double thisRadius = this.getTheCircleShape().radius;
-        return distance < targetRadius + thisRadius;
-    }
-
-    private void rebuildTheCircleShape()
-    {
-        this.theCircleShape.centreX = this.width / 2.0f;
-        this.theCircleShape.centreY = this.height / 2.0f;
-        this.theCircleShape.radius = width > height ? (width / 2.0f) : (height / 2.0f);
+        if (this.theShape == null)
+        {
+            this.theShape = new CircleShape(0, 0, 0);
+            this.theShape.setTheNode(this);
+            ((CircleShape) this.theShape).centreX = this.getCentreX();
+            ((CircleShape) this.theShape).centreY = this.getCentreY();
+            ((CircleShape) this.theShape).radius = this.getWidth() > this.getHeight() ? (this.getWidth() / 2.0f) : (this.getHeight() / 2.0f);
+        }
+        
+        this.theShape.refresh();
     }
 }
