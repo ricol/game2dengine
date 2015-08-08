@@ -7,7 +7,9 @@ package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.Game2dEngine.gravity.Gravity;
+import au.com.rmit.Game2dEngine.geometry.shape.ClosureShape;
+import au.com.rmit.Game2dEngine.geometry.shape.Shape;
+import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.interfaces.ICopy;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
@@ -39,9 +41,9 @@ public abstract class Sprite extends Node implements ICopy
     public Scene theScene;
 
     public boolean bDrawFrame = false;
-    public boolean bDrawCircle = false;
+    public boolean bDrawShape = false;
     public Color theColorOfFrame = Color.yellow;
-    public Color theColorOfCircle = Color.red;
+    public Color theColorOfTheShape = Color.red;
     public boolean bCollisionDetect = false;
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
     public boolean bCustomDrawing = false;
@@ -80,7 +82,7 @@ public abstract class Sprite extends Node implements ICopy
 
     private boolean bEnableGravity;
     private double mass;
-    private Gravity g;
+    private Gravity theGravity;
     private float alpha = 1;
     private int red = 0;
     private int green = 0;
@@ -150,10 +152,10 @@ public abstract class Sprite extends Node implements ICopy
             this.setShouldDie();
 
         //update state
-        if (this.g != null && this.bEnableGravity)
+        if (this.theGravity != null && this.bEnableGravity)
         {
-            velocityXChange = this.g.GX * t;
-            velocityYChange = this.g.GY * t;
+            velocityXChange = this.theGravity.GX * t;
+            velocityYChange = this.theGravity.GY * t;
             velocityX += velocityXChange;
             velocityY += velocityYChange;
         }
@@ -161,9 +163,9 @@ public abstract class Sprite extends Node implements ICopy
         xChange = velocityX * t;
         yChange = velocityY * t;
 
-        x += xChange;
-        y += yChange;
-        
+        this.setX(this.getX() + xChange);
+        this.setY(this.getY() + yChange);
+
         double IncAngle = velocityAngle * t;
         angle += IncAngle;
 
@@ -259,12 +261,14 @@ public abstract class Sprite extends Node implements ICopy
         this.lastUpdateTime = currentTime;
     }
 
-    public void updateGUI(final Graphics2D g)
+    public void updateGUI(final Graphics2D theGraphicsInTheScene)
     {
         if (this.isAlive)
         {
-            int tmpX = (int) x;
-            int tmpY = (int) y;
+            int tmpX = (int) this.getX();
+            int tmpY = (int) this.getY();
+            int tmpW = (int) getWidth();
+            int tmpH = (int) getHeight();
 
             int tmpSceneWidth;
             int tmpSceneHeight;
@@ -279,36 +283,32 @@ public abstract class Sprite extends Node implements ICopy
                 tmpSceneHeight = this.theScene.getHeight();
             }
 
-            int w = (int) getWidth();
-            int h = (int) getHeight();
-
-            if (tmpX + w < 0 || tmpY + h < 0)
+            if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
                 return;
 
             if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
                 return;
 
-            if (abs(w) <= 0.1 || abs(h) <= 0.1)
+            if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
                 return;
 
-            if (g == null)
+            if (theGraphicsInTheScene == null)
                 return;
 
+            Graphics2D theGraphics2D = this.getTheImageGraphics();
             if (bCustomDrawing)
             {
-                Graphics2D theGraphics2D = this.getTheImageGraphics();
                 this.onCustomDraw(theGraphics2D);
             } else
             {
                 //clear background
-                Graphics2D theGraphics2D = this.getTheImageGraphics();
                 theGraphics2D.setBackground(blackTransparent);
-                theGraphics2D.clearRect(0, 0, w, h);
+                theGraphics2D.clearRect(0, 0, tmpW, tmpH);
 
                 AffineTransform old = theGraphics2D.getTransform();
 
                 //rotate the angle
-                theGraphics2D.rotate(angle, w / 2.0f, h / 2.0f);
+                theGraphics2D.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
 
                 //draw itself
                 if (this.theImage != null)
@@ -324,7 +324,7 @@ public abstract class Sprite extends Node implements ICopy
                 {
                     //fill
                     theGraphics2D.setColor(theColor);
-                    theGraphics2D.drawRect(0, 0, w - 1, h - 1);
+                    theGraphics2D.drawRect(0, 0, tmpW - 1, tmpH - 1);
                 }
 
                 //draw its children
@@ -333,20 +333,20 @@ public abstract class Sprite extends Node implements ICopy
 
                 //restore
                 theGraphics2D.setTransform(old);
-
-                this.drawFrame(theGraphics2D);
-                this.drawCircle(theGraphics2D);
             }
+
+            this.drawFrame(theGraphics2D);
+            this.drawShape(theGraphicsInTheScene);
 
             if (theImageCanvas != null)
             {
-                Composite old = g.getComposite();
+                Composite old = theGraphicsInTheScene.getComposite();
 
                 AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-                g.setComposite(ac);
-                g.drawImage(theImageCanvas, (int) x, (int) y, null);
+                theGraphicsInTheScene.setComposite(ac);
+                theGraphicsInTheScene.drawImage(theImageCanvas, (int) this.getX(), (int) this.getY(), null);
 
-                g.setComposite(old);
+                theGraphicsInTheScene.setComposite(old);
             }
         }
     }
@@ -386,15 +386,13 @@ public abstract class Sprite extends Node implements ICopy
         }
     }
 
-    private void drawCircle(final Graphics2D theGraphics2D)
+    private void drawShape(final Graphics2D theGraphics2D)
     {
-        if (this.bDrawCircle)
+        if (this.bDrawShape)
         {
-            theGraphics2D.setColor(theColorOfCircle);
-            int tmpRadius = (int) this.getTheCircleShape().radius;
-            int tmpX = (int) (this.getTheCircleShape().centreX - tmpRadius);
-            int tmpY = (int) (this.getTheCircleShape().centreY - tmpRadius);
-            theGraphics2D.drawOval(tmpX, tmpY, 2 * tmpRadius, 2 * tmpRadius);
+            Shape theShape = this.getTheShape();
+            if (theShape != null)
+                theShape.draw(theGraphics2D, theColorOfTheShape);
         }
     }
 
@@ -428,9 +426,9 @@ public abstract class Sprite extends Node implements ICopy
     public void applyGravity(final Gravity theG)
     {
         if (theG != null)
-            this.g = new Gravity(theG.GX, theG.GY);
+            this.theGravity = new Gravity(theG.GX, theG.GY);
         else
-            this.g = null;
+            this.theGravity = null;
     }
 
     public void addAction(Action aAction)
@@ -491,7 +489,7 @@ public abstract class Sprite extends Node implements ICopy
         if (mass >= 0)
             this.mass = mass;
     }
-    
+
     public boolean gravityEnabled()
     {
         return this.bEnableGravity;
@@ -606,7 +604,7 @@ public abstract class Sprite extends Node implements ICopy
 
     public Gravity getGravity()
     {
-        return this.g;
+        return this.theGravity;
     }
 
     public double getStartTime()
@@ -628,8 +626,8 @@ public abstract class Sprite extends Node implements ICopy
 
         Sprite aCopy = (Sprite) theObject;
 
-        aCopy.x = this.x;
-        aCopy.y = this.y;
+        aCopy.setX(this.getX());
+        aCopy.setY(this.getY());
         aCopy.setWidth(this.getWidth());
         aCopy.setHeight(this.getHeight());
         aCopy.velocityX = this.velocityX;
@@ -645,9 +643,9 @@ public abstract class Sprite extends Node implements ICopy
         aCopy.theScene = this.theScene;
 
         aCopy.bDrawFrame = this.bDrawFrame;
-        aCopy.bDrawCircle = this.bDrawCircle;
+        aCopy.bDrawShape = this.bDrawShape;
         aCopy.theColorOfFrame = this.theColorOfFrame;
-        aCopy.theColorOfCircle = this.theColorOfCircle;
+        aCopy.theColorOfTheShape = this.theColorOfTheShape;
         aCopy.bCollisionDetect = this.bCollisionDetect;
         aCopy.bCustomDrawing = this.bCustomDrawing;
         aCopy.bDeadIfNoActions = this.bDeadIfNoActions;
@@ -664,15 +662,19 @@ public abstract class Sprite extends Node implements ICopy
         aCopy.collisionTargetCategory = this.collisionTargetCategory;
         aCopy.identifier = this.identifier;
 
-        if (this.g != null)
-            aCopy.g = (Gravity) this.g.getACopy();
+        if (this.theGravity != null)
+            aCopy.theGravity = (Gravity) this.theGravity.getACopy();
     }
 
     public boolean collideWith(final Sprite target)
     {
-//        return super.rectangleOverlaps(target);
-//        return super.circleOverlaps(target)
-        return false;
+        Shape theShape = this.getTheShape();
+        Shape theTargetShape = target.getTheShape();
+        if ((theShape instanceof ClosureShape) && (theTargetShape instanceof ClosureShape))
+        {
+            return ((ClosureShape) theShape).collideWith((ClosureShape) theTargetShape);
+        } else
+            return false;
     }
 
     public int getLayer()
@@ -690,17 +692,17 @@ public abstract class Sprite extends Node implements ICopy
     {
         return this.lifetime;
     }
-    
+
     public boolean isGravityEnabled()
     {
         return this.bEnableGravity;
     }
-    
+
     public void enableGravity()
     {
         this.bEnableGravity = true;
     }
-    
+
     public void disableGravity()
     {
         this.bEnableGravity = false;
@@ -853,22 +855,22 @@ public abstract class Sprite extends Node implements ICopy
         velocityX -= velocityXChange;
         velocityXChange = 0;
     }
-    
+
     public void restoreVelocityY()
     {
         velocityY -= velocityYChange;
         velocityYChange = 0;
     }
-    
+
     public void restoreX()
     {
-        x -= xChange;
+        this.setX(this.getX() - xChange);
         xChange = 0;
     }
-    
+
     public void restoreY()
     {
-        y -= yChange;
+        this.setY(this.getY() - yChange);
         yChange = 0;
     }
 }
