@@ -31,4 +31,9 @@ public class ClosureShape extends Shape
     {
         return 0;
     }
+    
+    public boolean collideWith(ClosureShape theShape)
+    {
+        return false;
+    }
 }
