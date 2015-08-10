@@ -11,6 +11,5 @@ package au.com.rmit.Game2dEngine.interfaces;
  */
 public interface ICopy
 {
-    public void copyContent(Object theObject);
     public Object getACopy();
 }
