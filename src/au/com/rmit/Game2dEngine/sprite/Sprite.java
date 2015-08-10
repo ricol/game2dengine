@@ -9,8 +9,8 @@ import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.shape.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.shape.Shape;
-import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.interfaces.ICopy;
+import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.AlphaComposite;
@@ -137,6 +137,15 @@ public abstract class Sprite extends Node implements ICopy
 
     public void updateState(double currentTime)
     {
+        double delta = currentTime - this.lastUpdateTime;
+        this.lastUpdateTime = currentTime;
+
+        if (this.theScene != null)
+        {
+            if (this.theScene.bPaused)
+                return;
+        }
+
         if (bShouldDie)
         {
             this.setDead();
@@ -144,7 +153,6 @@ public abstract class Sprite extends Node implements ICopy
         }
 
         //how much time passed since last update
-        double delta = currentTime - this.lastUpdateTime;
         double t = delta / 1000.0f; //in seconds
         currentLife += t;
 
@@ -257,8 +265,6 @@ public abstract class Sprite extends Node implements ICopy
             this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
             this.theSetOfChildrenWillDelete.clear();
         }
-
-        this.lastUpdateTime = currentTime;
     }
 
     public void updateGUI(final Graphics2D theGraphicsInTheScene)
@@ -616,54 +622,6 @@ public abstract class Sprite extends Node implements ICopy
     public Object getACopy()
     {
         return null;
-    }
-
-    @Override
-    public void copyContent(Object theObject)
-    {
-        if (!(theObject instanceof Sprite))
-            return;
-
-        Sprite aCopy = (Sprite) theObject;
-
-        aCopy.setX(this.getX());
-        aCopy.setY(this.getY());
-        aCopy.setWidth(this.getWidth());
-        aCopy.setHeight(this.getHeight());
-        aCopy.velocityX = this.velocityX;
-        aCopy.velocityY = this.velocityY;
-        aCopy.red = this.red;
-        aCopy.green = this.green;
-        aCopy.blue = this.blue;
-        aCopy.angle = this.angle;
-        aCopy.alpha = this.alpha;
-
-        aCopy.bChild = this.bChild;
-        aCopy.parent = this.parent;
-        aCopy.theScene = this.theScene;
-
-        aCopy.bDrawFrame = this.bDrawFrame;
-        aCopy.bDrawShape = this.bDrawShape;
-        aCopy.theColorOfFrame = this.theColorOfFrame;
-        aCopy.theColorOfTheShape = this.theColorOfTheShape;
-        aCopy.bCollisionDetect = this.bCollisionDetect;
-        aCopy.bCustomDrawing = this.bCustomDrawing;
-        aCopy.bDeadIfNoActions = this.bDeadIfNoActions;
-
-        aCopy.layer = this.layer;
-        aCopy.lifetime = this.lifetime;
-        aCopy.lastUpdateTime = this.lastUpdateTime;
-        aCopy.starttime = this.starttime;
-        aCopy.velocityAngle = this.velocityAngle;
-        aCopy.currentLife = this.currentLife;
-        aCopy.isAlive = this.isAlive;
-        aCopy.bShouldDie = this.bShouldDie;
-        aCopy.collisionCategory = this.collisionCategory;
-        aCopy.collisionTargetCategory = this.collisionTargetCategory;
-        aCopy.identifier = this.identifier;
-
-        if (this.theGravity != null)
-            aCopy.theGravity = (Gravity) this.theGravity.getACopy();
     }
 
     public boolean collideWith(final Sprite target)
