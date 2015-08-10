@@ -191,58 +191,46 @@ public class Scene extends JPanel
 
     private void Loop()
     {
+        number++;
 
-        if (!bPaused)
+        double currentTime = System.currentTimeMillis();
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
         {
-            number++;
+            Layer aLayer = layers.get(i);
+            if (aLayer == null)
+                continue;
 
-            double currentTime = System.currentTimeMillis();
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+            //remove all dead sprites
+            for (Sprite aSprite : aLayer.DeadObjects)
+                aSprite.theScene = null;
+
+            aLayer.AllObjects.removeAll(aLayer.DeadObjects);
+            aLayer.DeadObjects.clear();
+
+            actionCount = 0;
+            //update sprites states
+            for (Sprite aSprite : aLayer.AllObjects)
             {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
+                aSprite.updateState(currentTime);
+
+                if (aSprite instanceof Sprite)
+                    actionCount += ((Sprite) aSprite).getActionCount();
+
+                if (!aSprite.isAlive())
                 {
-                    continue;
+                    aLayer.DeadObjects.add(aSprite);
+                    aSprite.onRemovedFromLayer(aLayer);
                 }
-
-                //remove all dead sprites
-                for (Sprite aSprite : aLayer.DeadObjects)
-                {
-                    aSprite.theScene = null;
-                }
-
-                aLayer.AllObjects.removeAll(aLayer.DeadObjects);
-                aLayer.DeadObjects.clear();
-
-                actionCount = 0;
-                //update sprites states
-                for (Sprite aSprite : aLayer.AllObjects)
-                {
-                    aSprite.updateState(currentTime);
-
-                    if (aSprite instanceof Sprite)
-                    {
-                        actionCount += ((Sprite) aSprite).getActionCount();
-                    }
-
-                    if (!aSprite.isAlive())
-                    {
-                        aLayer.DeadObjects.add(aSprite);
-                        aSprite.onRemovedFromLayer(aLayer);
-                    }
-                }
-
-                aLayer.AllObjects.addAll(aLayer.NewObjects);
-                aLayer.NewObjects.clear();
             }
 
-            updateState();
-
-            if (this.bEnableCollisionDetect)
-            {
-                collisionDetect();
-            }
+            aLayer.AllObjects.addAll(aLayer.NewObjects);
+            aLayer.NewObjects.clear();
         }
+
+        updateState();
+
+        if (this.bEnableCollisionDetect)
+            collisionDetect();
 
         //update GUI
         if (theGraphics2D != null)
@@ -260,14 +248,10 @@ public class Scene extends JPanel
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
-                {
                     continue;
-                }
 
                 for (Sprite aSprite : aLayer.AllObjects)
-                {
                     aSprite.updateGUI(theGraphics2D);
-                }
             }
 
             long time = System.currentTimeMillis();
@@ -292,9 +276,7 @@ public class Scene extends JPanel
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
-                {
                     continue;
-                }
 
                 totalLayers++;
                 totalNodes += aLayer.AllObjects.size();
