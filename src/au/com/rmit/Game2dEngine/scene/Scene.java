@@ -230,7 +230,19 @@ public class Scene extends JPanel
         updateState();
 
         if (this.bEnableCollisionDetect)
+        {
             collisionDetect();
+
+            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+            {
+                Layer aLayer = layers.get(i);
+                if (aLayer == null)
+                    continue;
+
+                for (Sprite aSprite : aLayer.AllObjects)
+                    aSprite.afterCollisionProcess(currentTime);
+            }
+        }
 
         //update GUI
         if (theGraphics2D != null)

@@ -39,18 +39,18 @@ public abstract class Sprite extends Node implements ICopy
     public boolean bChild;
     public Sprite parent;
     public Scene theScene;
-
     public boolean bDrawFrame = false;
     public boolean bDrawShape = false;
+    public boolean bCustomDrawing = false;
+    public boolean bDeadIfNoActions;
+    public boolean bCollisionArbitrary = false;
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfTheShape = Color.red;
     public boolean bCollisionDetect = false;
+    
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
-    public boolean bCustomDrawing = false;
     public static final long EVER = Long.MAX_VALUE;
-    public boolean bDeadIfNoActions;
     private boolean bTargetCollisionProcessed = false;
-
     private int layer = Scene.MIN_LAYER;
     private double lifetime = Sprite.EVER; //in seconds
     private double lastUpdateTime;
@@ -67,19 +67,14 @@ public abstract class Sprite extends Node implements ICopy
     private boolean bShouldDie = false;
     private int collisionCategory = 0x00;
     private int collisionTargetCategory = 0x00;
-    public boolean bCollisionArbitrary = false;
-
     private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
     private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
     private Set<Action> theSetOfActions = new HashSet<>();
-
     private Set<Action> theSetOfActionsInQueueWillDelete = new HashSet<>();
     private Queue<Set<Action>> theQueueOfActions = new LinkedList<>();
-
     private Set<Sprite> theSetOfChildrenWillDelete = new HashSet<>();
     private Set<Sprite> theSetOfChildrenWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfChildren = new HashSet<>();
-
     private boolean bEnableGravity;
     private double mass;
     private Gravity theGravity;
@@ -89,7 +84,6 @@ public abstract class Sprite extends Node implements ICopy
     private int blue = 0;
     private double angle;
     private Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
-
     private BufferedImage theImageCanvas;
     private Graphics2D theGraphics;
     private BufferedImage theImage;
@@ -265,6 +259,11 @@ public abstract class Sprite extends Node implements ICopy
             this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
             this.theSetOfChildrenWillDelete.clear();
         }
+    }
+    
+    public void afterCollisionProcess(double currentTime)
+    {
+        
     }
 
     public void updateGUI(final Graphics2D theGraphicsInTheScene)
