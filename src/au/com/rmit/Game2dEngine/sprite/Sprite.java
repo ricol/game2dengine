@@ -75,6 +75,9 @@ public abstract class Sprite extends Node implements ICopy
     private Set<Sprite> theSetOfChildrenWillDelete = new HashSet<>();
     private Set<Sprite> theSetOfChildrenWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfChildren = new HashSet<>();
+    private Set<Sprite> theSetOfAttachedWillDelete = new HashSet<>();
+    private Set<Sprite> theSetOfAttachedWillAdd = new HashSet<>();
+    private Set<Sprite> theSetOfAttached = new HashSet<>();
     private boolean bEnableGravity;
     private double mass;
     private Gravity theGravity;
@@ -258,6 +261,27 @@ public abstract class Sprite extends Node implements ICopy
         {
             this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
             this.theSetOfChildrenWillDelete.clear();
+        }
+        
+        //add new attached
+        if (this.theSetOfAttachedWillAdd.size() > 0)
+        {
+            this.theSetOfAttached.addAll(this.theSetOfAttachedWillAdd);
+            this.theSetOfAttachedWillAdd.clear();
+        }
+
+        //update its attached
+        for (Sprite aSprite : this.theSetOfAttached)
+        {
+            if (!aSprite.isAlive)
+                this.theSetOfAttachedWillDelete.add(aSprite);
+        }
+
+        //delete old attached
+        if (this.theSetOfAttachedWillDelete.size() > 0)
+        {
+            this.theSetOfAttached.removeAll(this.theSetOfAttachedWillDelete);
+            this.theSetOfAttachedWillDelete.clear();
         }
     }
     
@@ -684,6 +708,16 @@ public abstract class Sprite extends Node implements ICopy
     {
         this.lifetime = life;
     }
+    
+    public void addAttached(Sprite aSprite)
+    {
+        this.theSetOfAttachedWillAdd.add(aSprite);
+    }
+    
+    public void removeAttached(Sprite aSprite)
+    {
+        this.theSetOfAttachedWillDelete.add(aSprite);
+    }
 
     public void addAChild(Sprite aSprite)
     {
@@ -787,6 +821,9 @@ public abstract class Sprite extends Node implements ICopy
         this.theSetOfChildren.clear();
         this.theSetOfChildrenWillAdd.clear();
         this.theSetOfChildrenWillDelete.clear();
+        this.theSetOfAttached.clear();
+        this.theSetOfAttachedWillAdd.clear();
+        this.theSetOfAttachedWillDelete.clear();
 
         this.theQueueOfActions.clear();
 
