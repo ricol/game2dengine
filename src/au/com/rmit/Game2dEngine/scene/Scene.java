@@ -31,34 +31,27 @@ public class Scene extends JPanel
 
     public static int MIN_LAYER = 0;
     public static int MAX_LAYER = 9;
-
+    public boolean bShowMemoryUsage = true;
     public BufferedImage theImageBackground;
+    public boolean bPaused;
+
     private int red = 0;
     private int green = 0;
     private int blue = 0;
     private Color theBackgroundColor = new Color(red, green, blue);
-
-    protected Random theRandom = new Random();
-    public boolean bPaused;
     private boolean bEnableCollisionDetect = false;
     static long INTERVAL = 500;
     static long DELAY = 5;
     static long LEFT_TEXT = 25;
     static long TOP_TEXT = 30;
     static long GAP_TEXT = 20;
-
-    public boolean bShowMemoryUsage = true;
-
     long number = 0;
     long lastTime = System.currentTimeMillis();
     long fps = 0;
     float timeEllapsed = 0;
     long actionCount = 0;
-    String strFreeMemory = "";
-    String strAllocatedMemory = "";
     String strMemoryUsage = "";
-    String strMaxMemory = "";
-    String strTotalFreeMemory = "";
+    Random theRandom = new Random();
 
     HashMap<Integer, Layer> layers = new HashMap();
     ArrayList<Sprite> allNodes = new ArrayList();
@@ -137,11 +130,6 @@ public class Scene extends JPanel
         theGraphics2D = null;
 
         bPaused = true;
-    }
-
-    public void updateState()
-    {
-
     }
 
     @Override
@@ -227,8 +215,6 @@ public class Scene extends JPanel
             aLayer.NewObjects.clear();
         }
 
-        updateState();
-
         if (this.bEnableCollisionDetect)
         {
             collisionDetect();
@@ -310,13 +296,7 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
 
             if (bShowMemoryUsage)
-            {
                 theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
-//                theGraphics2D.drawString(strFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
-//                theGraphics2D.drawString(strAllocatedMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 3);
-//                theGraphics2D.drawString(strMaxMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 4);
-//                theGraphics2D.drawString(strTotalFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 5);
-            }
         }
     }
 
@@ -410,18 +390,10 @@ public class Scene extends JPanel
     private void collectMemoryInfo()
     {
         Runtime runtime = Runtime.getRuntime();
-
         NumberFormat format = NumberFormat.getInstance();
-
-        long maxMemory = runtime.maxMemory();
         long allocatedMemory = runtime.totalMemory();
-        long freeMemory = runtime.freeMemory();
 
-        strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
-        strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
         strMemoryUsage = "MEM: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
-        strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
-        strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
     }
 
     private void collisionDetect()
