@@ -51,7 +51,8 @@ public class Scene extends JPanel
     float timeEllapsed = 0;
     long actionCount = 0;
     String strMemoryUsage = "";
-    Random theRandom = new Random();
+    
+    protected Random theRandom = new Random();
 
     HashMap<Integer, Layer> layers = new HashMap();
     ArrayList<Sprite> allNodes = new ArrayList();
