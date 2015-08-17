@@ -51,11 +51,12 @@ public class Scene extends JPanel
     float timeEllapsed = 0;
     long actionCount = 0;
     String strMemoryUsage = "";
-    
+
     protected Random theRandom = new Random();
 
     HashMap<Integer, Layer> layers = new HashMap();
     ArrayList<Sprite> allNodes = new ArrayList();
+    ArrayList<Sprite> allInLoop = new ArrayList();
 
     Timer theTimer = new Timer(10, new ActionListener()
     {
@@ -183,6 +184,21 @@ public class Scene extends JPanel
         number++;
 
         double currentTime = System.currentTimeMillis();
+
+        allInLoop.clear();
+
+        int totalLayers = 0;
+
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+        {
+            Layer aLayer = layers.get(i);
+            if (aLayer == null)
+                continue;
+
+            totalLayers++;
+            allInLoop.addAll(aLayer.AllObjects);
+        }
+
         for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
         {
             Layer aLayer = layers.get(i);
@@ -200,7 +216,9 @@ public class Scene extends JPanel
             //update sprites states
             for (Sprite aSprite : aLayer.AllObjects)
             {
+                aSprite.willUpdateState();
                 aSprite.updateState(currentTime);
+                aSprite.didUpdateState();
 
                 if (aSprite instanceof Sprite)
                     actionCount += ((Sprite) aSprite).getActionCount();
@@ -218,18 +236,14 @@ public class Scene extends JPanel
 
         if (this.bEnableCollisionDetect)
         {
-            collisionDetect();
+            collisionProcess();
 
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                    continue;
-
-                for (Sprite aSprite : aLayer.AllObjects)
-                    aSprite.afterCollisionProcess(currentTime);
-            }
+            for (Sprite aSprite : allInLoop)
+                aSprite.didCollisionProcess();
         }
+
+        for (Sprite aSprite : allInLoop)
+            aSprite.willUpdateGUI();
 
         //update GUI
         if (theGraphics2D != null)
@@ -243,15 +257,8 @@ public class Scene extends JPanel
                 theGraphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
 
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                    continue;
-
-                for (Sprite aSprite : aLayer.AllObjects)
-                    aSprite.updateGUI(theGraphics2D);
-            }
+            for (Sprite aSprite : allInLoop)
+                aSprite.updateGUI(theGraphics2D);
 
             long time = System.currentTimeMillis();
             long delta = time - lastTime;
@@ -268,18 +275,7 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT);
 
             //draw sprites count
-            int totalNodes = 0;
-            int totalLayers = 0;
-
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                    continue;
-
-                totalLayers++;
-                totalNodes += aLayer.AllObjects.size();
-            }
+            int totalNodes = allInLoop.size();
 
             text = "NODES: " + totalNodes;
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
@@ -299,6 +295,11 @@ public class Scene extends JPanel
             if (bShowMemoryUsage)
                 theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
         }
+
+        for (Sprite aSprite : allInLoop)
+            aSprite.didUpdateGUI();
+
+        allInLoop.clear();
     }
 
     public void setRed(int value)
@@ -397,7 +398,7 @@ public class Scene extends JPanel
         strMemoryUsage = "MEM: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
     }
 
-    private void collisionDetect()
+    private void collisionProcess()
     {
         this.allNodes.clear();
 

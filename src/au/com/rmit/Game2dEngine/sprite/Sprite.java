@@ -132,6 +132,11 @@ public abstract class Sprite extends Node implements ICopy
         this(x, y, width, height, 0, 0, 0);
     }
 
+    public void willUpdateState()
+    {
+        
+    }
+    
     public void updateState(double currentTime)
     {
         double delta = currentTime - this.lastUpdateTime;
@@ -250,7 +255,9 @@ public abstract class Sprite extends Node implements ICopy
         //update its children
         for (Sprite aSprite : this.theSetOfChildren)
         {
+            aSprite.willUpdateState();
             aSprite.updateState(currentTime);
+            aSprite.didUpdateState();
 
             if (!aSprite.isAlive)
                 this.theSetOfChildrenWillDelete.add(aSprite);
@@ -285,7 +292,17 @@ public abstract class Sprite extends Node implements ICopy
         }
     }
     
-    public void afterCollisionProcess(double currentTime)
+    public void didUpdateState()
+    {
+        
+    }
+    
+    public void didCollisionProcess()
+    {
+        
+    }
+    
+    public void willUpdateGUI()
     {
         
     }
@@ -378,6 +395,11 @@ public abstract class Sprite extends Node implements ICopy
                 theGraphicsInTheScene.setComposite(old);
             }
         }
+    }
+    
+    public void didUpdateGUI()
+    {
+        
     }
 
     private void initForImage()
