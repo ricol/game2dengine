@@ -893,4 +893,16 @@ public abstract class Sprite extends Node implements ICopy
         this.setY(this.getY() - yChange);
         yChange = 0;
     }
+    
+    public void restorePosition()
+    {
+        this.restoreX();
+        this.restoreY();
+    }
+    
+    public void restoreVelocity()
+    {
+        this.restoreVelocityX();
+        this.restoreVelocityY();
+    }
 }
