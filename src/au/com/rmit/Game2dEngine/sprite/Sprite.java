@@ -47,7 +47,7 @@ public abstract class Sprite extends Node implements ICopy
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfTheShape = Color.red;
     public boolean bCollisionDetect = false;
-    
+
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
     public static final long EVER = Long.MAX_VALUE;
     private boolean bTargetCollisionProcessed = false;
@@ -134,9 +134,9 @@ public abstract class Sprite extends Node implements ICopy
 
     public void willUpdateState()
     {
-        
+
     }
-    
+
     public void updateState(double currentTime)
     {
         double delta = currentTime - this.lastUpdateTime;
@@ -269,7 +269,7 @@ public abstract class Sprite extends Node implements ICopy
             this.theSetOfChildren.removeAll(this.theSetOfChildrenWillDelete);
             this.theSetOfChildrenWillDelete.clear();
         }
-        
+
         //add new attached
         if (this.theSetOfAttachedWillAdd.size() > 0)
         {
@@ -291,20 +291,20 @@ public abstract class Sprite extends Node implements ICopy
             this.theSetOfAttachedWillDelete.clear();
         }
     }
-    
+
     public void didUpdateState()
     {
-        
+
     }
-    
+
     public void didCollisionProcess()
     {
-        
+
     }
-    
+
     public void willUpdateGUI()
     {
-        
+
     }
 
     public void updateGUI(final Graphics2D theGraphicsInTheScene)
@@ -375,7 +375,11 @@ public abstract class Sprite extends Node implements ICopy
 
                 //draw its children
                 for (Sprite aSprite : this.theSetOfChildren)
+                {
+                    aSprite.willUpdateGUI();
                     aSprite.updateGUI(theGraphics2D);
+                    aSprite.didUpdateGUI();
+                }
 
                 //restore
                 theGraphics2D.setTransform(old);
@@ -396,10 +400,10 @@ public abstract class Sprite extends Node implements ICopy
             }
         }
     }
-    
+
     public void didUpdateGUI()
     {
-        
+
     }
 
     private void initForImage()
@@ -730,12 +734,12 @@ public abstract class Sprite extends Node implements ICopy
     {
         this.lifetime = life;
     }
-    
+
     public void addAttached(Sprite aSprite)
     {
         this.theSetOfAttachedWillAdd.add(aSprite);
     }
-    
+
     public void removeAttached(Sprite aSprite)
     {
         this.theSetOfAttachedWillDelete.add(aSprite);

@@ -242,9 +242,6 @@ public class Scene extends JPanel
                 aSprite.didCollisionProcess();
         }
 
-        for (Sprite aSprite : allInLoop)
-            aSprite.willUpdateGUI();
-
         //update GUI
         if (theGraphics2D != null)
         {
@@ -258,7 +255,11 @@ public class Scene extends JPanel
             }
 
             for (Sprite aSprite : allInLoop)
+            {
+                aSprite.willUpdateGUI();
                 aSprite.updateGUI(theGraphics2D);
+                aSprite.didUpdateGUI();
+            }
 
             long time = System.currentTimeMillis();
             long delta = time - lastTime;
@@ -295,9 +296,6 @@ public class Scene extends JPanel
             if (bShowMemoryUsage)
                 theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
         }
-
-        for (Sprite aSprite : allInLoop)
-            aSprite.didUpdateGUI();
 
         allInLoop.clear();
     }
