@@ -309,95 +309,95 @@ public abstract class Sprite extends Node implements ICopy
 
     public void updateGUI(final Graphics2D theGraphicsInTheScene)
     {
-        if (this.isAlive)
+        if (!this.isAlive)
+            return;
+
+        int tmpX = (int) this.getX();
+        int tmpY = (int) this.getY();
+        int tmpW = (int) getWidth();
+        int tmpH = (int) getHeight();
+
+        int tmpSceneWidth;
+        int tmpSceneHeight;
+
+        if (bChild)
         {
-            int tmpX = (int) this.getX();
-            int tmpY = (int) this.getY();
-            int tmpW = (int) getWidth();
-            int tmpH = (int) getHeight();
+            tmpSceneWidth = (int) this.parent.getWidth();
+            tmpSceneHeight = (int) this.parent.getHeight();
+        } else
+        {
+            tmpSceneWidth = this.theScene.getWidth();
+            tmpSceneHeight = this.theScene.getHeight();
+        }
 
-            int tmpSceneWidth;
-            int tmpSceneHeight;
+        if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
+            return;
 
-            if (bChild)
+        if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+            return;
+
+        if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
+            return;
+
+        if (theGraphicsInTheScene == null)
+            return;
+
+        Graphics2D theGraphics2D = this.getTheImageGraphics();
+        if (bCustomDrawing)
+        {
+            this.onCustomDraw(theGraphics2D);
+        } else
+        {
+            //clear background
+            theGraphics2D.setBackground(blackTransparent);
+            theGraphics2D.clearRect(0, 0, tmpW, tmpH);
+
+            AffineTransform old = theGraphics2D.getTransform();
+
+            //rotate the angle
+            theGraphics2D.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
+
+            //draw itself
+            if (this.theImage != null)
             {
-                tmpSceneWidth = (int) this.parent.getWidth();
-                tmpSceneHeight = (int) this.parent.getHeight();
+                //draw the image
+                int tmpImageWidth = this.theImage.getWidth();
+                int tmpImageHeight = this.theImage.getHeight();
+                int tmpImagePosX = (int) ((getWidth() - tmpImageWidth) / 2.0f);
+                int tmpImagePosY = (int) ((getHeight() - tmpImageHeight) / 2.0f);
+                theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
+
             } else
             {
-                tmpSceneWidth = this.theScene.getWidth();
-                tmpSceneHeight = this.theScene.getHeight();
+                //fill
+                theGraphics2D.setColor(theColor);
+                theGraphics2D.drawRect(0, 0, tmpW - 1, tmpH - 1);
             }
 
-            if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
-                return;
-
-            if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
-                return;
-
-            if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
-                return;
-
-            if (theGraphicsInTheScene == null)
-                return;
-
-            Graphics2D theGraphics2D = this.getTheImageGraphics();
-            if (bCustomDrawing)
+            //draw its children
+            for (Sprite aSprite : this.theSetOfChildren)
             {
-                this.onCustomDraw(theGraphics2D);
-            } else
-            {
-                //clear background
-                theGraphics2D.setBackground(blackTransparent);
-                theGraphics2D.clearRect(0, 0, tmpW, tmpH);
-
-                AffineTransform old = theGraphics2D.getTransform();
-
-                //rotate the angle
-                theGraphics2D.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
-
-                //draw itself
-                if (this.theImage != null)
-                {
-                    //draw the image
-                    int tmpImageWidth = this.theImage.getWidth();
-                    int tmpImageHeight = this.theImage.getHeight();
-                    int tmpImagePosX = (int) ((getWidth() - tmpImageWidth) / 2.0f);
-                    int tmpImagePosY = (int) ((getHeight() - tmpImageHeight) / 2.0f);
-                    theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
-
-                } else
-                {
-                    //fill
-                    theGraphics2D.setColor(theColor);
-                    theGraphics2D.drawRect(0, 0, tmpW - 1, tmpH - 1);
-                }
-
-                //draw its children
-                for (Sprite aSprite : this.theSetOfChildren)
-                {
-                    aSprite.willUpdateGUI();
-                    aSprite.updateGUI(theGraphics2D);
-                    aSprite.didUpdateGUI();
-                }
-
-                //restore
-                theGraphics2D.setTransform(old);
+                aSprite.willUpdateGUI();
+                aSprite.updateGUI(theGraphics2D);
+                aSprite.didUpdateGUI();
             }
 
-            this.drawFrame(theGraphics2D);
-            this.drawShape(theGraphicsInTheScene);
+            //restore
+            theGraphics2D.setTransform(old);
+        }
 
-            if (theImageCanvas != null)
-            {
-                Composite old = theGraphicsInTheScene.getComposite();
+        this.drawFrame(theGraphics2D);
+        this.drawShape(theGraphicsInTheScene);
 
-                AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-                theGraphicsInTheScene.setComposite(ac);
-                theGraphicsInTheScene.drawImage(theImageCanvas, (int) this.getX(), (int) this.getY(), null);
+        if (theImageCanvas != null)
+        {
+            Composite old = theGraphicsInTheScene.getComposite();
 
-                theGraphicsInTheScene.setComposite(old);
-            }
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            theGraphicsInTheScene.setComposite(ac);
+            theGraphicsInTheScene.drawImage(theImageCanvas, (int) this.getX(), (int) this.getY(), null);
+
+            theGraphicsInTheScene.setComposite(old);
         }
     }
 
