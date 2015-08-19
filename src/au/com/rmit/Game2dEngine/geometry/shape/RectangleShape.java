@@ -41,12 +41,10 @@ public class RectangleShape extends ClosureShape
     {
         if (theShape instanceof CircleShape)
         {
-            CircleShape theCircleShape = (CircleShape) theShape;
-            return Shape.RectangleCollideWithRectangle(this, theCircleShape.getTheSquareShape());
+            return Shape.RectangleCollideWithCircle(this, (CircleShape) theShape);
         } else if (theShape instanceof RectangleShape)
         {
-            RectangleShape theRectangleShape = (RectangleShape) theShape;
-            return Shape.RectangleCollideWithRectangle(this, theRectangleShape);
+            return Shape.RectangleCollideWithRectangle(this,  (RectangleShape) theShape);
         } else
             return false;
     }
