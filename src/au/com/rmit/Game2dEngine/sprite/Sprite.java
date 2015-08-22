@@ -9,8 +9,8 @@ import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.shape.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.shape.Shape;
-import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.interfaces.ICopy;
+import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
 import java.awt.AlphaComposite;
@@ -39,18 +39,18 @@ public abstract class Sprite extends Node implements ICopy
     public boolean bChild;
     public Sprite parent;
     public Scene theScene;
-
     public boolean bDrawFrame = false;
     public boolean bDrawShape = false;
+    public boolean bCustomDrawing = false;
+    public boolean bDeadIfNoActions;
+    public boolean bCollisionArbitrary = false;
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfTheShape = Color.red;
     public boolean bCollisionDetect = false;
-    public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
-    public boolean bCustomDrawing = false;
-    public static final long EVER = Long.MAX_VALUE;
-    public boolean bDeadIfNoActions;
-    private boolean bTargetCollisionProcessed = false;
 
+    public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
+    public static final long EVER = Long.MAX_VALUE;
+    private boolean bTargetCollisionProcessed = false;
     private int layer = Scene.MIN_LAYER;
     private double lifetime = Sprite.EVER; //in seconds
     private double lastUpdateTime;
@@ -67,19 +67,17 @@ public abstract class Sprite extends Node implements ICopy
     private boolean bShouldDie = false;
     private int collisionCategory = 0x00;
     private int collisionTargetCategory = 0x00;
-    public boolean bCollisionArbitrary = false;
-
     private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
     private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
     private Set<Action> theSetOfActions = new HashSet<>();
-
     private Set<Action> theSetOfActionsInQueueWillDelete = new HashSet<>();
     private Queue<Set<Action>> theQueueOfActions = new LinkedList<>();
-
     private Set<Sprite> theSetOfChildrenWillDelete = new HashSet<>();
     private Set<Sprite> theSetOfChildrenWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfChildren = new HashSet<>();
-
+    private Set<Sprite> theSetOfAttachedWillDelete = new HashSet<>();
+    private Set<Sprite> theSetOfAttachedWillAdd = new HashSet<>();
+    private Set<Sprite> theSetOfAttached = new HashSet<>();
     private boolean bEnableGravity;
     private double mass;
     private Gravity theGravity;
@@ -89,7 +87,6 @@ public abstract class Sprite extends Node implements ICopy
     private int blue = 0;
     private double angle;
     private Color theColor = new Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha);
-
     private BufferedImage theImageCanvas;
     private Graphics2D theGraphics;
     private BufferedImage theImage;
@@ -135,8 +132,22 @@ public abstract class Sprite extends Node implements ICopy
         this(x, y, width, height, 0, 0, 0);
     }
 
+    public void willUpdateState()
+    {
+
+    }
+
     public void updateState(double currentTime)
     {
+        double delta = currentTime - this.lastUpdateTime;
+        this.lastUpdateTime = currentTime;
+
+        if (this.theScene != null)
+        {
+            if (this.theScene.isScenePaused())
+                return;
+        }
+
         if (bShouldDie)
         {
             this.setDead();
@@ -144,7 +155,6 @@ public abstract class Sprite extends Node implements ICopy
         }
 
         //how much time passed since last update
-        double delta = currentTime - this.lastUpdateTime;
         double t = delta / 1000.0f; //in seconds
         currentLife += t;
 
@@ -245,7 +255,9 @@ public abstract class Sprite extends Node implements ICopy
         //update its children
         for (Sprite aSprite : this.theSetOfChildren)
         {
+            aSprite.willUpdateState();
             aSprite.updateState(currentTime);
+            aSprite.didUpdateState();
 
             if (!aSprite.isAlive)
                 this.theSetOfChildrenWillDelete.add(aSprite);
@@ -258,97 +270,140 @@ public abstract class Sprite extends Node implements ICopy
             this.theSetOfChildrenWillDelete.clear();
         }
 
-        this.lastUpdateTime = currentTime;
+        //add new attached
+        if (this.theSetOfAttachedWillAdd.size() > 0)
+        {
+            this.theSetOfAttached.addAll(this.theSetOfAttachedWillAdd);
+            this.theSetOfAttachedWillAdd.clear();
+        }
+
+        //update its attached
+        for (Sprite aSprite : this.theSetOfAttached)
+        {
+            if (!aSprite.isAlive)
+                this.theSetOfAttachedWillDelete.add(aSprite);
+        }
+
+        //delete old attached
+        if (this.theSetOfAttachedWillDelete.size() > 0)
+        {
+            this.theSetOfAttached.removeAll(this.theSetOfAttachedWillDelete);
+            this.theSetOfAttachedWillDelete.clear();
+        }
+    }
+
+    public void didUpdateState()
+    {
+
+    }
+
+    public void didCollisionProcess()
+    {
+
+    }
+
+    public void willUpdateGUI()
+    {
+
     }
 
     public void updateGUI(final Graphics2D theGraphicsInTheScene)
     {
-        if (this.isAlive)
+        if (!this.isAlive)
+            return;
+
+        int tmpX = (int) this.getX();
+        int tmpY = (int) this.getY();
+        int tmpW = (int) getWidth();
+        int tmpH = (int) getHeight();
+
+        int tmpSceneWidth;
+        int tmpSceneHeight;
+
+        if (bChild)
         {
-            int tmpX = (int) this.getX();
-            int tmpY = (int) this.getY();
-            int tmpW = (int) getWidth();
-            int tmpH = (int) getHeight();
-
-            int tmpSceneWidth;
-            int tmpSceneHeight;
-
-            if (bChild)
-            {
-                tmpSceneWidth = (int) this.parent.getWidth();
-                tmpSceneHeight = (int) this.parent.getHeight();
-            } else
-            {
-                tmpSceneWidth = this.theScene.getWidth();
-                tmpSceneHeight = this.theScene.getHeight();
-            }
-
-            if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
-                return;
-
-            if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
-                return;
-
-            if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
-                return;
-
-            if (theGraphicsInTheScene == null)
-                return;
-
-            Graphics2D theGraphics2D = this.getTheImageGraphics();
-            if (bCustomDrawing)
-            {
-                this.onCustomDraw(theGraphics2D);
-            } else
-            {
-                //clear background
-                theGraphics2D.setBackground(blackTransparent);
-                theGraphics2D.clearRect(0, 0, tmpW, tmpH);
-
-                AffineTransform old = theGraphics2D.getTransform();
-
-                //rotate the angle
-                theGraphics2D.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
-
-                //draw itself
-                if (this.theImage != null)
-                {
-                    //draw the image
-                    int tmpImageWidth = this.theImage.getWidth();
-                    int tmpImageHeight = this.theImage.getHeight();
-                    int tmpImagePosX = (int) ((getWidth() - tmpImageWidth) / 2.0f);
-                    int tmpImagePosY = (int) ((getHeight() - tmpImageHeight) / 2.0f);
-                    theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
-
-                } else
-                {
-                    //fill
-                    theGraphics2D.setColor(theColor);
-                    theGraphics2D.drawRect(0, 0, tmpW - 1, tmpH - 1);
-                }
-
-                //draw its children
-                for (Sprite aSprite : this.theSetOfChildren)
-                    aSprite.updateGUI(theGraphics2D);
-
-                //restore
-                theGraphics2D.setTransform(old);
-            }
-
-            this.drawFrame(theGraphics2D);
-            this.drawShape(theGraphicsInTheScene);
-
-            if (theImageCanvas != null)
-            {
-                Composite old = theGraphicsInTheScene.getComposite();
-
-                AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-                theGraphicsInTheScene.setComposite(ac);
-                theGraphicsInTheScene.drawImage(theImageCanvas, (int) this.getX(), (int) this.getY(), null);
-
-                theGraphicsInTheScene.setComposite(old);
-            }
+            tmpSceneWidth = (int) this.parent.getWidth();
+            tmpSceneHeight = (int) this.parent.getHeight();
+        } else
+        {
+            tmpSceneWidth = this.theScene.getWidth();
+            tmpSceneHeight = this.theScene.getHeight();
         }
+
+        if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
+            return;
+
+        if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+            return;
+
+        if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
+            return;
+
+        if (theGraphicsInTheScene == null)
+            return;
+
+        Graphics2D theGraphics2D = this.getTheImageGraphics();
+        if (bCustomDrawing)
+        {
+            this.onCustomDraw(theGraphics2D);
+        } else
+        {
+            //clear background
+            theGraphics2D.setBackground(blackTransparent);
+            theGraphics2D.clearRect(0, 0, tmpW, tmpH);
+
+            AffineTransform old = theGraphics2D.getTransform();
+
+            //rotate the angle
+            theGraphics2D.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
+
+            //draw itself
+            if (this.theImage != null)
+            {
+                //draw the image
+                int tmpImageWidth = this.theImage.getWidth();
+                int tmpImageHeight = this.theImage.getHeight();
+                int tmpImagePosX = (int) ((getWidth() - tmpImageWidth) / 2.0f);
+                int tmpImagePosY = (int) ((getHeight() - tmpImageHeight) / 2.0f);
+                theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
+
+            } else
+            {
+                //fill
+                theGraphics2D.setColor(theColor);
+                theGraphics2D.drawRect(0, 0, tmpW - 1, tmpH - 1);
+            }
+
+            //draw its children
+            for (Sprite aSprite : this.theSetOfChildren)
+            {
+                aSprite.willUpdateGUI();
+                aSprite.updateGUI(theGraphics2D);
+                aSprite.didUpdateGUI();
+            }
+
+            //restore
+            theGraphics2D.setTransform(old);
+        }
+
+        this.drawFrame(theGraphics2D);
+        this.drawShape(theGraphicsInTheScene);
+
+        if (theImageCanvas != null)
+        {
+            Composite old = theGraphicsInTheScene.getComposite();
+
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            theGraphicsInTheScene.setComposite(ac);
+            theGraphicsInTheScene.drawImage(theImageCanvas, (int) this.getX(), (int) this.getY(), null);
+
+            theGraphicsInTheScene.setComposite(old);
+        }
+    }
+
+    public void didUpdateGUI()
+    {
+
     }
 
     private void initForImage()
@@ -618,54 +673,6 @@ public abstract class Sprite extends Node implements ICopy
         return null;
     }
 
-    @Override
-    public void copyContent(Object theObject)
-    {
-        if (!(theObject instanceof Sprite))
-            return;
-
-        Sprite aCopy = (Sprite) theObject;
-
-        aCopy.setX(this.getX());
-        aCopy.setY(this.getY());
-        aCopy.setWidth(this.getWidth());
-        aCopy.setHeight(this.getHeight());
-        aCopy.velocityX = this.velocityX;
-        aCopy.velocityY = this.velocityY;
-        aCopy.red = this.red;
-        aCopy.green = this.green;
-        aCopy.blue = this.blue;
-        aCopy.angle = this.angle;
-        aCopy.alpha = this.alpha;
-
-        aCopy.bChild = this.bChild;
-        aCopy.parent = this.parent;
-        aCopy.theScene = this.theScene;
-
-        aCopy.bDrawFrame = this.bDrawFrame;
-        aCopy.bDrawShape = this.bDrawShape;
-        aCopy.theColorOfFrame = this.theColorOfFrame;
-        aCopy.theColorOfTheShape = this.theColorOfTheShape;
-        aCopy.bCollisionDetect = this.bCollisionDetect;
-        aCopy.bCustomDrawing = this.bCustomDrawing;
-        aCopy.bDeadIfNoActions = this.bDeadIfNoActions;
-
-        aCopy.layer = this.layer;
-        aCopy.lifetime = this.lifetime;
-        aCopy.lastUpdateTime = this.lastUpdateTime;
-        aCopy.starttime = this.starttime;
-        aCopy.velocityAngle = this.velocityAngle;
-        aCopy.currentLife = this.currentLife;
-        aCopy.isAlive = this.isAlive;
-        aCopy.bShouldDie = this.bShouldDie;
-        aCopy.collisionCategory = this.collisionCategory;
-        aCopy.collisionTargetCategory = this.collisionTargetCategory;
-        aCopy.identifier = this.identifier;
-
-        if (this.theGravity != null)
-            aCopy.theGravity = (Gravity) this.theGravity.getACopy();
-    }
-
     public boolean collideWith(final Sprite target)
     {
         Shape theShape = this.getTheShape();
@@ -726,6 +733,16 @@ public abstract class Sprite extends Node implements ICopy
     public void setLifeTime(double life)
     {
         this.lifetime = life;
+    }
+
+    public void addAttached(Sprite aSprite)
+    {
+        this.theSetOfAttachedWillAdd.add(aSprite);
+    }
+
+    public void removeAttached(Sprite aSprite)
+    {
+        this.theSetOfAttachedWillDelete.add(aSprite);
     }
 
     public void addAChild(Sprite aSprite)
@@ -830,6 +847,9 @@ public abstract class Sprite extends Node implements ICopy
         this.theSetOfChildren.clear();
         this.theSetOfChildrenWillAdd.clear();
         this.theSetOfChildrenWillDelete.clear();
+        this.theSetOfAttached.clear();
+        this.theSetOfAttachedWillAdd.clear();
+        this.theSetOfAttachedWillDelete.clear();
 
         this.theQueueOfActions.clear();
 
@@ -872,5 +892,17 @@ public abstract class Sprite extends Node implements ICopy
     {
         this.setY(this.getY() - yChange);
         yChange = 0;
+    }
+    
+    public void restorePosition()
+    {
+        this.restoreX();
+        this.restoreY();
+    }
+    
+    public void restoreVelocity()
+    {
+        this.restoreVelocityX();
+        this.restoreVelocityY();
     }
 }

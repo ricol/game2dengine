@@ -31,37 +31,32 @@ public class Scene extends JPanel
 
     public static int MIN_LAYER = 0;
     public static int MAX_LAYER = 9;
-
+    public boolean bShowMemoryUsage = true;
     public BufferedImage theImageBackground;
+    private boolean bPaused;
+
     private int red = 0;
     private int green = 0;
     private int blue = 0;
     private Color theBackgroundColor = new Color(red, green, blue);
-
-    protected Random theRandom = new Random();
-    public boolean bPaused;
     private boolean bEnableCollisionDetect = false;
     static long INTERVAL = 500;
     static long DELAY = 5;
     static long LEFT_TEXT = 25;
     static long TOP_TEXT = 30;
     static long GAP_TEXT = 20;
-
-    public boolean bShowMemoryUsage = true;
-
     long number = 0;
     long lastTime = System.currentTimeMillis();
     long fps = 0;
     float timeEllapsed = 0;
     long actionCount = 0;
-    String strFreeMemory = "";
-    String strAllocatedMemory = "";
     String strMemoryUsage = "";
-    String strMaxMemory = "";
-    String strTotalFreeMemory = "";
+
+    protected Random theRandom = new Random();
 
     HashMap<Integer, Layer> layers = new HashMap();
     ArrayList<Sprite> allNodes = new ArrayList();
+    ArrayList<Sprite> allInLoop = new ArrayList();
 
     Timer theTimer = new Timer(10, new ActionListener()
     {
@@ -139,11 +134,6 @@ public class Scene extends JPanel
         bPaused = true;
     }
 
-    public void updateState()
-    {
-
-    }
-
     @Override
     public void paint(Graphics g)
     {
@@ -191,57 +181,65 @@ public class Scene extends JPanel
 
     private void Loop()
     {
+        number++;
 
-        if (!bPaused)
+        double currentTime = System.currentTimeMillis();
+
+        allInLoop.clear();
+
+        int totalLayers = 0;
+
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
         {
-            number++;
+            Layer aLayer = layers.get(i);
+            if (aLayer == null)
+                continue;
 
-            double currentTime = System.currentTimeMillis();
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+            totalLayers++;
+            allInLoop.addAll(aLayer.AllObjects);
+        }
+
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+        {
+            Layer aLayer = layers.get(i);
+            if (aLayer == null)
+                continue;
+
+            //remove all dead sprites
+            for (Sprite aSprite : aLayer.DeadObjects)
+                aSprite.theScene = null;
+
+            aLayer.AllObjects.removeAll(aLayer.DeadObjects);
+            aLayer.DeadObjects.clear();
+
+            actionCount = 0;
+            //update sprites states
+            for (Sprite aSprite : aLayer.AllObjects)
             {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
+                aSprite.willUpdateState();
+                aSprite.updateState(currentTime);
+                aSprite.didUpdateState();
+
+                if (aSprite instanceof Sprite)
+                    actionCount += ((Sprite) aSprite).getActionCount();
+
+                if (!aSprite.isAlive())
                 {
-                    continue;
+                    aLayer.DeadObjects.add(aSprite);
+                    aSprite.onRemovedFromLayer(aLayer);
                 }
-
-                //remove all dead sprites
-                for (Sprite aSprite : aLayer.DeadObjects)
-                {
-                    aSprite.theScene = null;
-                }
-
-                aLayer.AllObjects.removeAll(aLayer.DeadObjects);
-                aLayer.DeadObjects.clear();
-
-                actionCount = 0;
-                //update sprites states
-                for (Sprite aSprite : aLayer.AllObjects)
-                {
-                    aSprite.updateState(currentTime);
-
-                    if (aSprite instanceof Sprite)
-                    {
-                        actionCount += ((Sprite) aSprite).getActionCount();
-                    }
-
-                    if (!aSprite.isAlive())
-                    {
-                        aLayer.DeadObjects.add(aSprite);
-                        aSprite.onRemovedFromLayer(aLayer);
-                    }
-                }
-
-                aLayer.AllObjects.addAll(aLayer.NewObjects);
-                aLayer.NewObjects.clear();
             }
 
-            updateState();
+            aLayer.AllObjects.addAll(aLayer.NewObjects);
+            aLayer.NewObjects.clear();
+        }
 
-            if (this.bEnableCollisionDetect)
-            {
-                collisionDetect();
-            }
+        if (this.bEnableCollisionDetect)
+        {
+            collisionProcess();
+
+            for (Sprite aSprite : allInLoop)
+                aSprite.didCollisionProcess();
         }
 
         //update GUI
@@ -256,18 +254,11 @@ public class Scene extends JPanel
                 theGraphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
 
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+            for (Sprite aSprite : allInLoop)
             {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                {
-                    continue;
-                }
-
-                for (Sprite aSprite : aLayer.AllObjects)
-                {
-                    aSprite.updateGUI(theGraphics2D);
-                }
+                aSprite.willUpdateGUI();
+                aSprite.updateGUI(theGraphics2D);
+                aSprite.didUpdateGUI();
             }
 
             long time = System.currentTimeMillis();
@@ -285,20 +276,7 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT);
 
             //draw sprites count
-            int totalNodes = 0;
-            int totalLayers = 0;
-
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                {
-                    continue;
-                }
-
-                totalLayers++;
-                totalNodes += aLayer.AllObjects.size();
-            }
+            int totalNodes = allInLoop.size();
 
             text = "NODES: " + totalNodes;
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
@@ -316,14 +294,10 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
 
             if (bShowMemoryUsage)
-            {
                 theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
-//                theGraphics2D.drawString(strFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
-//                theGraphics2D.drawString(strAllocatedMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 3);
-//                theGraphics2D.drawString(strMaxMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 4);
-//                theGraphics2D.drawString(strTotalFreeMemory, LEFT_TEXT, this.getHeight() - TOP_TEXT * 5);
-            }
         }
+
+        allInLoop.clear();
     }
 
     public void setRed(int value)
@@ -366,6 +340,11 @@ public class Scene extends JPanel
     public int getBlue()
     {
         return this.blue;
+    }
+    
+    public boolean isScenePaused()
+    {
+        return this.bPaused;
     }
 
     public boolean collisionDetectEnabled()
@@ -416,21 +395,13 @@ public class Scene extends JPanel
     private void collectMemoryInfo()
     {
         Runtime runtime = Runtime.getRuntime();
-
         NumberFormat format = NumberFormat.getInstance();
-
-        long maxMemory = runtime.maxMemory();
         long allocatedMemory = runtime.totalMemory();
-        long freeMemory = runtime.freeMemory();
 
-        strFreeMemory = "Free Memory: " + format.format(freeMemory / (1024 * 1024)) + " MB";
-        strAllocatedMemory = "Allocated Memory: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
         strMemoryUsage = "MEM: " + format.format(allocatedMemory / (1024 * 1024)) + " MB";
-        strMaxMemory = "Max Memory: " + format.format(maxMemory / (1024 * 1024)) + " MB";
-        strTotalFreeMemory = "Total Free Memory: " + format.format((freeMemory + (maxMemory - allocatedMemory)) / (1024 * 1024)) + " MB";
     }
 
-    private void collisionDetect()
+    private void collisionProcess()
     {
         this.allNodes.clear();
 
