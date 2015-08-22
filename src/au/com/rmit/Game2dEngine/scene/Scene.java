@@ -33,7 +33,7 @@ public class Scene extends JPanel
     public static int MAX_LAYER = 9;
     public boolean bShowMemoryUsage = true;
     public BufferedImage theImageBackground;
-    public boolean bPaused;
+    private boolean bPaused;
 
     private int red = 0;
     private int green = 0;
@@ -340,6 +340,11 @@ public class Scene extends JPanel
     public int getBlue()
     {
         return this.blue;
+    }
+    
+    public boolean isScenePaused()
+    {
+        return this.bPaused;
     }
 
     public boolean collisionDetectEnabled()

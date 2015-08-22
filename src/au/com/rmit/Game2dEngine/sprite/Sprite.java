@@ -144,7 +144,7 @@ public abstract class Sprite extends Node implements ICopy
 
         if (this.theScene != null)
         {
-            if (this.theScene.bPaused)
+            if (this.theScene.isScenePaused())
                 return;
         }
 
