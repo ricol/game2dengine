@@ -5,7 +5,8 @@
  */
 package au.com.rmit.Game2dEngine.geometry.shape;
 
-import au.com.rmit.Game2dEngine.geometry.Point;
+import au.com.rmit.Game2dEngine.geometry.Line;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,11 +15,26 @@ import au.com.rmit.Game2dEngine.geometry.Point;
 public class PolygonShape extends ClosureShape
 {
 
-    Point data[];
+    ArrayList<Line> sides = new ArrayList<>();
 
-    public PolygonShape(Point data[])
+    public PolygonShape()
     {
-        this.data = data;
+
+    }
+
+    public void addSide(Line aLine)
+    {
+        this.sides.add(aLine);
+    }
+
+    public void removeSide(Line aLine)
+    {
+        this.sides.remove(aLine);
+    }
+
+    public int getSidesCount()
+    {
+        return this.sides.size();
     }
 
     @Override
