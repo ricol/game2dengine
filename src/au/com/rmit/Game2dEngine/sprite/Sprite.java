@@ -10,6 +10,7 @@ import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.shape.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.shape.Shape;
 import au.com.rmit.Game2dEngine.interfaces.ICopy;
+import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
@@ -55,12 +56,9 @@ public abstract class Sprite extends Node implements ICopy
     private double lifetime = Sprite.EVER; //in seconds
     private double lastUpdateTime;
     private double starttime = System.currentTimeMillis();
-    private double velocityX;
-    private double velocityY;
-    private double velocityXChange;
-    private double velocityYChange;
-    private double xChange;
-    private double yChange;
+    private Vector velocity = new Vector(0, 0);
+    private Vector velocityChange = new Vector(0, 0);
+    private Vector change = new Vector(0, 0);
     private double velocityAngle;
     private double currentLife = 0;
     private boolean isAlive = true;
@@ -96,8 +94,8 @@ public abstract class Sprite extends Node implements ICopy
     {
         super(x, y, width, height);
         this.mass = mass;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
+        this.velocity.x = velocityX;
+        this.velocity.y = velocityY;
         this.lastUpdateTime = System.currentTimeMillis();
     }
 
@@ -164,17 +162,17 @@ public abstract class Sprite extends Node implements ICopy
         //update state
         if (this.theGravity != null && this.bEnableGravity)
         {
-            velocityXChange = this.theGravity.GX * t;
-            velocityYChange = this.theGravity.GY * t;
-            velocityX += velocityXChange;
-            velocityY += velocityYChange;
+            velocityChange.x = this.theGravity.GX * t;
+            velocityChange.y = this.theGravity.GY * t;
+            velocity.x += velocityChange.x;
+            velocity.y += velocityChange.y;
         }
 
-        xChange = velocityX * t;
-        yChange = velocityY * t;
+        change.x = velocity.x * t;
+        change.y = velocity.y * t;
 
-        this.setX(this.getX() + xChange);
-        this.setY(this.getY() + yChange);
+        this.setX(this.getX() + change.x);
+        this.setY(this.getY() + change.y);
 
         double IncAngle = velocityAngle * t;
         angle += IncAngle;
@@ -298,6 +296,11 @@ public abstract class Sprite extends Node implements ICopy
     }
 
     public void didCollisionProcess()
+    {
+
+    }
+
+    public void didFinishUpdateState()
     {
 
     }
@@ -506,12 +509,12 @@ public abstract class Sprite extends Node implements ICopy
 
     public void setVelocityX(double value)
     {
-        this.velocityX = value;
+        this.velocity.x = value;
     }
 
     public void setVelocityY(double value)
     {
-        this.velocityY = value;
+        this.velocity.y = value;
     }
 
     public void setVelocityAngle(double value)
@@ -521,12 +524,23 @@ public abstract class Sprite extends Node implements ICopy
 
     public double getVelocityX()
     {
-        return this.velocityX;
+        return this.velocity.x;
     }
 
     public double getVelocityY()
     {
-        return this.velocityY;
+        return this.velocity.y;
+    }
+
+    public Vector getVelocity()
+    {
+        return this.velocity;
+    }
+
+    public void setVelocity(Vector v)
+    {
+        this.velocity.x = v.x;
+        this.velocity.y = v.y;
     }
 
     public double getVelocityAngle()
@@ -872,34 +886,34 @@ public abstract class Sprite extends Node implements ICopy
 
     public void restoreVelocityX()
     {
-        velocityX -= velocityXChange;
-        velocityXChange = 0;
+        velocity.x -= velocityChange.x;
+        velocityChange.x = 0;
     }
 
     public void restoreVelocityY()
     {
-        velocityY -= velocityYChange;
-        velocityYChange = 0;
+        velocity.y -= velocityChange.y;
+        velocityChange.y = 0;
     }
 
     public void restoreX()
     {
-        this.setX(this.getX() - xChange);
-        xChange = 0;
+        this.setX(this.getX() - change.x);
+        change.x = 0;
     }
 
     public void restoreY()
     {
-        this.setY(this.getY() - yChange);
-        yChange = 0;
+        this.setY(this.getY() - change.y);
+        change.y = 0;
     }
-    
+
     public void restorePosition()
     {
         this.restoreX();
         this.restoreY();
     }
-    
+
     public void restoreVelocity()
     {
         this.restoreVelocityX();
