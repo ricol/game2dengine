@@ -241,6 +241,9 @@ public class Scene extends JPanel
             for (Sprite aSprite : allInLoop)
                 aSprite.didCollisionProcess();
         }
+        
+        for (Sprite aSprite : allInLoop)
+                aSprite.didFinishUpdateState();
 
         //update GUI
         if (theGraphics2D != null)
