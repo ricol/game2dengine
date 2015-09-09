@@ -58,7 +58,6 @@ public class CircleShape extends ClosureShape
         } else if (theShape instanceof RectangleShape)
         {
             return Shape.CircleCollideWithRectangle(this, (RectangleShape) theShape);
-//            return Shape.RectangleCollideWithRectangle(this.theSquareShape, (RectangleShape) theShape);
         } else
             return false;
     }
