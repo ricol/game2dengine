@@ -17,7 +17,6 @@ public class CircleShape extends ClosureShape
 
     public Point centre = new Point(0, 0);
     public double radius;
-    SquareShape theSquareShape = new SquareShape(0, 0, 0, 0);
 
     public CircleShape(double centreX, double centreY, double radius)
     {
@@ -58,7 +57,7 @@ public class CircleShape extends ClosureShape
             return Shape.CircleCollideWithCircle(this, (CircleShape) theShape);
         } else if (theShape instanceof RectangleShape)
         {
-            return Shape.CircleCollideWithRectangle(this, (RectangleShape)theShape);
+            return Shape.CircleCollideWithRectangle(this, (RectangleShape) theShape);
 //            return Shape.RectangleCollideWithRectangle(this.theSquareShape, (RectangleShape) theShape);
         } else
             return false;
@@ -69,14 +68,8 @@ public class CircleShape extends ClosureShape
     {
         super.refresh(changeX, changeY, changeWidth, changeHeight); //To change body of generated methods, choose Tools | Templates.
 
-        this.centre.x = theNode.getCentreX();
-        this.centre.y = theNode.getCentreY();
+        this.centre.refresh(changeX, changeY, changeWidth, changeHeight);
         this.radius = theNode.getWidth() > theNode.getHeight() ? theNode.getWidth() / 2.0f : theNode.getHeight() / 2.0f;
-
-        this.theSquareShape.left = this.centre.x - this.radius;
-        this.theSquareShape.top = this.centre.y - this.radius;
-        this.theSquareShape.width = this.radius * 2;
-        this.theSquareShape.height = this.radius * 2;
     }
 
     @Override
@@ -93,10 +86,5 @@ public class CircleShape extends ClosureShape
     public void print(String text)
     {
         System.out.println(text + " - CircleShape: Radius: " + radius + " at centre: " + centre.x + " : " + centre.y);
-    }
-
-    public SquareShape getTheSquareShape()
-    {
-        return this.theSquareShape;
     }
 }
