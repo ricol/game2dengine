@@ -7,8 +7,8 @@ package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.Game2dEngine.geometry.shape.ClosureShape;
-import au.com.rmit.Game2dEngine.geometry.shape.Shape;
+import au.com.rmit.Game2dEngine.geometry.ClosureShape;
+import au.com.rmit.Game2dEngine.geometry.Shape;
 import au.com.rmit.Game2dEngine.interfaces.ICopy;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;

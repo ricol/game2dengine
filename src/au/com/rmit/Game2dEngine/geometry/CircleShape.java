@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.geometry.shape;
+package au.com.rmit.Game2dEngine.geometry;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -15,14 +15,14 @@ import java.awt.Graphics2D;
 public class CircleShape extends ClosureShape
 {
 
-    public double centreX, centreY;
+    public Point centre = new Point(0, 0);
     public double radius;
     SquareShape theSquareShape = new SquareShape(0, 0, 0, 0);
 
     public CircleShape(double centreX, double centreY, double radius)
     {
-        this.centreX = centreX;
-        this.centreY = centreY;
+        this.centre.x = centreX;
+        this.centre.y = centreY;
         this.radius = radius;
     }
 
@@ -65,16 +65,16 @@ public class CircleShape extends ClosureShape
     }
 
     @Override
-    public void refresh()
+    public void refresh(double changeX, double changeY, double changeWidth, double changeHeight)
     {
-        super.refresh(); //To change body of generated methods, choose Tools | Templates.
+        super.refresh(changeX, changeY, changeWidth, changeHeight); //To change body of generated methods, choose Tools | Templates.
 
-        this.centreX = theNode.getCentreX();
-        this.centreY = theNode.getCentreY();
+        this.centre.x = theNode.getCentreX();
+        this.centre.y = theNode.getCentreY();
         this.radius = theNode.getWidth() > theNode.getHeight() ? theNode.getWidth() / 2.0f : theNode.getHeight() / 2.0f;
 
-        this.theSquareShape.left = this.centreX - this.radius;
-        this.theSquareShape.top = this.centreY - this.radius;
+        this.theSquareShape.left = this.centre.x - this.radius;
+        this.theSquareShape.top = this.centre.y - this.radius;
         this.theSquareShape.width = this.radius * 2;
         this.theSquareShape.height = this.radius * 2;
     }
@@ -83,8 +83,8 @@ public class CircleShape extends ClosureShape
     public void draw(Graphics2D theGraphicsInTheScene, Color theColor)
     {
         int tmpRadius = (int) radius;
-        int tmpX = (int) (centreX - tmpRadius);
-        int tmpY = (int) (centreY - tmpRadius);
+        int tmpX = (int) (centre.x - tmpRadius);
+        int tmpY = (int) (centre.y - tmpRadius);
         theGraphicsInTheScene.setColor(theColor);
         theGraphicsInTheScene.drawArc(tmpX, tmpY, 2 * tmpRadius, 2 * tmpRadius, 0, 360);
     }
@@ -92,7 +92,7 @@ public class CircleShape extends ClosureShape
     @Override
     public void print(String text)
     {
-        System.out.println(text + " - CircleShape: Radius: " + radius + " at centre: " + centreX + " : " + centreY);
+        System.out.println(text + " - CircleShape: Radius: " + radius + " at centre: " + centre.x + " : " + centre.y);
     }
 
     public SquareShape getTheSquareShape()

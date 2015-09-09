@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.geometry.shape;
+package au.com.rmit.Game2dEngine.geometry;
 
-import au.com.rmit.Game2dEngine.geometry.Line;
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 public class PolygonShape extends ClosureShape
 {
 
-    ArrayList<Line> sides = new ArrayList<>();
+    Set<Line> sides = new HashSet<>();
 
     public PolygonShape()
     {
@@ -58,6 +60,27 @@ public class PolygonShape extends ClosureShape
     @Override
     public double getCircumference()
     {
-        return 0;
+        double sum = 0;
+        for (Line aLine : this.sides)
+            sum += aLine.getLength();
+
+        return sum;
+    }
+
+    @Override
+    public void refresh(double changeX, double changeY, double changeWidth, double changeHeight)
+    {
+        super.refresh(changeX, changeY, changeWidth, changeHeight);
+        for (Line aLine : this.sides)
+            aLine.refresh(changeX, changeY, changeWidth, changeHeight);
+    }
+
+    @Override
+    public void draw(Graphics2D theGraphicsInTheScene, Color theColor)
+    {
+        super.draw(theGraphicsInTheScene, theColor);
+
+        for (Line aLine : this.sides)
+            aLine.draw(theGraphicsInTheScene, theColor);
     }
 }

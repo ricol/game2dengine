@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.geometry.shape;
+package au.com.rmit.Game2dEngine.geometry;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -26,10 +26,9 @@ public class RectangleShape extends ClosureShape
     }
 
     @Override
-    public void refresh()
+    public void refresh(double changeX, double changeY, double changeWidth, double changeHeight)
     {
-        super.refresh(); //To change body of generated methods, choose Tools | Templates.
-
+        super.refresh(changeX, changeY, changeWidth, changeHeight);
         this.left = theNode.getX();
         this.top = theNode.getY();
         this.width = theNode.getWidth();
@@ -44,7 +43,7 @@ public class RectangleShape extends ClosureShape
             return Shape.RectangleCollideWithCircle(this, (CircleShape) theShape);
         } else if (theShape instanceof RectangleShape)
         {
-            return Shape.RectangleCollideWithRectangle(this,  (RectangleShape) theShape);
+            return Shape.RectangleCollideWithRectangle(this, (RectangleShape) theShape);
         } else
             return false;
     }

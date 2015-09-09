@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.geometry.shape;
+package au.com.rmit.Game2dEngine.geometry;
 
 import au.com.rmit.Game2dEngine.sprite.Node;
 import java.awt.Color;
@@ -19,8 +19,10 @@ public class Shape
 
     public static enum CircleRectangleCollideDirection
     {
+
         FROM_TOP, FROM_LEFT, FROM_BOTTOM, FROM_RIGHT, FROM_INSIDE, FROM_OUTSIDE, FROM_TOP_LEFT, FROM_BOTTOM_LEFT, FROM_BOTTOM_RIGHT, FROM_TOP_RIGHT, NO
     };
+
     Node theNode;
 
     public void print(String text)
@@ -28,7 +30,7 @@ public class Shape
 
     }
 
-    public void refresh()
+    public void refresh(double changeX, double changeY, double changeWidth, double changeHeight)
     {
 
     }
@@ -40,8 +42,8 @@ public class Shape
 
     public static boolean CircleCollideWithCircle(CircleShape A, CircleShape B)
     {
-        double delX = A.centreX - B.centreX;
-        double delY = A.centreY - B.centreY;
+        double delX = A.centre.x - B.centre.x;
+        double delY = A.centre.y - B.centre.y;
         double distance = Math.sqrt(delX * delX + delY * delY);
         double targetRadius = B.radius;
         double thisRadius = A.radius;
@@ -56,8 +58,8 @@ public class Shape
 
     public static CircleRectangleCollideDirection CircleCollideWithRectangleFromDirection(CircleShape A, RectangleShape B)
     {
-        double a = A.centreX;
-        double b = A.centreY;
+        double a = A.centre.x;
+        double b = A.centre.y;
         double r = A.radius;
         double x = B.left;
         double y = B.top;
@@ -99,7 +101,7 @@ public class Shape
     {
         this.theNode = theNode;
     }
-    
+
     public static void printCode(CircleRectangleCollideDirection theDirection)
     {
         if (theDirection == CircleRectangleCollideDirection.FROM_TOP)
@@ -120,7 +122,7 @@ public class Shape
             System.out.println("FROM_BOTTOM_RIGHT");
         else if (theDirection == CircleRectangleCollideDirection.FROM_INSIDE)
             System.out.println("FROM_INSIDE");
-        else 
+        else
             System.out.println("NO");
         //FROM_TOP, FROM_LEFT, FROM_BOTTOM, FROM_RIGHT, FROM_INSIDE, FROM_OUTSIDE, FROM_TOP_LEFT, FROM_BOTTOM_LEFT, FROM_BOTTOM_RIGHT, FROM_TOP_RIGHT, NO
     }

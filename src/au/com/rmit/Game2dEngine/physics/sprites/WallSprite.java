@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.physics.sprites;
 
-import au.com.rmit.Game2dEngine.geometry.shape.RectangleShape;
+import au.com.rmit.Game2dEngine.geometry.RectangleShape;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 
 /**
