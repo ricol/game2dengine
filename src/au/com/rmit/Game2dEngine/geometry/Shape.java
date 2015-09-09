@@ -50,13 +50,13 @@ public class Shape
         return distance < targetRadius + thisRadius;
     }
 
-    public static boolean CircleCollideWithRectangle(CircleShape A, RectangleShape B)
+    public static boolean CircleCollideWithRectangle(CircleShape A, SpecialRectangleShape B)
     {
         CircleRectangleCollideDirection theDirection = Shape.CircleCollideWithRectangleFromDirection(A, B);
         return theDirection != CircleRectangleCollideDirection.NO;
     }
 
-    public static CircleRectangleCollideDirection CircleCollideWithRectangleFromDirection(CircleShape A, RectangleShape B)
+    public static CircleRectangleCollideDirection CircleCollideWithRectangleFromDirection(CircleShape A, SpecialRectangleShape B)
     {
         double a = A.centre.x;
         double b = A.centre.y;
@@ -87,12 +87,12 @@ public class Shape
         return CircleRectangleCollideDirection.NO;
     }
 
-    public static boolean RectangleCollideWithCircle(RectangleShape A, CircleShape B)
+    public static boolean RectangleCollideWithCircle(SpecialRectangleShape A, CircleShape B)
     {
         return CircleCollideWithRectangle(B, A);
     }
 
-    public static boolean RectangleCollideWithRectangle(RectangleShape A, RectangleShape B)
+    public static boolean RectangleCollideWithRectangle(SpecialRectangleShape A, SpecialRectangleShape B)
     {
         return A.left < B.left + B.width && A.left + A.width > B.left && A.top < B.top + B.height && A.top + A.height > B.top;
     }

@@ -12,12 +12,12 @@ import java.awt.Graphics2D;
  *
  * @author ricolwang
  */
-public class RectangleShape extends ClosureShape
+public class SpecialRectangleShape extends ClosureShape
 {
 
     public double left, top, width, height;
 
-    public RectangleShape(double left, double top, double width, double height)
+    public SpecialRectangleShape(double left, double top, double width, double height)
     {
         this.left = left;
         this.top = top;
@@ -41,9 +41,9 @@ public class RectangleShape extends ClosureShape
         if (theShape instanceof CircleShape)
         {
             return Shape.RectangleCollideWithCircle(this, (CircleShape) theShape);
-        } else if (theShape instanceof RectangleShape)
+        } else if (theShape instanceof SpecialRectangleShape)
         {
-            return Shape.RectangleCollideWithRectangle(this, (RectangleShape) theShape);
+            return Shape.RectangleCollideWithRectangle(this, (SpecialRectangleShape) theShape);
         } else
             return false;
     }

@@ -116,13 +116,11 @@ public class Node
     {
         if (this.theShape == null)
         {
-            this.theShape = new CircleShape(0, 0, 0);
-            this.theShape.setTheNode(this);
-            ((CircleShape) this.theShape).centre.x = this.getCentreX();
-            ((CircleShape) this.theShape).centre.y = this.getCentreY();
-            ((CircleShape) this.theShape).radius = this.getWidth() > this.getHeight() ? (this.getWidth() / 2.0f) : (this.getHeight() / 2.0f);
-        }
-        
-        this.theShape.refresh(changeX, changeY, changeWidth, changeHeight);
+            CircleShape aCircleShape = new CircleShape(this.getCentreX(), this.getCentreY(), 0);
+            aCircleShape.radius = this.getWidth() > this.getHeight() ? (this.getWidth() / 2.0f) : (this.getHeight() / 2.0f);
+            aCircleShape.setTheNode(this);
+            this.theShape = aCircleShape;
+        } else
+            this.theShape.refresh(changeX, changeY, changeWidth, changeHeight);
     }
 }

@@ -83,4 +83,10 @@ public class PolygonShape extends ClosureShape
         for (Line aLine : this.sides)
             aLine.draw(theGraphicsInTheScene, theColor);
     }
+    
+    @Override
+    public void print(String text)
+    {
+        System.out.println(text + " - PolygonShape: " + this.sides.size() + " Lines.");
+    }
 }

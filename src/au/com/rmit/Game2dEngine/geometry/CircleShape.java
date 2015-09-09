@@ -55,9 +55,9 @@ public class CircleShape extends ClosureShape
         if (theShape instanceof CircleShape)
         {
             return Shape.CircleCollideWithCircle(this, (CircleShape) theShape);
-        } else if (theShape instanceof RectangleShape)
+        } else if (theShape instanceof SpecialRectangleShape)
         {
-            return Shape.CircleCollideWithRectangle(this, (RectangleShape) theShape);
+            return Shape.CircleCollideWithRectangle(this, (SpecialRectangleShape) theShape);
         } else
             return false;
     }
