@@ -29,9 +29,19 @@ public class PolygonShape extends ClosureShape
         this.sides.add(aLine);
     }
 
+    public void addSides(Set<Line> lines)
+    {
+        this.sides.addAll(lines);
+    }
+    
     public void removeSide(Line aLine)
     {
         this.sides.remove(aLine);
+    }
+    
+    public void removeSides(Set<Line> lines)
+    {
+        this.sides.removeAll(lines);
     }
 
     public int getSidesCount()
