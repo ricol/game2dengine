@@ -27,7 +27,7 @@ public class Line extends Shape
         this.start = start;
         this.end = end;
     }
-    
+
     public Line getReverseLine()
     {
         return new Line(end, start);
@@ -60,7 +60,7 @@ public class Line extends Shape
         double a = start.x, b = start.y, c = end.x, d = end.y;
 
         Point middle = new Point((a + c) / 2, (b + d) / 2);
-        if (abs(b - d) > 0.00001)
+        if (abs(b - d) > 0.01)
         {
             double t = getT1(a, b, c, d);
             double A = (1 + ((a - c) / (b - d)) * ((a - c) / (b - d)));
@@ -68,8 +68,17 @@ public class Line extends Shape
             double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (b + d) * t - distance * distance;
             QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
 
-            double x = theEquation.getX1();
-            double y = this.getYfromX(a, b, c, d, x);
+            double x, y;
+
+            x = theEquation.getX1();
+            y = this.getYfromX(a, b, c, d, x);
+
+            double k = (c - a) * (y - b) - (x - a) * (d - b);
+            if (k < 0)
+            {
+                x = theEquation.getX2();
+                y = this.getYfromX(a, b, c, d, x);
+            }
 
             middle.x = x;
             middle.y = y;
@@ -81,8 +90,17 @@ public class Line extends Shape
             double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (a + c) * t - distance * distance;
             QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
 
-            double y = theEquation.getX1();
-            double x = this.getXfromY(a, b, c, d, y);
+            double x, y;
+
+            y = theEquation.getX1();
+            x = this.getXfromY(a, b, c, d, y);
+
+            double k = (c - a) * (y - b) - (x - a) * (d - b);
+            if (k < 0)
+            {
+                y = theEquation.getX2();
+                x = this.getXfromY(a, b, c, d, y);
+            }
 
             middle.x = x;
             middle.y = y;
@@ -103,7 +121,7 @@ public class Line extends Shape
         double a = start.x, b = start.y, c = end.x, d = end.y;
 
         Point middle = new Point((a + c) / 2, (b + d) / 2);
-        if (abs(b - d) > 0.00001)
+        if (abs(b - d) > 0.01)
         {
             double t = getT1(a, b, c, d);
             double A = (1 + ((a - c) / (b - d)) * ((a - c) / (b - d)));
@@ -111,8 +129,17 @@ public class Line extends Shape
             double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (b + d) * t - distance * distance;
             QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
 
-            double x = theEquation.getX2();
-            double y = this.getYfromX(a, b, c, d, x);
+            double x, y;
+
+            x = theEquation.getX1();
+            y = this.getYfromX(a, b, c, d, x);
+
+            double k = (c - a) * (y - b) - (x - a) * (d - b);
+            if (k > 0)
+            {
+                x = theEquation.getX2();
+                y = this.getYfromX(a, b, c, d, x);
+            }
 
             middle.x = x;
             middle.y = y;
@@ -124,8 +151,17 @@ public class Line extends Shape
             double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (a + c) * t - distance * distance;
             QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
 
-            double y = theEquation.getX2();
-            double x = this.getXfromY(a, b, c, d, y);
+            double x, y;
+
+            y = theEquation.getX1();
+            x = this.getXfromY(a, b, c, d, y);
+
+            double k = (c - a) * (y - b) - (x - a) * (d - b);
+            if (k > 0)
+            {
+                y = theEquation.getX2();
+                x = this.getXfromY(a, b, c, d, y);
+            }
 
             middle.x = x;
             middle.y = y;
@@ -167,7 +203,7 @@ public class Line extends Shape
         this.start.refresh(changeX, changeY, changeWidth, changeHeight);
         this.end.refresh(changeX, changeY, changeWidth, changeHeight);
     }
-    
+
     @Override
     public String toString()
     {
