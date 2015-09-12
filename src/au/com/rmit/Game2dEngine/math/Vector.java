@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.math;
 
+import au.com.rmit.Game2dEngine.geometry.Point;
 import static java.lang.Math.abs;
 
 /**
@@ -13,7 +14,7 @@ import static java.lang.Math.abs;
  */
 public class Vector
 {
-
+    public Point start = new Point(0, 0);
     public double x;
     public double y;
 
@@ -21,6 +22,12 @@ public class Vector
     {
         this.x = x;
         this.y = y;
+    }
+    
+    public Point getEndPoint()
+    {
+        Point aPoint = new Point(x + start.x, y + start.y);
+        return aPoint;
     }
 
     public Vector addVector(Vector B)

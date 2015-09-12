@@ -6,11 +6,11 @@
 package au.com.rmit.Game2dEngine.geometry;
 
 import au.com.rmit.Game2dEngine.math.QuadraticEquation;
+import au.com.rmit.Game2dEngine.math.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 
 /**
  *
@@ -33,6 +33,13 @@ public class Line extends Shape
         return new Line(end, start);
     }
 
+    public void reverse()
+    {
+        Point tmp = this.start;
+        this.start = this.end;
+        this.end = tmp;
+    }
+
     public Line(double x1, double y1, double x2, double y2)
     {
         this.start = new Point(x1, y1);
@@ -53,9 +60,9 @@ public class Line extends Shape
         theGraphicsInTheScene.drawLine((int) start.x, (int) start.y, (int) end.x, (int) end.y);
     }
 
-    public Set<Line> getSeperateLinesClock(double distance)
+    public ArrayList<Line> getSeperateLinesClock(double distance)
     {
-        Set<Line> lines = new HashSet<>();
+        ArrayList<Line> lines = new ArrayList<>();
 
         double a = start.x, b = start.y, c = end.x, d = end.y;
 
@@ -114,9 +121,9 @@ public class Line extends Shape
         return lines;
     }
 
-    public Set<Line> getSeperateLinesCounterClock(double distance)
+    public ArrayList<Line> getSeperateLinesCounterClock(double distance)
     {
-        Set<Line> lines = new HashSet<>();
+        ArrayList<Line> lines = new ArrayList<>();
 
         double a = start.x, b = start.y, c = end.x, d = end.y;
 
@@ -193,6 +200,41 @@ public class Line extends Shape
     double getXfromY(double a, double b, double c, double d, double y)
     {
         return getT2(a, b, c, d) - ((b - d) / (a - c)) * y;
+    }
+
+    public ArrayList<Line> getArrowLines(double r, double angle)
+    {
+        double l = Math.tan(angle) * this.getLength() / 2.0f;
+        ArrayList<Line> lines = this.getSeperateLinesCounterClock(l);
+        Line theArrowRight = lines.get(lines.size() - 1);
+        theArrowRight.reverse();
+        lines = this.getSeperateLinesClock(l);
+        Line theArrowLeft = lines.get(lines.size() - 1);
+        theArrowLeft.reverse();
+
+        Point endRight = this.getTheCorrectPoint(theArrowRight, r);
+        theArrowRight.end = endRight;
+
+        endRight = this.getTheCorrectPoint(theArrowLeft, r);
+        theArrowLeft.end = endRight;
+
+        lines = new ArrayList<>();
+        lines.add(theArrowRight);
+        lines.add(theArrowLeft);
+
+        return lines;
+    }
+
+    public Point getTheCorrectPoint(Line aLine, double r)
+    {
+        Vector V_theArrowRight = new Vector(aLine.end.x - aLine.start.x, aLine.end.y - aLine.start.y);
+        V_theArrowRight.start = aLine.start;
+
+        Vector V_theArrowRight_UNIT = V_theArrowRight.getTheUnitVector();
+        Vector V_theNewArrowRight = V_theArrowRight_UNIT.multiplyNumber(r);
+        V_theNewArrowRight.start = aLine.start;
+
+        return V_theNewArrowRight.getEndPoint();
     }
 
     @Override

@@ -7,7 +7,7 @@ package au.com.rmit.Game2dEngine.geometry;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -17,7 +17,7 @@ import java.util.Set;
 public class PolygonShape extends ClosureShape
 {
 
-    Set<Line> sides = new HashSet<>();
+    ArrayList<Line> sides = new ArrayList<>();
 
     public PolygonShape()
     {
@@ -29,16 +29,16 @@ public class PolygonShape extends ClosureShape
         this.sides.add(aLine);
     }
 
-    public void addSides(Set<Line> lines)
+    public void addSides(ArrayList<Line> lines)
     {
         this.sides.addAll(lines);
     }
-    
+
     public void removeSide(Line aLine)
     {
         this.sides.remove(aLine);
     }
-    
+
     public void removeSides(Set<Line> lines)
     {
         this.sides.removeAll(lines);
@@ -93,7 +93,7 @@ public class PolygonShape extends ClosureShape
         for (Line aLine : this.sides)
             aLine.draw(theGraphicsInTheScene, theColor);
     }
-    
+
     @Override
     public void print(String text)
     {
