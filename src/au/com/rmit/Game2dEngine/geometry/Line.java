@@ -5,11 +5,9 @@
  */
 package au.com.rmit.Game2dEngine.geometry;
 
-import au.com.rmit.Game2dEngine.math.QuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import static java.lang.Math.abs;
 import java.util.ArrayList;
 
 /**
@@ -60,155 +58,51 @@ public class Line extends Shape
         theGraphicsInTheScene.drawLine((int) start.x, (int) start.y, (int) end.x, (int) end.y);
     }
 
-    public ArrayList<Line> getSeperateLinesClock(double distance)
+    public ArrayList<Line> getSpecialLinesClockwise(double distance)
     {
         ArrayList<Line> lines = new ArrayList<>();
 
-        double a = start.x, b = start.y, c = end.x, d = end.y;
+        Vector V_AB = new Vector(this.end.x - this.start.x, this.end.y - this.start.y);
+        Vector V_PEN = V_AB.getPerpendicularUnitVectorClockwise();
+        V_PEN.start = new Point((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
+        Vector V_RESULT = V_PEN.multiplyNumber(distance);
+        V_RESULT.start = V_PEN.start;
+        Point result = V_RESULT.getEndPoint();
 
-        Point middle = new Point((a + c) / 2, (b + d) / 2);
-        if (abs(b - d) > 0.01)
-        {
-            double t = getT1(a, b, c, d);
-            double A = (1 + ((a - c) / (b - d)) * ((a - c) / (b - d)));
-            double B = ((b + d) * (a - c) / (b - d) - (a + c) - 2 * t * (a - c) / (b - d));
-            double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (b + d) * t - distance * distance;
-            QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
-
-            double x, y;
-
-            x = theEquation.getX1();
-            y = this.getYfromX(a, b, c, d, x);
-
-            double k = (c - a) * (y - b) - (x - a) * (d - b);
-            if (k < 0)
-            {
-                x = theEquation.getX2();
-                y = this.getYfromX(a, b, c, d, x);
-            }
-
-            middle.x = x;
-            middle.y = y;
-        } else
-        {
-            double t = getT2(a, b, c, d);
-            double A = (1 + ((b - d) / (a - c)) * ((b - d) / (a - c)));
-            double B = ((a + c) * (b - d) / (a - c) - (b + d) - 2 * t * (b - d) / (a - c));
-            double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (a + c) * t - distance * distance;
-            QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
-
-            double x, y;
-
-            y = theEquation.getX1();
-            x = this.getXfromY(a, b, c, d, y);
-
-            double k = (c - a) * (y - b) - (x - a) * (d - b);
-            if (k < 0)
-            {
-                y = theEquation.getX2();
-                x = this.getXfromY(a, b, c, d, y);
-            }
-
-            middle.x = x;
-            middle.y = y;
-        }
-
-        Line line1 = new Line(start.x, start.y, middle.x, middle.y);
-        Line line2 = new Line(middle.x, middle.y, end.x, end.y);
+        Line line1 = new Line(this.start.x, this.start.y, result.x, result.y);
+        Line line2 = new Line(result.x, result.y, this.end.x, this.end.y);
         lines.add(line1);
         lines.add(line2);
 
         return lines;
     }
 
-    public ArrayList<Line> getSeperateLinesCounterClock(double distance)
+    public ArrayList<Line> getSpecialLinesCounterClockwise(double distance)
     {
         ArrayList<Line> lines = new ArrayList<>();
 
-        double a = start.x, b = start.y, c = end.x, d = end.y;
+        Vector V_AB = new Vector(this.end.x - this.start.x, this.end.y - this.start.y);
+        Vector V_PEN = V_AB.getPerpendicularUnitVectorCounterClockwise();
+        V_PEN.start = new Point((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
+        Vector V_RESULT = V_PEN.multiplyNumber(distance);
+        V_RESULT.start = V_PEN.start;
+        Point result = V_RESULT.getEndPoint();
 
-        Point middle = new Point((a + c) / 2, (b + d) / 2);
-        if (abs(b - d) > 0.01)
-        {
-            double t = getT1(a, b, c, d);
-            double A = (1 + ((a - c) / (b - d)) * ((a - c) / (b - d)));
-            double B = ((b + d) * (a - c) / (b - d) - (a + c) - 2 * t * (a - c) / (b - d));
-            double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (b + d) * t - distance * distance;
-            QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
-
-            double x, y;
-
-            x = theEquation.getX1();
-            y = this.getYfromX(a, b, c, d, x);
-
-            double k = (c - a) * (y - b) - (x - a) * (d - b);
-            if (k > 0)
-            {
-                x = theEquation.getX2();
-                y = this.getYfromX(a, b, c, d, x);
-            }
-
-            middle.x = x;
-            middle.y = y;
-        } else
-        {
-            double t = getT2(a, b, c, d);
-            double A = (1 + ((b - d) / (a - c)) * ((b - d) / (a - c)));
-            double B = ((a + c) * (b - d) / (a - c) - (b + d) - 2 * t * (b - d) / (a - c));
-            double C = ((a + c) / 2) * ((a + c) / 2) + ((b + d) / 2) * ((b + d) / 2) + t * t - (a + c) * t - distance * distance;
-            QuadraticEquation theEquation = new QuadraticEquation(A, B, C);
-
-            double x, y;
-
-            y = theEquation.getX1();
-            x = this.getXfromY(a, b, c, d, y);
-
-            double k = (c - a) * (y - b) - (x - a) * (d - b);
-            if (k > 0)
-            {
-                y = theEquation.getX2();
-                x = this.getXfromY(a, b, c, d, y);
-            }
-
-            middle.x = x;
-            middle.y = y;
-        }
-
-        Line line1 = new Line(start.x, start.y, middle.x, middle.y);
-        Line line2 = new Line(middle.x, middle.y, end.x, end.y);
+        Line line1 = new Line(this.start.x, this.start.y, result.x, result.y);
+        Line line2 = new Line(result.x, result.y, this.end.x, this.end.y);
         lines.add(line1);
         lines.add(line2);
 
         return lines;
-    }
-
-    double getT1(double a, double b, double c, double d)
-    {
-        return (a * a + b * b - c * c - d * d) / (2 * (b - d));
-    }
-
-    double getT2(double a, double b, double c, double d)
-    {
-        return (a * a + b * b - c * c - d * d) / (2 * (a - c));
-    }
-
-    double getYfromX(double a, double b, double c, double d, double x)
-    {
-        return getT1(a, b, c, d) - ((a - c) / (b - d)) * x;
-    }
-
-    double getXfromY(double a, double b, double c, double d, double y)
-    {
-        return getT2(a, b, c, d) - ((b - d) / (a - c)) * y;
     }
 
     public ArrayList<Line> getArrowLines(double r, double angle)
     {
         double l = Math.tan(angle) * this.getLength() / 2.0f;
-        ArrayList<Line> lines = this.getSeperateLinesCounterClock(l);
+        ArrayList<Line> lines = this.getSpecialLinesCounterClockwise(l);
         Line theArrowRight = lines.get(lines.size() - 1);
         theArrowRight.reverse();
-        lines = this.getSeperateLinesClock(l);
+        lines = this.getSpecialLinesClockwise(l);
         Line theArrowLeft = lines.get(lines.size() - 1);
         theArrowLeft.reverse();
 
@@ -225,7 +119,7 @@ public class Line extends Shape
         return lines;
     }
 
-    public Point getTheCorrectPoint(Line aLine, double r)
+    Point getTheCorrectPoint(Line aLine, double r)
     {
         Vector V_theArrowRight = new Vector(aLine.end.x - aLine.start.x, aLine.end.y - aLine.start.y);
         V_theArrowRight.start = aLine.start;
