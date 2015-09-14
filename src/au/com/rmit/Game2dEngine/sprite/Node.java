@@ -5,8 +5,8 @@
  */
 package au.com.rmit.Game2dEngine.sprite;
 
-import au.com.rmit.Game2dEngine.geometry.shape.CircleShape;
-import au.com.rmit.Game2dEngine.geometry.shape.Shape;
+import au.com.rmit.Game2dEngine.geometry.CircleShape;
+import au.com.rmit.Game2dEngine.geometry.Shape;
 import java.util.Random;
 
 /**
@@ -55,26 +55,30 @@ public class Node
 
     public void setX(double x)
     {
+        double oldX = this.x;
         this.x = x;
-        this.refreshShape();
+        this.refreshShape(x - oldX, 0, 0, 0);
     }
 
     public void setY(double y)
     {
+        double oldY = this.y;
         this.y = y;
-        this.refreshShape();
+        this.refreshShape(0, y - oldY, 0, 0);
     }
 
     public void setWidth(double width)
     {
+        double oldWidth = this.width;
         this.width = width;
-        this.refreshShape();
+        this.refreshShape(0, 0, width - oldWidth, 0);
     }
 
     public void setHeight(double height)
     {
+        double oldHeight = this.height;
         this.height = height;
-        this.refreshShape();
+        this.refreshShape(0, 0, 0, height - oldHeight);
     }
 
     public Shape getTheShape()
@@ -108,17 +112,15 @@ public class Node
         this.setY(value - height / 2.0);
     }
 
-    void refreshShape()
+    void refreshShape(double changeX, double changeY, double changeWidth, double changeHeight)
     {
         if (this.theShape == null)
         {
-            this.theShape = new CircleShape(0, 0, 0);
-            this.theShape.setTheNode(this);
-            ((CircleShape) this.theShape).centreX = this.getCentreX();
-            ((CircleShape) this.theShape).centreY = this.getCentreY();
-            ((CircleShape) this.theShape).radius = this.getWidth() > this.getHeight() ? (this.getWidth() / 2.0f) : (this.getHeight() / 2.0f);
-        }
-        
-        this.theShape.refresh();
+            CircleShape aCircleShape = new CircleShape(this.getCentreX(), this.getCentreY(), 0);
+            aCircleShape.radius = this.getWidth() > this.getHeight() ? (this.getWidth() / 2.0f) : (this.getHeight() / 2.0f);
+            aCircleShape.setTheNode(this);
+            this.theShape = aCircleShape;
+        } else
+            this.theShape.refresh(changeX, changeY, changeWidth, changeHeight);
     }
 }

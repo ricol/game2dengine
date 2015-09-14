@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.math;
 
+import au.com.rmit.Game2dEngine.geometry.Point;
 import static java.lang.Math.abs;
 
 /**
@@ -14,6 +15,7 @@ import static java.lang.Math.abs;
 public class Vector
 {
 
+    public Point start = new Point(0, 0);
     public double x;
     public double y;
 
@@ -21,6 +23,12 @@ public class Vector
     {
         this.x = x;
         this.y = y;
+    }
+
+    public Point getEndPoint()
+    {
+        Point aPoint = new Point(x + start.x, y + start.y);
+        return aPoint;
     }
 
     public Vector addVector(Vector B)
@@ -63,38 +71,50 @@ public class Vector
 
     public Vector getPerpendicularUnitVectorCounterClockwise()
     {
-        if (x != 0)
-        {
-            double tmp = -1 * (x / Math.sqrt(x * x + y * y));
-            Vector C = new Vector(-1 * (y / x) * tmp, tmp);
-            return C;
-        } else if (y != 0)
-        {
-            double tmp = -1 * (y / Math.sqrt(x * x + y * y));
-            Vector C = new Vector(-1 * (x / y) * tmp, tmp);
-            return C;
-        } else
-        {
+        if (x == 0 && y == 0)
             return new Vector(0, 0);
+        if (x == 0)
+        {
+            if (y > 0)
+                return new Vector(1, 0);
+            else
+                return new Vector(-1, 0);
         }
+        if (y == 0)
+        {
+            if (x > 0)
+                return new Vector(0, -1);
+            else
+                return new Vector(0, 1);
+        }
+
+        double tmp = -1 * (x / Math.sqrt(x * x + y * y));
+        Vector C = new Vector(-1 * (y / x) * tmp, tmp);
+        return C;
     }
 
     public Vector getPerpendicularUnitVectorClockwise()
     {
-        if (x != 0)
-        {
-            double tmp = x / Math.sqrt(x * x + y * y);
-            Vector C = new Vector(-1 * (y / x) * tmp, tmp);
-            return C;
-        } else if (y != 0)
-        {
-            double tmp = y / Math.sqrt(x * x + y * y);
-            Vector C = new Vector(-1 * (x / y) * tmp, tmp);
-            return C;
-        } else
-        {
+        if (x == 0 && y == 0)
             return new Vector(0, 0);
+        if (x == 0)
+        {
+            if (y > 0)
+                return new Vector(-1, 0);
+            else
+                return new Vector(1, 0);
         }
+        if (y == 0)
+        {
+            if (x > 0)
+                return new Vector(0, 1);
+            else
+                return new Vector(0, -1);
+        }
+
+        double tmp = x / Math.sqrt(x * x + y * y);
+        Vector C = new Vector(-1 * (y / x) * tmp, tmp);
+        return C;
     }
 
     public boolean isPerpendicularTo(Vector B)

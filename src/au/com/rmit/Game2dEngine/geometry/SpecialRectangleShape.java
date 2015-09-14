@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.geometry.shape;
+package au.com.rmit.Game2dEngine.geometry;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,12 +12,12 @@ import java.awt.Graphics2D;
  *
  * @author ricolwang
  */
-public class RectangleShape extends ClosureShape
+public class SpecialRectangleShape extends ClosureShape
 {
 
     public double left, top, width, height;
 
-    public RectangleShape(double left, double top, double width, double height)
+    public SpecialRectangleShape(double left, double top, double width, double height)
     {
         this.left = left;
         this.top = top;
@@ -26,10 +26,9 @@ public class RectangleShape extends ClosureShape
     }
 
     @Override
-    public void refresh()
+    public void refresh(double changeX, double changeY, double changeWidth, double changeHeight)
     {
-        super.refresh(); //To change body of generated methods, choose Tools | Templates.
-
+        super.refresh(changeX, changeY, changeWidth, changeHeight);
         this.left = theNode.getX();
         this.top = theNode.getY();
         this.width = theNode.getWidth();
@@ -42,9 +41,9 @@ public class RectangleShape extends ClosureShape
         if (theShape instanceof CircleShape)
         {
             return Shape.RectangleCollideWithCircle(this, (CircleShape) theShape);
-        } else if (theShape instanceof RectangleShape)
+        } else if (theShape instanceof SpecialRectangleShape)
         {
-            return Shape.RectangleCollideWithRectangle(this,  (RectangleShape) theShape);
+            return Shape.RectangleCollideWithRectangle(this, (SpecialRectangleShape) theShape);
         } else
             return false;
     }

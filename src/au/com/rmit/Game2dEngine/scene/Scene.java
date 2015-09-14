@@ -42,8 +42,8 @@ public class Scene extends JPanel
     private boolean bEnableCollisionDetect = false;
     static long INTERVAL = 500;
     static long DELAY = 5;
-    static long LEFT_TEXT = 25;
-    static long TOP_TEXT = 30;
+    static long LEFT_TEXT = 30;
+    static long TOP_TEXT = 45;
     static long GAP_TEXT = 20;
     long number = 0;
     long lastTime = System.currentTimeMillis();
@@ -241,6 +241,9 @@ public class Scene extends JPanel
             for (Sprite aSprite : allInLoop)
                 aSprite.didCollisionProcess();
         }
+        
+        for (Sprite aSprite : allInLoop)
+                aSprite.didFinishUpdateState();
 
         //update GUI
         if (theGraphics2D != null)
@@ -294,7 +297,7 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
 
             if (bShowMemoryUsage)
-                theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT * 2);
+                theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT - GAP_TEXT);
         }
 
         allInLoop.clear();
