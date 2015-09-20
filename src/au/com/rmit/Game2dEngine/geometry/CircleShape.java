@@ -67,8 +67,9 @@ public class CircleShape extends ClosureShape
     {
         super.refresh(changeX, changeY, changeWidth, changeHeight); //To change body of generated methods, choose Tools | Templates.
 
-        this.centre.refresh(changeX, changeY, changeWidth, changeHeight);
-        this.radius = theNode.getWidth() > theNode.getHeight() ? theNode.getWidth() / 2.0f : theNode.getHeight() / 2.0f;
+        this.centre.x = theNode.getCentreX();
+        this.centre.y = theNode.getCentreY();
+        this.radius = theNode.getWidth() > theNode.getHeight() ? (theNode.getWidth() / 2.0f) : (theNode.getHeight() / 2.0f);
     }
 
     @Override
