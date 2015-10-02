@@ -48,6 +48,7 @@ public abstract class Sprite extends Node
     public Color theColorOfTheShape = Color.red;
     public boolean bCollisionDetect = false;
     public boolean bEnablePhysics = false;
+    public boolean bKillWhenOutOfScene = false;
 
     public WeakHashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new WeakHashMap<>();
     public static final long EVER = Long.MAX_VALUE;
@@ -292,7 +293,38 @@ public abstract class Sprite extends Node
 
     public void didUpdateState()
     {
+        if (this.bKillWhenOutOfScene)
+        {
+            if (!this.isAlive)
+                return;
 
+            int tmpX = (int) this.getX();
+            int tmpY = (int) this.getY();
+            int tmpW = (int) getWidth();
+            int tmpH = (int) getHeight();
+
+            int tmpSceneWidth;
+            int tmpSceneHeight;
+
+            if (bChild)
+            {
+                tmpSceneWidth = (int) this.parent.getWidth();
+                tmpSceneHeight = (int) this.parent.getHeight();
+            } else
+            {
+                tmpSceneWidth = this.theScene.getWidth();
+                tmpSceneHeight = this.theScene.getHeight();
+            }
+
+            if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
+                this.setShouldDie();
+
+            if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+                this.setShouldDie();
+
+            if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
+                this.setShouldDie();
+        }
     }
 
     public void didCollisionProcess()

@@ -60,4 +60,10 @@ public class SpecialRectangleShape extends ClosureShape
     {
         System.out.println(text + " - RectangleShape: " + left + ", " + top + ", " + width + ", " + height);
     }
+
+    @Override
+    public String toString()
+    {
+        return "RectangleShape: " + left + ", " + top + ", " + width + ", " + height;
+    }
 }

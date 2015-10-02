@@ -87,4 +87,10 @@ public class CircleShape extends ClosureShape
     {
         System.out.println(text + " - CircleShape: Radius: " + radius + " at centre: " + centre.x + " : " + centre.y);
     }
+
+    @Override
+    public String toString()
+    {
+        return "CircleShape: Radius: " + radius + " at centre: " + centre.x + " : " + centre.y;
+    }
 }

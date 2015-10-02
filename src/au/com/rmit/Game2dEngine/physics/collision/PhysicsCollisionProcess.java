@@ -155,7 +155,10 @@ public class PhysicsCollisionProcess
 
     public static void processCollision(Sprite A, Sprite B)
     {
-        if (A.getTheShape() instanceof CircleShape && B.getTheShape() instanceof CircleShape)
+        Shape theShapeOfA = A.getTheShape();
+        Shape theShapeOfB = B.getTheShape();
+
+        if (theShapeOfA instanceof CircleShape && theShapeOfB instanceof CircleShape)
         {
             //a circle collide with a circle
             Vector AB = new Vector(B.getCentreX() - A.getCentreX(), B.getCentreY() - A.getCentreY());
@@ -207,6 +210,6 @@ public class PhysicsCollisionProcess
 
             A.setTargetCollisionProcessed(true);
         } else
-            System.out.println("Warning: Shape Collision except Circle not implemented!");
+            System.out.println("Warning: Shape Collision <" + theShapeOfA + " VS " + theShapeOfB + " not implemented!");
     }
 }
