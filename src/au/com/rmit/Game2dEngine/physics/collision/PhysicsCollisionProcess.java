@@ -5,12 +5,14 @@
  */
 package au.com.rmit.Game2dEngine.physics.collision;
 
+import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.CircleShape;
 import au.com.rmit.Game2dEngine.geometry.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.Shape;
 import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +20,127 @@ import au.com.rmit.Game2dEngine.sprite.Sprite;
  */
 public class PhysicsCollisionProcess
 {
+
+    public static void collisionDetectionBasedOnCategory(ArrayList<Sprite> nodes)
+    {
+        for (Sprite aSprite : nodes)
+        {
+            if (!aSprite.bCollisionDetect)
+            {
+                continue;
+            }
+
+            if (aSprite.getCollisionTargetCategory() <= 0)
+            {
+                continue;
+            }
+
+            for (Sprite aTargetSprite : nodes)
+            {
+                if (aSprite.equals(aTargetSprite))
+                {
+                    continue;
+                }
+
+                //the target allows to be detected
+                if (!aTargetSprite.bCollisionDetect)
+                {
+                    continue;
+                }
+
+                //the target belongs to the group
+                if (!aSprite.isInTheTargetCollisionCategory(aTargetSprite.getCollisionCategory()))
+                {
+                    continue;
+                }
+
+                //collide with this sprite or not.
+                PhysicsCollisionProcess.detactCollision(aSprite, aTargetSprite);
+            }
+        }
+    }
+
+    public static void collisionDetectionArbitrary(ArrayList<Sprite> nodes)
+    {
+        for (Sprite aSprite : nodes)
+        {
+            if (!aSprite.bCollisionDetect)
+            {
+                continue;
+            }
+
+            if (!aSprite.bCollisionArbitrary)
+            {
+                continue;
+            }
+
+            for (Sprite aTargetSprite : nodes)
+            {
+                if (aSprite.equals(aTargetSprite))
+                {
+                    continue;
+                }
+
+                //the target allows to be detected
+                if (!aTargetSprite.bCollisionArbitrary)
+                {
+                    continue;
+                }
+
+                //collide with this sprite or not.
+                PhysicsCollisionProcess.detactCollision(aSprite, aTargetSprite);
+            }
+        }
+    }
+
+    static void detactCollision(Sprite theSprite, Sprite theTarget)
+    {
+        Game2dEngineShared.TypeCollisionDetection value;
+
+        if (PhysicsCollisionProcess.detectCollision(theSprite, theTarget))
+        {
+            //collide
+            value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;
+            if (theSprite.hashCollision.get(theTarget) != value)
+            {
+                theSprite.onCollideWith(theTarget);
+                theSprite.hashCollision.put(theTarget, value);
+            }
+
+            if (theTarget.hashCollision.get(theSprite) != value)
+            {
+                theTarget.hashCollision.put(theSprite, value);
+
+                if (!theSprite.getTargetCollisionProcessed())
+                {
+                    theTarget.onCollideWith(theSprite);
+                }
+
+                theSprite.setTargetCollisionProcessed(false);
+            }
+        } else
+        {
+            //uncollide
+            value = Game2dEngineShared.TypeCollisionDetection.UNCOLLIDED;
+            if (theSprite.hashCollision.get(theTarget) != value)
+            {
+                theSprite.onNotCollideWith(theTarget);
+                theSprite.hashCollision.put(theTarget, value);
+            }
+
+            if (theTarget.hashCollision.get(theSprite) != value)
+            {
+                theTarget.hashCollision.put(theSprite, value);
+
+                if (!theSprite.getTargetCollisionProcessed())
+                {
+                    theTarget.onNotCollideWith(theSprite);
+                }
+
+                theSprite.setTargetCollisionProcessed(false);
+            }
+        }
+    }
 
     public static boolean detectCollision(Sprite A, Sprite B)
     {
