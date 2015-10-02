@@ -6,6 +6,8 @@
 package au.com.rmit.Game2dEngine.physics.collision;
 
 import au.com.rmit.Game2dEngine.geometry.CircleShape;
+import au.com.rmit.Game2dEngine.geometry.ClosureShape;
+import au.com.rmit.Game2dEngine.geometry.Shape;
 import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
@@ -16,6 +18,17 @@ import au.com.rmit.Game2dEngine.sprite.Sprite;
  */
 public class PhysicsCollisionProcess
 {
+
+    public static boolean detectCollision(Sprite A, Sprite B)
+    {
+        Shape theShape = A.getTheShape();
+        Shape theTargetShape = B.getTheShape();
+        if ((theShape instanceof ClosureShape) && (theTargetShape instanceof ClosureShape))
+        {
+            return ((ClosureShape) theShape).collideWith((ClosureShape) theTargetShape);
+        } else
+            return false;
+    }
 
     public static void processCollision(Sprite A, Sprite B)
     {
@@ -71,6 +84,6 @@ public class PhysicsCollisionProcess
 
             A.setTargetCollisionProcessed(true);
         } else
-            System.out.println("Error: Shape Collision except Circle not implemented!");
+            System.out.println("Warning: Shape Collision except Circle not implemented!");
     }
 }

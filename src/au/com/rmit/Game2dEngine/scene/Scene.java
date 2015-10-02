@@ -6,6 +6,7 @@
 package au.com.rmit.Game2dEngine.scene;
 
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
+import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -502,7 +503,7 @@ public class Scene extends JPanel
     {
         Game2dEngineShared.TypeCollisionDetection value;
 
-        if (theSprite.collideWith(theTarget))
+        if (PhysicsCollisionProcess.detectCollision(theSprite, theTarget))
         {
             //collide
             value = Game2dEngineShared.TypeCollisionDetection.COLLIDED;

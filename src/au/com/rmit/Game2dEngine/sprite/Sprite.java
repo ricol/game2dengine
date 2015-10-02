@@ -7,7 +7,6 @@ package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.Game2dEngine.geometry.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.Shape;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
@@ -680,17 +679,6 @@ public abstract class Sprite extends Node
     public double getStartTime()
     {
         return this.starttime;
-    }
-
-    public boolean collideWith(final Sprite target)
-    {
-        Shape theShape = this.getTheShape();
-        Shape theTargetShape = target.getTheShape();
-        if ((theShape instanceof ClosureShape) && (theTargetShape instanceof ClosureShape))
-        {
-            return ((ClosureShape) theShape).collideWith((ClosureShape) theTargetShape);
-        } else
-            return false;
     }
 
     public int getLayer()
