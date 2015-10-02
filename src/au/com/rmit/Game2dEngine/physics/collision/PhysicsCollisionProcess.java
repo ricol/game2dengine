@@ -11,6 +11,7 @@ import au.com.rmit.Game2dEngine.geometry.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.Shape;
 import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.physics.sprites.WallSprite;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.util.ArrayList;
 
@@ -149,6 +150,23 @@ public class PhysicsCollisionProcess
             B.setVelocityY(RESULT_V_B.y);
 
             A.setTargetCollisionProcessed(true);
+        } else if (B instanceof WallSprite)
+        {
+            //any shape collide to a wall
+            WallSprite aWall = (WallSprite) B;
+            if (aWall.wallType == WallSprite.WALLTYPE.LEFT)
+            {
+                A.setVelocityX(-A.getVelocityX());
+            } else if (aWall.wallType == WallSprite.WALLTYPE.RIGHT)
+            {
+                A.setVelocityX(-A.getVelocityX());
+            } else if (aWall.wallType == WallSprite.WALLTYPE.TOP)
+            {
+                A.setVelocityY(-A.getVelocityY());
+            } else if (aWall.wallType == WallSprite.WALLTYPE.BOTTOM)
+            {
+                A.setVelocityY(-A.getVelocityY());
+            }
         } else
             System.out.println("Warning: Shape Collision <" + theShapeOfA + " VS " + theShapeOfB + " not implemented!");
     }
