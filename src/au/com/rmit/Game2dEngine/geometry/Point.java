@@ -44,9 +44,9 @@ public class Point extends Shape
     public void refresh(double changeX, double changeY, double changeWidth, double changeHeight)
     {
         super.refresh(changeX, changeY, changeWidth, changeHeight);
-        
+
         x += changeX;
         y += changeY;
     }
-    
+
 }

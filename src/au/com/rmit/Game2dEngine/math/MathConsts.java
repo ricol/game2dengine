@@ -11,5 +11,6 @@ package au.com.rmit.Game2dEngine.math;
  */
 public class MathConsts
 {
+
     public static double E = 0.000000001;
 }

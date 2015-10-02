@@ -241,9 +241,9 @@ public class Scene extends JPanel
             for (Sprite aSprite : allInLoop)
                 aSprite.didCollisionProcess();
         }
-        
+
         for (Sprite aSprite : allInLoop)
-                aSprite.didFinishUpdateState();
+            aSprite.didFinishUpdateState();
 
         //update GUI
         if (theGraphics2D != null)
@@ -344,7 +344,7 @@ public class Scene extends JPanel
     {
         return this.blue;
     }
-    
+
     public boolean isScenePaused()
     {
         return this.bPaused;

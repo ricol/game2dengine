@@ -9,8 +9,8 @@ import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.Shape;
-import au.com.rmit.Game2dEngine.interfaces.ICopy;
 import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
@@ -34,7 +34,7 @@ import javax.imageio.ImageIO;
  *
  * @author ricolwang
  */
-public abstract class Sprite extends Node implements ICopy
+public abstract class Sprite extends Node
 {
 
     public boolean bChild;
@@ -48,6 +48,7 @@ public abstract class Sprite extends Node implements ICopy
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfTheShape = Color.red;
     public boolean bCollisionDetect = false;
+    public boolean bEnablePhysics = false;
 
     public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
     public static final long EVER = Long.MAX_VALUE;
@@ -681,12 +682,6 @@ public abstract class Sprite extends Node implements ICopy
         return this.starttime;
     }
 
-    @Override
-    public Object getACopy()
-    {
-        return null;
-    }
-
     public boolean collideWith(final Sprite target)
     {
         Shape theShape = this.getTheShape();
@@ -813,7 +808,8 @@ public abstract class Sprite extends Node implements ICopy
 
     public void onCollideWith(final Sprite target)
     {
-
+        if (this.bEnablePhysics)
+            PhysicsCollisionProcess.processCollision(this, target);
     }
 
     public void onNotCollideWith(final Sprite target)
