@@ -23,11 +23,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
+import java.util.WeakHashMap;
 import javax.imageio.ImageIO;
 
 /**
@@ -50,7 +50,7 @@ public abstract class Sprite extends Node
     public boolean bCollisionDetect = false;
     public boolean bEnablePhysics = false;
 
-    public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
+    public WeakHashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new WeakHashMap<>();
     public static final long EVER = Long.MAX_VALUE;
     private boolean bTargetCollisionProcessed = false;
     private int layer = Scene.MIN_LAYER;
