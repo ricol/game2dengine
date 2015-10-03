@@ -9,6 +9,7 @@ import au.com.rmit.Game2dEngine.sprite.Node;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;
+import java.util.ArrayList;
 
 /**
  *
@@ -48,6 +49,28 @@ public class Shape
         double targetRadius = B.radius;
         double thisRadius = A.radius;
         return distance < targetRadius + thisRadius;
+    }
+    
+    public static ArrayList<Point> getCollidePoints(CircleShape A, CircleShape B)
+    {
+        ArrayList<Point> points = new ArrayList<>();
+        
+        double a = A.centre.x;
+        double b = A.centre.y;
+        double c = B.centre.x;
+        double d = B.centre.y;
+        double r1 = A.radius;
+        double r2 = B.radius;
+        
+        if (abs(a - c) > 0.01)
+        {
+            
+        }else if (abs(b - d) > 0.01)
+        {
+            
+        }
+        
+        return points;
     }
 
     public static boolean CircleCollideWithRectangle(CircleShape A, SpecialRectangleShape B)

@@ -7,6 +7,7 @@ package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
+import au.com.rmit.Game2dEngine.geometry.Line;
 import au.com.rmit.Game2dEngine.geometry.Shape;
 import au.com.rmit.Game2dEngine.math.Vector;
 import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
@@ -22,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -46,9 +48,16 @@ public abstract class Sprite extends Node
     public boolean bCollisionArbitrary = false;
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfTheShape = Color.red;
+    public Color theColorOfVelocityVector = Color.white;
+    public Color theColorOfGravityVector = Color.green;
     public boolean bCollisionDetect = false;
     public boolean bEnablePhysics = false;
+    public boolean bEnableGravity = false;
     public boolean bKillWhenOutOfScene = false;
+    public boolean bDrawVelocityVector = false;
+    public boolean bDrawGravityVector = false;
+    public double DrawVelocityBase = 1;
+    public double DrawGravityBase = 1;
 
     public WeakHashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new WeakHashMap<>();
     public static final long EVER = Long.MAX_VALUE;
@@ -77,7 +86,6 @@ public abstract class Sprite extends Node
     private Set<Sprite> theSetOfAttachedWillDelete = new HashSet<>();
     private Set<Sprite> theSetOfAttachedWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfAttached = new HashSet<>();
-    private boolean bEnableGravity;
     private double mass;
     private Gravity theGravity;
     private float alpha = 1;
@@ -423,6 +431,8 @@ public abstract class Sprite extends Node
 
         this.drawFrame(theGraphics2D);
         this.drawShape(theGraphicsInTheScene);
+        this.drawVelocityVector(theGraphicsInTheScene);
+        this.drawGravityVector(theGraphicsInTheScene);
 
         if (theImageCanvas != null)
         {
@@ -483,6 +493,53 @@ public abstract class Sprite extends Node
             Shape theShape = this.getTheShape();
             if (theShape != null)
                 theShape.draw(theGraphics2D, theColorOfTheShape);
+        }
+    }
+
+    private void drawVelocityVector(final Graphics2D theGraphics2D)
+    {
+        if (this.bDrawVelocityVector)
+        {
+            theGraphics2D.setColor(theColorOfVelocityVector);
+
+            Vector v = this.velocity.multiplyNumber(this.DrawVelocityBase);
+            if (v.getMagnitude() <= 0) return;
+            
+            v.start.x = this.getCentreX();
+            v.start.y = this.getCentreY();
+
+            Line aLine = new Line(v.start, v.getEndPoint());
+            ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
+            lines.add(aLine);
+            for (Line line : lines)
+            {
+                theGraphics2D.drawLine((int) line.start.x, (int) line.start.y, (int) line.end.x, (int) line.end.y);
+            }
+        }
+    }
+    
+    private void drawGravityVector(final Graphics2D theGraphics2D)
+    {
+        if (this.bDrawGravityVector)
+        {
+            theGraphics2D.setColor(theColorOfGravityVector);
+
+            if (this.theGravity == null) return;
+            
+            Vector G = new Vector(this.theGravity.GX, this.theGravity.GY);
+            Vector v = G.multiplyNumber(this.DrawGravityBase);
+            if (v.getMagnitude() <= 0) return;
+            
+            v.start.x = this.getCentreX();
+            v.start.y = this.getCentreY();
+
+            Line aLine = new Line(v.start, v.getEndPoint());
+            ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
+            lines.add(aLine);
+            for (Line line : lines)
+            {
+                theGraphics2D.drawLine((int) line.start.x, (int) line.start.y, (int) line.end.x, (int) line.end.y);
+            }
         }
     }
 
@@ -729,21 +786,6 @@ public abstract class Sprite extends Node
         return this.lifetime;
     }
 
-    public boolean isGravityEnabled()
-    {
-        return this.bEnableGravity;
-    }
-
-    public void enableGravity()
-    {
-        this.bEnableGravity = true;
-    }
-
-    public void disableGravity()
-    {
-        this.bEnableGravity = false;
-    }
-
     public boolean getTargetCollisionProcessed()
     {
         return this.bTargetCollisionProcessed;
@@ -935,4 +977,5 @@ public abstract class Sprite extends Node
         this.restoreVelocityX();
         this.restoreVelocityY();
     }
+
 }
