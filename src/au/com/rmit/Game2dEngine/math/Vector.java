@@ -149,6 +149,12 @@ public class Vector
         return this.multiplyNumber(1 / number);
     }
 
+    public Vector3D getCrossProduct(Vector B)
+    {
+        Vector3D Result = new Vector3D(0, 0, this.x * B.y - this.y * B.x);
+        return Result;
+    }
+
     //magnitude != 0
     public Vector getTheUnitVector()
     {
@@ -176,6 +182,88 @@ public class Vector
     {
         Vector C = B.getTheUnitVector();
         return C.multiplyNumber(this.getMagnitude() * this.getCosValueForAngleToVector(B));
+    }
+
+    public Vector getVectorRotateByInClockwise(double angle)
+    {
+        Vector Result = new Vector(0, 0);
+
+        double a = this.x;
+        double b = this.y;
+        double t = (a * a + b * b) * Math.cos(angle);
+
+        if (abs(a) > 0.001)
+        {
+            double A = a * a + b * b;
+            double B = - 2 * t * b;
+            double C = t * t - a * a * t;
+
+            QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
+            Result.y = aEquation.getX1();
+            Result.x = (t - b * Result.y) / a;
+            Vector Unit_Result = Result.getTheUnitVector();
+            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+            Vector3D theCrossProduct = Result.getCrossProduct(this);
+            if (theCrossProduct.getMagnitude() < 0)
+            {
+                Result.y = aEquation.getX2();
+                Result.x = (t - b * Result.y) / a;
+            }
+
+        } else if (abs(b) > 0.001)
+        {
+            double A = a * a + b * b;
+            double B = - 2 * t * a;
+            double C = t * t - b * b * t;
+
+            QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
+            Result.x = aEquation.getX1();
+            Result.y = (t - a * Result.x) / b;
+            Vector Unit_Result = Result.getTheUnitVector();
+            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+            Vector3D theCrossProduct = Result.getCrossProduct(this);
+            if (theCrossProduct.getMagnitude() < 0)
+            {
+                Result.x = aEquation.getX2();
+                Result.y = (t - a * Result.x) / b;
+            }
+        }
+        return Result;
+    }
+
+    public Vector getVectorRotateByInCounterClockwise(double angle)
+    {
+        Vector Result = new Vector(0, 0);
+
+        double a = this.x;
+        double b = this.y;
+        double t = (a * a + b * b) * Math.cos(angle);
+
+        if (abs(a) > 0.001)
+        {
+            double A = a * a + b * b;
+            double B = - 2 * t * b;
+            double C = t * t - a * a * t;
+
+            QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
+            Result.y = aEquation.getX2();
+            Result.x = (t - b * Result.y) / a;
+            Vector Unit_Result = Result.getTheUnitVector();
+            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+        } else if (abs(b) > 0.001)
+        {
+            double A = a * a + b * b;
+            double B = - 2 * t * a;
+            double C = t * t - b * b * t;
+
+            QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
+            Result.x = aEquation.getX2();
+            Result.y = (t - a * Result.x) / b;
+            Vector Unit_Result = Result.getTheUnitVector();
+            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+        }
+
+        return Result;
     }
 
 }

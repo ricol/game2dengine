@@ -17,10 +17,10 @@ public class Node
 {
 
     public String identifier;
-    private double x;
-    private double y;
-    private double width;
-    private double height;
+    private double x = 0;
+    private double y = 0;
+    private double width = 0;
+    private double height = 0;
 
     protected Random theRandom = new Random();
     private Shape theShape = null;
@@ -89,7 +89,11 @@ public class Node
     public void setTheShape(Shape theShape)
     {
         this.theShape = theShape;
-        this.theShape.setTheNode(this);
+
+        if (this.theShape != null)
+            this.theShape.setTheNode(this);
+
+        this.onShapeAdded(theShape);
     }
 
     public double getCentreX()
@@ -112,15 +116,19 @@ public class Node
         this.setY(value - height / 2.0);
     }
 
+    public void onShapeAdded(Shape theShape)
+    {
+
+    }
+
     void refreshShape(double changeX, double changeY, double changeWidth, double changeHeight)
     {
         if (this.theShape == null)
         {
-            CircleShape aCircleShape = new CircleShape(this.getCentreX(), this.getCentreY(), 0);
-            aCircleShape.radius = this.getWidth() > this.getHeight() ? (this.getWidth() / 2.0f) : (this.getHeight() / 2.0f);
-            aCircleShape.setTheNode(this);
-            this.theShape = aCircleShape;
-        } else
-            this.theShape.refresh(changeX, changeY, changeWidth, changeHeight);
+            CircleShape aCircleShape = new CircleShape(this.getCentreX(), this.getCentreY(), this.getWidth() > this.getHeight() ? this.getWidth() / 2.0f : this.getHeight() / 2.0f);
+            this.setTheShape(aCircleShape);
+        }
+
+        this.theShape.refresh(changeX, changeY, changeWidth, changeHeight);
     }
 }

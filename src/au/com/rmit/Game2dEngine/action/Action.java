@@ -47,7 +47,7 @@ public abstract class Action
     {
         return "Action: " + this.getClass().getName() + " - id: " + identifer;
     }
-    
+
     public Sprite getTheSprite()
     {
         return this.theSprite;

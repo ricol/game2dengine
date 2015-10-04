@@ -5,13 +5,11 @@
  */
 package au.com.rmit.Game2dEngine.physics.gravity;
 
-import au.com.rmit.Game2dEngine.interfaces.ICopy;
-
 /**
  *
  * @author ricolwang
  */
-public class Gravity implements ICopy
+public class Gravity
 {
 
     public double GX = 9.8f;
@@ -23,10 +21,4 @@ public class Gravity implements ICopy
         this.GY = gy;
     }
 
-    @Override
-    public Object getACopy()
-    {
-        final Gravity g = new Gravity(this.GX, this.GY);
-        return g;
-    }
 }

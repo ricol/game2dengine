@@ -7,10 +7,11 @@ package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.Game2dEngine.geometry.ClosureShape;
+import au.com.rmit.Game2dEngine.geometry.Line;
 import au.com.rmit.Game2dEngine.geometry.Shape;
-import au.com.rmit.Game2dEngine.interfaces.ICopy;
+import au.com.rmit.Game2dEngine.math.MathConsts;
 import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
@@ -23,18 +24,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
+import java.util.WeakHashMap;
 import javax.imageio.ImageIO;
 
 /**
  *
  * @author ricolwang
  */
-public abstract class Sprite extends Node implements ICopy
+public abstract class Sprite extends Node
 {
 
     public boolean bChild;
@@ -47,9 +49,18 @@ public abstract class Sprite extends Node implements ICopy
     public boolean bCollisionArbitrary = false;
     public Color theColorOfFrame = Color.yellow;
     public Color theColorOfTheShape = Color.red;
+    public Color theColorOfVelocityVector = Color.white;
+    public Color theColorOfGravityVector = Color.green;
     public boolean bCollisionDetect = false;
+    public boolean bEnablePhysics = false;
+    public boolean bEnableGravity = false;
+    public boolean bKillWhenOutOfScene = false;
+    public boolean bDrawVelocityVector = false;
+    public boolean bDrawGravityVector = false;
+    public double DrawVelocityBase = 1;
+    public double DrawGravityBase = 1;
 
-    public HashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new HashMap();
+    public WeakHashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new WeakHashMap<>();
     public static final long EVER = Long.MAX_VALUE;
     private boolean bTargetCollisionProcessed = false;
     private int layer = Scene.MIN_LAYER;
@@ -76,7 +87,6 @@ public abstract class Sprite extends Node implements ICopy
     private Set<Sprite> theSetOfAttachedWillDelete = new HashSet<>();
     private Set<Sprite> theSetOfAttachedWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfAttached = new HashSet<>();
-    private boolean bEnableGravity;
     private double mass;
     private Gravity theGravity;
     private float alpha = 1;
@@ -292,7 +302,38 @@ public abstract class Sprite extends Node implements ICopy
 
     public void didUpdateState()
     {
+        if (this.bKillWhenOutOfScene)
+        {
+            if (!this.isAlive)
+                return;
 
+            int tmpX = (int) this.getX();
+            int tmpY = (int) this.getY();
+            int tmpW = (int) getWidth();
+            int tmpH = (int) getHeight();
+
+            int tmpSceneWidth;
+            int tmpSceneHeight;
+
+            if (bChild)
+            {
+                tmpSceneWidth = (int) this.parent.getWidth();
+                tmpSceneHeight = (int) this.parent.getHeight();
+            } else
+            {
+                tmpSceneWidth = this.theScene.getWidth();
+                tmpSceneHeight = this.theScene.getHeight();
+            }
+
+            if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
+                this.setShouldDie();
+
+            if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+                this.setShouldDie();
+
+            if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
+                this.setShouldDie();
+        }
     }
 
     public void didCollisionProcess()
@@ -391,6 +432,8 @@ public abstract class Sprite extends Node implements ICopy
 
         this.drawFrame(theGraphics2D);
         this.drawShape(theGraphicsInTheScene);
+        this.drawVelocityVector(theGraphicsInTheScene);
+        this.drawGravityVector(theGraphicsInTheScene);
 
         if (theImageCanvas != null)
         {
@@ -451,6 +494,54 @@ public abstract class Sprite extends Node implements ICopy
             Shape theShape = this.getTheShape();
             if (theShape != null)
                 theShape.draw(theGraphics2D, theColorOfTheShape);
+        }
+    }
+
+    private void drawVelocityVector(final Graphics2D theGraphics2D)
+    {
+        if (this.bDrawVelocityVector)
+        {
+            theGraphics2D.setColor(theColorOfVelocityVector);
+
+            Vector v = this.velocity.multiplyNumber(this.DrawVelocityBase);
+            if (v.getMagnitude() <= MathConsts.E)
+                return;
+
+            v.start.x = this.getCentreX();
+            v.start.y = this.getCentreY();
+
+            Line aLine = new Line(v.start, v.getEndPoint());
+            ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
+            lines.add(aLine);
+            for (Line line : lines)
+                theGraphics2D.drawLine((int) line.start.x, (int) line.start.y, (int) line.end.x, (int) line.end.y);
+        }
+    }
+
+    private void drawGravityVector(final Graphics2D theGraphics2D)
+    {
+        if (this.bDrawGravityVector)
+        {
+            theGraphics2D.setColor(theColorOfGravityVector);
+
+            if (this.theGravity == null)
+                return;
+
+            Vector G = new Vector(this.theGravity.GX, this.theGravity.GY);
+            Vector v = G.multiplyNumber(this.DrawGravityBase);
+            if (v.getMagnitude() <= 0)
+                return;
+
+            v.start.x = this.getCentreX();
+            v.start.y = this.getCentreY();
+
+            Line aLine = new Line(v.start, v.getEndPoint());
+            ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
+            lines.add(aLine);
+            for (Line line : lines)
+            {
+                theGraphics2D.drawLine((int) line.start.x, (int) line.start.y, (int) line.end.x, (int) line.end.y);
+            }
         }
     }
 
@@ -681,23 +772,6 @@ public abstract class Sprite extends Node implements ICopy
         return this.starttime;
     }
 
-    @Override
-    public Object getACopy()
-    {
-        return null;
-    }
-
-    public boolean collideWith(final Sprite target)
-    {
-        Shape theShape = this.getTheShape();
-        Shape theTargetShape = target.getTheShape();
-        if ((theShape instanceof ClosureShape) && (theTargetShape instanceof ClosureShape))
-        {
-            return ((ClosureShape) theShape).collideWith((ClosureShape) theTargetShape);
-        } else
-            return false;
-    }
-
     public int getLayer()
     {
         return this.layer;
@@ -712,21 +786,6 @@ public abstract class Sprite extends Node implements ICopy
     public double getLife()
     {
         return this.lifetime;
-    }
-
-    public boolean isGravityEnabled()
-    {
-        return this.bEnableGravity;
-    }
-
-    public void enableGravity()
-    {
-        this.bEnableGravity = true;
-    }
-
-    public void disableGravity()
-    {
-        this.bEnableGravity = false;
     }
 
     public boolean getTargetCollisionProcessed()
@@ -813,7 +872,8 @@ public abstract class Sprite extends Node implements ICopy
 
     public void onCollideWith(final Sprite target)
     {
-
+        if (this.bEnablePhysics)
+            PhysicsCollisionProcess.processCollision(this, target);
     }
 
     public void onNotCollideWith(final Sprite target)
@@ -919,4 +979,5 @@ public abstract class Sprite extends Node implements ICopy
         this.restoreVelocityX();
         this.restoreVelocityY();
     }
+
 }
