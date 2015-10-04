@@ -434,6 +434,7 @@ public abstract class Sprite extends Node
         this.drawShape(theGraphicsInTheScene);
         this.drawVelocityVector(theGraphicsInTheScene);
         this.drawGravityVector(theGraphicsInTheScene);
+        this.onCustomDrawInTheScene(theGraphicsInTheScene);
 
         if (theImageCanvas != null)
         {
@@ -903,6 +904,11 @@ public abstract class Sprite extends Node
     {
         theGraphics2D.setBackground(blackTransparent);
         theGraphics2D.clearRect(0, 0, (int) getWidth(), (int) getHeight());
+    }
+
+    public void onCustomDrawInTheScene(final Graphics2D theGraphics2D)
+    {
+
     }
 
     public void onWillDead()
