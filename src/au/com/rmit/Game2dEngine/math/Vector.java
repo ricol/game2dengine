@@ -149,9 +149,9 @@ public class Vector
         return this.multiplyNumber(1 / number);
     }
 
-    public Vector3 getCrossProduct(Vector B)
+    public Vector3D getCrossProduct(Vector B)
     {
-        Vector3 Result = new Vector3(0, 0, this.x * B.y - this.y * B.x);
+        Vector3D Result = new Vector3D(0, 0, this.x * B.y - this.y * B.x);
         return Result;
     }
 
@@ -203,7 +203,7 @@ public class Vector
             Result.x = (t - b * Result.y) / a;
             Vector Unit_Result = Result.getTheUnitVector();
             Result = Unit_Result.multiplyNumber(this.getMagnitude());
-            Vector3 theCrossProduct = Result.getCrossProduct(this);
+            Vector3D theCrossProduct = Result.getCrossProduct(this);
             if (theCrossProduct.getMagnitude() < 0)
             {
                 Result.y = aEquation.getX2();
@@ -221,7 +221,7 @@ public class Vector
             Result.y = (t - a * Result.x) / b;
             Vector Unit_Result = Result.getTheUnitVector();
             Result = Unit_Result.multiplyNumber(this.getMagnitude());
-            Vector3 theCrossProduct = Result.getCrossProduct(this);
+            Vector3D theCrossProduct = Result.getCrossProduct(this);
             if (theCrossProduct.getMagnitude() < 0)
             {
                 Result.x = aEquation.getX2();

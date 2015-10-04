@@ -5,54 +5,54 @@
  */
 package au.com.rmit.Game2dEngine.math;
 
-import au.com.rmit.Game2dEngine.geometry.Point3;
+import au.com.rmit.Game2dEngine.geometry.Point3D;
 
 /**
  *
  * @author ricolwang
  */
-public class Vector3
+public class Vector3D
 {
 
-    public Point3 start = new Point3(0, 0, 0);
+    public Point3D start = new Point3D(0, 0, 0);
     public double x;
     public double y;
     public double z;
 
-    public Vector3(double x, double y, double z)
+    public Vector3D(double x, double y, double z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Point3 getEndPoint()
+    public Point3D getEndPoint()
     {
-        Point3 aPoint = new Point3(x + start.x, y + start.y, z + start.z);
+        Point3D aPoint = new Point3D(x + start.x, y + start.y, z + start.z);
         return aPoint;
     }
 
-    public Vector3 addVector(Vector3 B)
+    public Vector3D addVector(Vector3D B)
     {
-        Vector3 C = new Vector3(x, y, z);
+        Vector3D C = new Vector3D(x, y, z);
         C.x += B.x;
         C.y += B.y;
         C.z += B.z;
         return C;
     }
 
-    public Vector3 subVector(Vector3 B)
+    public Vector3D subVector(Vector3D B)
     {
-        Vector3 C = new Vector3(x, y, z);
+        Vector3D C = new Vector3D(x, y, z);
         C.x -= B.x;
         C.y -= B.y;
         C.z -= B.z;
         return C;
     }
 
-    public Vector3 getNegativeVector()
+    public Vector3D getNegativeVector()
     {
-        Vector3 C = new Vector3(-x, -y, -z);
+        Vector3D C = new Vector3D(-x, -y, -z);
         return C;
     }
 
@@ -61,9 +61,9 @@ public class Vector3
         return Math.sqrt(x * x + y * y + z * z);
     }
 
-    public Vector3 multiplyNumber(double number)
+    public Vector3D multiplyNumber(double number)
     {
-        Vector3 C = new Vector3(x * number, y * number, z * number);
+        Vector3D C = new Vector3D(x * number, y * number, z * number);
         return C;
     }
 
@@ -79,15 +79,15 @@ public class Vector3
     }
 
     //number != 0
-    public Vector3 divideByNumber(double number)
+    public Vector3D divideByNumber(double number)
     {
         return this.multiplyNumber(1 / number);
     }
 
     //magnitude != 0
-    public Vector3 getTheUnitVector()
+    public Vector3D getTheUnitVector()
     {
-        Vector3 C = new Vector3(x, y, z);
+        Vector3D C = new Vector3D(x, y, z);
         return C.divideByNumber(this.getMagnitude());
     }
 

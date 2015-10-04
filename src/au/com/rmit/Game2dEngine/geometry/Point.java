@@ -5,8 +5,10 @@
  */
 package au.com.rmit.Game2dEngine.geometry;
 
+import au.com.rmit.Game2dEngine.math.MathConsts;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
 
 /**
@@ -49,4 +51,29 @@ public class Point extends Shape
         y += changeY;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Point)
+        {
+            Point B = (Point) obj;
+            return abs(this.x - B.x) <= MathConsts.E && abs(this.y - B.y) <= MathConsts.E;
+        } else
+            return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.x) ^ (Double.doubleToLongBits(this.x) >>> 32));
+        hash = 41 * hash + (int) (Double.doubleToLongBits(this.y) ^ (Double.doubleToLongBits(this.y) >>> 32));
+        return hash;
+    }
+
+    public static Point getZeroPoint()
+    {
+        Point zero = new Point(0, 0);
+        return zero;
+    }
 }
