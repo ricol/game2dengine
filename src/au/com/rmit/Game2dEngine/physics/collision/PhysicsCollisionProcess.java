@@ -9,8 +9,8 @@ import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.CircleShape;
 import au.com.rmit.Game2dEngine.geometry.ClosureShape;
 import au.com.rmit.Game2dEngine.geometry.Shape;
-import au.com.rmit.Game2dEngine.math.CollisionQuadraticEquation;
-import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.math.equation.CollisionQuadraticEquation;
+import au.com.rmit.Game2dEngine.math.vector.Vector;
 import au.com.rmit.Game2dEngine.physics.sprites.WallSprite;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class PhysicsCollisionProcess
         {
             //a circle collide with a circle
             Vector AB = new Vector(B.getCentreX() - A.getCentreX(), B.getCentreY() - A.getCentreY());
-            if (AB.getMagnitude() <= 0)
+            if (AB.getTheMagnitude() <= 0)
                 return;
 
             Vector BC = AB.getPerpendicularUnitVectorClockwise();
@@ -120,12 +120,12 @@ public class PhysicsCollisionProcess
             Vector V_B = new Vector(B.getVelocityX(), B.getVelocityY());
             Vector V_B_AB = V_B.getProjectVectorOn(UNIT_AB);
 
-            double absV_A_AB = V_A_AB.getMagnitude();
+            double absV_A_AB = V_A_AB.getTheMagnitude();
 
             if (V_A.getCosValueForAngleToVector(AB) < 0)
                 absV_A_AB = -absV_A_AB;
 
-            double absV_B_AB = V_B_AB.getMagnitude();
+            double absV_B_AB = V_B_AB.getTheMagnitude();
 
             if (V_B.getCosValueForAngleToVector(AB) < 0)
                 absV_B_AB = -absV_B_AB;

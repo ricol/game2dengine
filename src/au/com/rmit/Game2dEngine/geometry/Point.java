@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.geometry;
 
-import au.com.rmit.Game2dEngine.math.MathConsts;
+import au.com.rmit.Game2dEngine.math.common.MathConsts;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import static java.lang.Math.abs;

@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.math;
+package au.com.rmit.Game2dEngine.math.vector;
 
 import au.com.rmit.Game2dEngine.geometry.Point;
+import au.com.rmit.Game2dEngine.math.common.MathConsts;
+import au.com.rmit.Game2dEngine.math.equation.QuadraticEquation;
 import static java.lang.Math.abs;
 
 /**
@@ -25,7 +27,7 @@ public class Vector
         this.y = y;
     }
 
-    public Point getEndPoint()
+    public Point getTheEndPoint()
     {
         Point aPoint = new Point(x + start.x, y + start.y);
         return aPoint;
@@ -47,7 +49,7 @@ public class Vector
         return C;
     }
 
-    public Vector getNegativeVector()
+    public Vector getTheNegativeVector()
     {
         Vector C = new Vector(-x, -y);
         return C;
@@ -58,7 +60,7 @@ public class Vector
         return x * B.x + y * B.y;
     }
 
-    public double getMagnitude()
+    public double getTheMagnitude()
     {
         return Math.sqrt(x * x + y * y);
     }
@@ -126,8 +128,8 @@ public class Vector
     public boolean isParalleTo(Vector B)
     {
         double dot = this.dotProduct(B);
-        double absThis = this.getMagnitude();
-        double absB = B.getMagnitude();
+        double absThis = this.getTheMagnitude();
+        double absB = B.getTheMagnitude();
 
         return abs((abs(dot) - abs(absThis * absB))) <= MathConsts.E;
     }
@@ -135,7 +137,7 @@ public class Vector
     @Override
     public String toString()
     {
-        return "Vector[X: " + x + "; Y: " + y + "; Magnitude: " + this.getMagnitude() + "]";
+        return "Vector[X: " + x + "; Y: " + y + "; Magnitude: " + this.getTheMagnitude() + "]";
     }
 
     public void print(String title)
@@ -159,18 +161,18 @@ public class Vector
     public Vector getTheUnitVector()
     {
         Vector C = new Vector(x, y);
-        return C.divideByNumber(this.getMagnitude());
+        return C.divideByNumber(this.getTheMagnitude());
     }
 
     //not perpendicular relationship
     public double getCosValueForAngleToVector(Vector B)
     {
-        double magnitude = this.getMagnitude();
-        double targetMagnitude = B.getMagnitude();
+        double magnitude = this.getTheMagnitude();
+        double targetMagnitude = B.getTheMagnitude();
 
         if (magnitude > 0 && targetMagnitude > 0)
         {
-            return this.dotProduct(B) / (this.getMagnitude() * B.getMagnitude());
+            return this.dotProduct(B) / (this.getTheMagnitude() * B.getTheMagnitude());
         } else
         {
             return 0;
@@ -181,7 +183,7 @@ public class Vector
     public Vector getProjectVectorOn(Vector B)
     {
         Vector C = B.getTheUnitVector();
-        return C.multiplyNumber(this.getMagnitude() * this.getCosValueForAngleToVector(B));
+        return C.multiplyNumber(this.getTheMagnitude() * this.getCosValueForAngleToVector(B));
     }
 
     public Vector getVectorRotateByInClockwise(double angle)
@@ -202,9 +204,9 @@ public class Vector
             Result.y = aEquation.getX1();
             Result.x = (t - b * Result.y) / a;
             Vector Unit_Result = Result.getTheUnitVector();
-            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+            Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
             Vector3D theCrossProduct = Result.getCrossProduct(this);
-            if (theCrossProduct.getMagnitude() < 0)
+            if (theCrossProduct.getTheMagnitude() < 0)
             {
                 Result.y = aEquation.getX2();
                 Result.x = (t - b * Result.y) / a;
@@ -220,9 +222,9 @@ public class Vector
             Result.x = aEquation.getX1();
             Result.y = (t - a * Result.x) / b;
             Vector Unit_Result = Result.getTheUnitVector();
-            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+            Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
             Vector3D theCrossProduct = Result.getCrossProduct(this);
-            if (theCrossProduct.getMagnitude() < 0)
+            if (theCrossProduct.getTheMagnitude() < 0)
             {
                 Result.x = aEquation.getX2();
                 Result.y = (t - a * Result.x) / b;
@@ -249,7 +251,7 @@ public class Vector
             Result.y = aEquation.getX2();
             Result.x = (t - b * Result.y) / a;
             Vector Unit_Result = Result.getTheUnitVector();
-            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+            Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
         } else if (abs(b) > 0.001)
         {
             double A = a * a + b * b;
@@ -260,7 +262,7 @@ public class Vector
             Result.x = aEquation.getX2();
             Result.y = (t - a * Result.x) / b;
             Vector Unit_Result = Result.getTheUnitVector();
-            Result = Unit_Result.multiplyNumber(this.getMagnitude());
+            Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
         }
 
         return Result;

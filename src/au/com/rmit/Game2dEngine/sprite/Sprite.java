@@ -9,8 +9,8 @@ import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.Line;
 import au.com.rmit.Game2dEngine.geometry.Shape;
-import au.com.rmit.Game2dEngine.math.MathConsts;
-import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.math.common.MathConsts;
+import au.com.rmit.Game2dEngine.math.vector.Vector;
 import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
@@ -504,13 +504,13 @@ public abstract class Sprite extends Node
             theGraphics2D.setColor(theColorOfVelocityVector);
 
             Vector v = this.velocity.multiplyNumber(this.DrawVelocityBase);
-            if (v.getMagnitude() <= MathConsts.E)
+            if (v.getTheMagnitude() <= MathConsts.E)
                 return;
 
             v.start.x = this.getCentreX();
             v.start.y = this.getCentreY();
 
-            Line aLine = new Line(v.start, v.getEndPoint());
+            Line aLine = new Line(v.start, v.getTheEndPoint());
             ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
             lines.add(aLine);
             for (Line line : lines)
@@ -529,13 +529,13 @@ public abstract class Sprite extends Node
 
             Vector G = new Vector(this.theGravity.GX, this.theGravity.GY);
             Vector v = G.multiplyNumber(this.DrawGravityBase);
-            if (v.getMagnitude() <= 0)
+            if (v.getTheMagnitude() <= 0)
                 return;
 
             v.start.x = this.getCentreX();
             v.start.y = this.getCentreY();
 
-            Line aLine = new Line(v.start, v.getEndPoint());
+            Line aLine = new Line(v.start, v.getTheEndPoint());
             ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
             lines.add(aLine);
             for (Line line : lines)
