@@ -8,11 +8,14 @@ package au.com.rmit.Game2dEngine.physics.collision;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.CircleShape;
 import au.com.rmit.Game2dEngine.geometry.ClosureShape;
+import au.com.rmit.Game2dEngine.geometry.Point;
 import au.com.rmit.Game2dEngine.geometry.Shape;
+import au.com.rmit.Game2dEngine.math.common.MathConsts;
 import au.com.rmit.Game2dEngine.math.equation.CollisionQuadraticEquation;
 import au.com.rmit.Game2dEngine.math.vector.Vector;
 import au.com.rmit.Game2dEngine.physics.sprites.WallSprite;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
+import static java.lang.Math.abs;
 import java.util.ArrayList;
 
 /**
@@ -230,5 +233,38 @@ public class PhysicsCollisionProcess
                 theSprite.setTargetCollisionProcessed(false);
             }
         }
+    }
+
+    public static ArrayList<Point> getCollisionPointsForCircle(CircleShape A, CircleShape B)
+    {
+        ArrayList<Point> points = new ArrayList<>();
+        
+        if (A.centre.equals(B.centre) && abs(A.radius - B.radius) < MathConsts.E)
+            return null;
+
+        double r1 = A.radius;
+        double r2 = B.radius;
+        double r = A.centre.getDistanceFrom(B.centre);
+
+        double cos = (r2 * r2 - r1 * r1 - r * r) / (-2 * r1 * r);
+        double angel = Math.acos(cos);
+        Vector V_AB = new Vector(B.centre.x - A.centre.x, B.centre.y - A.centre.y);
+        Vector V_AB_ROTATE_CLOCK_WISE = V_AB.getVectorRotateByInClockwise(angel);
+        Vector V_AB_ROTATE_CLOCK_WISE_UNIT = V_AB_ROTATE_CLOCK_WISE.getTheUnitVector();
+        Vector V_AC_CLOCK_WISE = V_AB_ROTATE_CLOCK_WISE_UNIT.multiplyNumber(r1);
+        V_AC_CLOCK_WISE.start = A.centre;
+        Point p1 = V_AC_CLOCK_WISE.getTheEndPoint();
+
+        Vector V_AB_ROTATE_COUNTER_CLOCK_WISE = V_AB.getVectorRotateByInCounterClockwise(angel);
+        Vector V_AB_ROTATE_COUNTER_CLOCK_WISE_UNIT = V_AB_ROTATE_COUNTER_CLOCK_WISE.getTheUnitVector();
+        Vector V_AC_COUNTER_CLOCK_WISE = V_AB_ROTATE_COUNTER_CLOCK_WISE_UNIT.multiplyNumber(r1);
+        V_AC_COUNTER_CLOCK_WISE.start = A.centre;
+        Point p2 = V_AC_COUNTER_CLOCK_WISE.getTheEndPoint();
+
+        points.add(p1);
+        if (!p1.equals(p2) && abs(r1 + r2 - r) > MathConsts.E)
+            points.add(p2);
+
+        return points;
     }
 }
