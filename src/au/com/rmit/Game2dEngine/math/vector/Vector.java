@@ -9,7 +9,6 @@ import au.com.rmit.Game2dEngine.geometry.Point;
 import au.com.rmit.Game2dEngine.math.common.MathConsts;
 import au.com.rmit.Game2dEngine.math.equation.QuadraticEquation;
 import static java.lang.Math.abs;
-import java.util.ArrayList;
 
 /**
  *
@@ -205,7 +204,7 @@ public class Vector
             Result.y = aEquation.getX1();
             Result.x = (t - b * Result.y) / a;
             Vector3D theCrossProduct = Result.getCrossProduct(this);
-            if (theCrossProduct.getTheMagnitude() < 0)
+            if (theCrossProduct.z > 0)
             {
                 Result.y = aEquation.getX2();
                 Result.x = (t - b * Result.y) / a;
@@ -220,7 +219,7 @@ public class Vector
             Result.x = aEquation.getX1();
             Result.y = (t - a * Result.x) / b;
             Vector3D theCrossProduct = Result.getCrossProduct(this);
-            if (theCrossProduct.getTheMagnitude() < 0)
+            if (theCrossProduct.z > 0)
             {
                 Result.x = aEquation.getX2();
                 Result.y = (t - a * Result.x) / b;
@@ -247,8 +246,14 @@ public class Vector
             double C = t * t - a * a * t;
 
             QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
-            Result.y = aEquation.getX2();
+            Result.y = aEquation.getX1();
             Result.x = (t - b * Result.y) / a;
+            Vector3D theCrossProduct = Result.getCrossProduct(this);
+            if (theCrossProduct.z < 0)
+            {
+                Result.y = aEquation.getX2();
+                Result.x = (t - b * Result.y) / a;
+            }
         } else if (abs(b) > MathConsts.E)
         {
             double A = a * a + b * b;
@@ -256,73 +261,20 @@ public class Vector
             double C = t * t - b * b * t;
 
             QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
-            Result.x = aEquation.getX2();
+            Result.x = aEquation.getX1();
             Result.y = (t - a * Result.x) / b;
+            Vector3D theCrossProduct = Result.getCrossProduct(this);
+            if (theCrossProduct.z < 0)
+            {
+                Result.x = aEquation.getX2();
+                Result.y = (t - a * Result.y) / b;
+            }
         }
 
         Vector Unit_Result = Result.getTheUnitVector();
         Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
 
         return Result;
-    }
-
-    public ArrayList<Vector> getVectorsRotateByInClockwise(double angle)
-    {
-        ArrayList<Vector> results = new ArrayList<>();
-        double a = this.x;
-        double b = this.y;
-        double t = (a * a + b * b) * Math.cos(angle);
-
-        if (abs(a) > MathConsts.E)
-        {
-            double A = a * a + b * b;
-            double B = - 2 * t * b;
-            double C = t * t - a * a * t;
-
-            QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
-            {
-                Vector Result = new Vector(0, 0);
-                Result.y = aEquation.getX1();
-                Result.x = (t - b * Result.y) / a;
-                Vector Unit_Result = Result.getTheUnitVector();
-                Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
-                results.add(Result);
-            }
-            {
-                Vector Result = new Vector(0, 0);
-                Result.y = aEquation.getX2();
-                Result.x = (t - b * Result.y) / a;
-                Vector Unit_Result = Result.getTheUnitVector();
-                Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
-                results.add(Result);
-            }
-
-        } else if (abs(b) > MathConsts.E)
-        {
-            double A = a * a + b * b;
-            double B = - 2 * t * a;
-            double C = t * t - b * b * t;
-
-            QuadraticEquation aEquation = new QuadraticEquation(A, B, C);
-            {
-                Vector Result = new Vector(0, 0);
-                Result.x = aEquation.getX1();
-                Result.y = (t - a * Result.x) / b;
-                Vector Unit_Result = Result.getTheUnitVector();
-                Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
-                results.add(Result);
-            }
-            {
-                Vector Result = new Vector(0, 0);
-                Result.x = aEquation.getX2();
-                Result.y = (t - a * Result.x) / b;
-                Vector Unit_Result = Result.getTheUnitVector();
-                Result = Unit_Result.multiplyNumber(this.getTheMagnitude());
-                results.add(Result);
-            }
-
-        }
-        return results;
     }
 
 }
