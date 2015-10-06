@@ -240,7 +240,7 @@ public class PhysicsCollisionProcess
         ArrayList<Point> points = new ArrayList<>();
         
         if (A.centre.equals(B.centre) && abs(A.radius - B.radius) < MathConsts.E)
-            return null;
+            return points;
 
         double r1 = A.radius;
         double r2 = B.radius;
