@@ -26,6 +26,11 @@ public class Vector3D
         this.z = z;
     }
 
+    public static Vector3D getTheZeroVector()
+    {
+        return new Vector3D(0, 0, 0);
+    }
+    
     public Point3D getTheEndPoint()
     {
         Point3D aPoint = new Point3D(x + start.x, y + start.y, z + start.z);
