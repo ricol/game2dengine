@@ -9,8 +9,8 @@ import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.geometry.Line;
 import au.com.rmit.Game2dEngine.geometry.Shape;
-import au.com.rmit.Game2dEngine.math.MathConsts;
-import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.math.common.MathConsts;
+import au.com.rmit.Game2dEngine.math.vector.Vector;
 import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
@@ -76,17 +76,26 @@ public abstract class Sprite extends Node
     private boolean bShouldDie = false;
     private int collisionCategory = 0x00;
     private int collisionTargetCategory = 0x00;
+
+    //sets for actions and each action will execute in parallel.
     private Set<Action> theSetOfActionsWillDelete = new HashSet<>();
     private Set<Action> theSetOfActionsWillAdd = new HashSet<>();
     private Set<Action> theSetOfActions = new HashSet<>();
     private Set<Action> theSetOfActionsInQueueWillDelete = new HashSet<>();
+
+    //queue for sets of actions and each set of actions will execute in sequence.
     private Queue<Set<Action>> theQueueOfActions = new LinkedList<>();
+
+    //sets for children that will be drawed inside the sprite.
     private Set<Sprite> theSetOfChildrenWillDelete = new HashSet<>();
     private Set<Sprite> theSetOfChildrenWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfChildren = new HashSet<>();
+
+    //sets for attached children that will be drawed in the scene and they move as the sprite moves.
     private Set<Sprite> theSetOfAttachedWillDelete = new HashSet<>();
     private Set<Sprite> theSetOfAttachedWillAdd = new HashSet<>();
     private Set<Sprite> theSetOfAttached = new HashSet<>();
+
     private double mass;
     private Gravity theGravity;
     private float alpha = 1;
@@ -278,6 +287,7 @@ public abstract class Sprite extends Node
             this.theSetOfChildrenWillDelete.clear();
         }
 
+        //update its attached children
         //add new attached
         if (this.theSetOfAttachedWillAdd.size() > 0)
         {
@@ -366,10 +376,14 @@ public abstract class Sprite extends Node
 
         if (bChild)
         {
+            if (this.parent == null)
+                return;
             tmpSceneWidth = (int) this.parent.getWidth();
             tmpSceneHeight = (int) this.parent.getHeight();
         } else
         {
+            if (this.theScene == null)
+                return;
             tmpSceneWidth = this.theScene.getWidth();
             tmpSceneHeight = this.theScene.getHeight();
         }
@@ -430,10 +444,15 @@ public abstract class Sprite extends Node
             theGraphics2D.setTransform(old);
         }
 
+        //draw its attached children
+        for (Sprite aSprite : this.theSetOfAttached)
+            aSprite.updateGUI(theGraphicsInTheScene);
+
         this.drawFrame(theGraphics2D);
         this.drawShape(theGraphicsInTheScene);
         this.drawVelocityVector(theGraphicsInTheScene);
         this.drawGravityVector(theGraphicsInTheScene);
+        this.onCustomDrawInTheScene(theGraphicsInTheScene);
 
         if (theImageCanvas != null)
         {
@@ -504,13 +523,13 @@ public abstract class Sprite extends Node
             theGraphics2D.setColor(theColorOfVelocityVector);
 
             Vector v = this.velocity.multiplyNumber(this.DrawVelocityBase);
-            if (v.getMagnitude() <= MathConsts.E)
+            if (v.getTheMagnitude() <= MathConsts.E)
                 return;
 
             v.start.x = this.getCentreX();
             v.start.y = this.getCentreY();
 
-            Line aLine = new Line(v.start, v.getEndPoint());
+            Line aLine = new Line(v.start, v.getTheEndPoint());
             ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
             lines.add(aLine);
             for (Line line : lines)
@@ -529,13 +548,13 @@ public abstract class Sprite extends Node
 
             Vector G = new Vector(this.theGravity.GX, this.theGravity.GY);
             Vector v = G.multiplyNumber(this.DrawGravityBase);
-            if (v.getMagnitude() <= 0)
+            if (v.getTheMagnitude() <= 0)
                 return;
 
             v.start.x = this.getCentreX();
             v.start.y = this.getCentreY();
 
-            Line aLine = new Line(v.start, v.getEndPoint());
+            Line aLine = new Line(v.start, v.getTheEndPoint());
             ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
             lines.add(aLine);
             for (Line line : lines)
@@ -562,6 +581,9 @@ public abstract class Sprite extends Node
         bShouldDie = true;
 
         for (Sprite aSprite : this.theSetOfChildren)
+            aSprite.setShouldDie();
+
+        for (Sprite aSprite : this.theSetOfAttached)
             aSprite.setShouldDie();
 
         this.onWillDead();
@@ -669,6 +691,28 @@ public abstract class Sprite extends Node
         {
             theImage = null;
         }
+    }
+
+    @Override
+    public void setX(double x)
+    {
+        for (Sprite aSprite : this.theSetOfAttached)
+        {
+            aSprite.setX(aSprite.getX() + (x - this.getX()));
+        }
+
+        super.setX(x); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setY(double y)
+    {
+        for (Sprite aSprite : this.theSetOfAttached)
+        {
+            aSprite.setY(aSprite.getY() + (y - this.getY()));
+        }
+
+        super.setY(y); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -811,6 +855,13 @@ public abstract class Sprite extends Node
     public void addAttached(Sprite aSprite)
     {
         this.theSetOfAttachedWillAdd.add(aSprite);
+        aSprite.setLayer(this.getLayer());
+
+        if (this.theScene != null)
+        {
+            if (aSprite.theScene == null)
+                this.theScene.addSprite(aSprite);
+        }
     }
 
     public void removeAttached(Sprite aSprite)
@@ -903,6 +954,11 @@ public abstract class Sprite extends Node
     {
         theGraphics2D.setBackground(blackTransparent);
         theGraphics2D.clearRect(0, 0, (int) getWidth(), (int) getHeight());
+    }
+
+    public void onCustomDrawInTheScene(final Graphics2D theGraphics2D)
+    {
+
     }
 
     public void onWillDead()

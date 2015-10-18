@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.geometry;
 
-import au.com.rmit.Game2dEngine.math.Vector;
+import au.com.rmit.Game2dEngine.math.vector.Vector;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class Line extends Shape
         V_PEN.start = new Point((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
         Vector V_RESULT = V_PEN.multiplyNumber(distance);
         V_RESULT.start = V_PEN.start;
-        Point result = V_RESULT.getEndPoint();
+        Point result = V_RESULT.getTheEndPoint();
 
         Line line1 = new Line(this.start.x, this.start.y, result.x, result.y);
         Line line2 = new Line(result.x, result.y, this.end.x, this.end.y);
@@ -86,7 +86,7 @@ public class Line extends Shape
         V_PEN.start = new Point((this.start.x + this.end.x) / 2, (this.start.y + this.end.y) / 2);
         Vector V_RESULT = V_PEN.multiplyNumber(distance);
         V_RESULT.start = V_PEN.start;
-        Point result = V_RESULT.getEndPoint();
+        Point result = V_RESULT.getTheEndPoint();
 
         Line line1 = new Line(this.start.x, this.start.y, result.x, result.y);
         Line line2 = new Line(result.x, result.y, this.end.x, this.end.y);
@@ -128,7 +128,7 @@ public class Line extends Shape
         Vector V_theNewArrowRight = V_theArrowRight_UNIT.multiplyNumber(r);
         V_theNewArrowRight.start = aLine.start;
 
-        return V_theNewArrowRight.getEndPoint();
+        return V_theNewArrowRight.getTheEndPoint();
     }
 
     @Override

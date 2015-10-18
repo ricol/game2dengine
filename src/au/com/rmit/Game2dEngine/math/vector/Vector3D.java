@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.math;
+package au.com.rmit.Game2dEngine.math.vector;
 
 import au.com.rmit.Game2dEngine.geometry.Point3D;
 
@@ -26,7 +26,12 @@ public class Vector3D
         this.z = z;
     }
 
-    public Point3D getEndPoint()
+    public static Vector3D getTheZeroVector()
+    {
+        return new Vector3D(0, 0, 0);
+    }
+    
+    public Point3D getTheEndPoint()
     {
         Point3D aPoint = new Point3D(x + start.x, y + start.y, z + start.z);
         return aPoint;
@@ -50,13 +55,13 @@ public class Vector3D
         return C;
     }
 
-    public Vector3D getNegativeVector()
+    public Vector3D getTheNegativeVector()
     {
         Vector3D C = new Vector3D(-x, -y, -z);
         return C;
     }
 
-    public double getMagnitude()
+    public double getTheMagnitude()
     {
         return Math.sqrt(x * x + y * y + z * z);
     }
@@ -70,7 +75,7 @@ public class Vector3D
     @Override
     public String toString()
     {
-        return "Vector3[X: " + x + "; Y: " + y + "; Z: " + z + "; Magnitude: " + this.getMagnitude() + "]";
+        return "Vector3[X: " + x + "; Y: " + y + "; Z: " + z + "; Magnitude: " + this.getTheMagnitude() + "]";
     }
 
     public void print(String title)
@@ -88,7 +93,7 @@ public class Vector3D
     public Vector3D getTheUnitVector()
     {
         Vector3D C = new Vector3D(x, y, z);
-        return C.divideByNumber(this.getMagnitude());
+        return C.divideByNumber(this.getTheMagnitude());
     }
 
 }
