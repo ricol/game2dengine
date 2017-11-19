@@ -183,6 +183,9 @@ public class Scene extends JPanel
     private void Loop()
     {
         double currentTime = System.currentTimeMillis();
+        
+        long delta = (long) (currentTime - lastTime);
+        if (delta < 1000.0 / FPS) { return; }
 
         allInLoop.clear();
 
@@ -244,13 +247,6 @@ public class Scene extends JPanel
         for (Sprite aSprite : allInLoop)
             aSprite.didFinishUpdateState();
 
-        long delta = (long) (currentTime - lastTime);
-        if (delta < 1000.0 / FPS) 
-        { 
-            allInLoop.clear();
-            return; 
-        } 
-        
         //update GUI
         if (theGraphics2D != null)
         {
