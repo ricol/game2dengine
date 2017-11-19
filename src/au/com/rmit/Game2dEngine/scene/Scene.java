@@ -40,16 +40,17 @@ public class Scene extends JPanel
     private int blue = 0;
     private Color theBackgroundColor = new Color(red, green, blue);
     private boolean bEnableCollisionDetect = false;
-    static long INTERVAL = 500;
     static long DELAY = 5;
     static long LEFT_TEXT = 30;
     static long TOP_TEXT = 45;
     static long GAP_TEXT = 20;
-    long number = 0;
     long lastTime = System.currentTimeMillis();
+    long lastFPSTime = System.currentTimeMillis();
     long fps = 0;
     float timeEllapsed = 0;
     long actionCount = 0;
+    long FPS_INTERVAL = 500;
+    long FPS = 100;
     String strMemoryUsage = "";
 
     protected Random theRandom = new Random();
@@ -181,8 +182,6 @@ public class Scene extends JPanel
 
     private void Loop()
     {
-        number++;
-
         double currentTime = System.currentTimeMillis();
 
         allInLoop.clear();
@@ -245,6 +244,13 @@ public class Scene extends JPanel
         for (Sprite aSprite : allInLoop)
             aSprite.didFinishUpdateState();
 
+        long delta = (long) (currentTime - lastTime);
+        if (delta < 1000.0 / FPS) 
+        { 
+            allInLoop.clear();
+            return; 
+        } 
+        
         //update GUI
         if (theGraphics2D != null)
         {
@@ -264,14 +270,13 @@ public class Scene extends JPanel
                 aSprite.didUpdateGUI();
             }
 
-            long time = System.currentTimeMillis();
-            long delta = time - lastTime;
-            if (delta > INTERVAL)
+            if (currentTime - lastFPSTime >= FPS_INTERVAL)
             {
-                fps = (long) ((number / (delta * 1.0)) * 1000);
-                number = 0;
-                lastTime = time;
+                fps = (long) (1000.0 / delta);
+                lastFPSTime = (long) currentTime;
             }
+            
+            lastTime = (long) currentTime;
 
             //draw fps
             String text = "FPS: " + fps;
