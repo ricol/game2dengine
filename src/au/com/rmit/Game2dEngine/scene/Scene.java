@@ -40,7 +40,6 @@ public class Scene extends JPanel
     private int blue = 0;
     private Color theBackgroundColor = new Color(red, green, blue);
     private boolean bEnableCollisionDetect = false;
-    static long DELAY = 5;
     static long LEFT_TEXT = 30;
     static long TOP_TEXT = 45;
     static long GAP_TEXT = 20;
@@ -145,14 +144,7 @@ public class Scene extends JPanel
             g.drawImage(theImage, 0, 0, null);
         }
 
-        try
-        {
-            Thread.sleep(DELAY);
-            repaint();
-        } catch (InterruptedException ex)
-        {
-
-        }
+        repaint();
     }
 
     private void addSprite(Sprite aSprite, int zOrder)
@@ -180,16 +172,9 @@ public class Scene extends JPanel
         addSprite(aSprite, aSprite.getLayer());
     }
 
-    private void Loop()
+    private void updateModel(double currentTime)
     {
-        double currentTime = System.currentTimeMillis();
-        
-        long delta = (long) (currentTime - lastTime);
-        if (delta < 1000.0 / FPS) { return; }
-
         allInLoop.clear();
-
-        int totalLayers = 0;
 
         for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
         {
@@ -197,7 +182,6 @@ public class Scene extends JPanel
             if (aLayer == null)
                 continue;
 
-            totalLayers++;
             allInLoop.addAll(aLayer.AllObjects);
         }
 
@@ -247,6 +231,10 @@ public class Scene extends JPanel
         for (Sprite aSprite : allInLoop)
             aSprite.didFinishUpdateState();
 
+    }
+
+    private void updateGUI(double currentTime)
+    {
         //update GUI
         if (theGraphics2D != null)
         {
@@ -268,10 +256,10 @@ public class Scene extends JPanel
 
             if (currentTime - lastFPSTime >= FPS_INTERVAL)
             {
-                fps = (long) (1000.0 / delta);
+                fps = (long) (1000.0 / (currentTime - lastTime));
                 lastFPSTime = (long) currentTime;
             }
-            
+
             lastTime = (long) currentTime;
 
             //draw fps
@@ -290,6 +278,16 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
 
             //draw total layers
+            int totalLayers = 0;
+
+            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+            {
+                Layer aLayer = layers.get(i);
+                if (aLayer == null)
+                    continue;
+
+                totalLayers++;
+            }
             text = "LAYERS: " + totalLayers;
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
 
@@ -302,6 +300,20 @@ public class Scene extends JPanel
         }
 
         allInLoop.clear();
+    }
+
+    private void Loop()
+    {
+        double currentTime = System.currentTimeMillis();
+
+        long delta = (long) (currentTime - lastTime);
+        if (delta < 1000.0 / FPS)
+        {
+            return;
+        }
+
+        this.updateModel(currentTime);
+        this.updateGUI(currentTime);
     }
 
     public void setRed(int value)
