@@ -1,0 +1,9 @@
+/nbproject/private/
+/build/
+/dist/
+out
+nbproject
+.idea
+build.xml
+game2dengine.iml
+manifest.mf

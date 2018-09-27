@@ -29,7 +29,7 @@ public class Director
 
     private Director()
     {
-
+        System.setProperty("sun.java2d.opengl", "True");
     }
 
     public void start()

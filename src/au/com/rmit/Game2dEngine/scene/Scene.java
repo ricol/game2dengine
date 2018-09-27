@@ -99,6 +99,10 @@ public class Scene extends JPanel
                 }
 
                 theImage = null;
+                if (theGraphics2D != null)
+                {
+                    theGraphics2D.dispose();
+                }
                 theGraphics2D = null;
 
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -114,6 +118,11 @@ public class Scene extends JPanel
             if (theImage == null)
             {
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+                if (theGraphics2D != null)
+                {
+                    theGraphics2D.dispose();
+                }
+                theGraphics2D = null;
                 theGraphics2D = theImage.createGraphics();
             }
 
@@ -129,6 +138,10 @@ public class Scene extends JPanel
     public void stop()
     {
         theImage = null;
+        if (theGraphics2D != null)
+        {
+            theGraphics2D.dispose();
+        }
         theGraphics2D = null;
 
         bPaused = true;
@@ -180,7 +193,9 @@ public class Scene extends JPanel
         {
             Layer aLayer = layers.get(i);
             if (aLayer == null)
+            {
                 continue;
+            }
 
             allInLoop.addAll(aLayer.AllObjects);
         }
@@ -189,11 +204,15 @@ public class Scene extends JPanel
         {
             Layer aLayer = layers.get(i);
             if (aLayer == null)
+            {
                 continue;
+            }
 
             //remove all dead sprites
             for (Sprite aSprite : aLayer.DeadObjects)
+            {
                 aSprite.theScene = null;
+            }
 
             aLayer.AllObjects.removeAll(aLayer.DeadObjects);
             aLayer.DeadObjects.clear();
@@ -207,7 +226,9 @@ public class Scene extends JPanel
                 aSprite.didUpdateState();
 
                 if (aSprite instanceof Sprite)
+                {
                     actionCount += ((Sprite) aSprite).getActionCount();
+                }
 
                 if (!aSprite.isAlive())
                 {
@@ -225,11 +246,15 @@ public class Scene extends JPanel
             collisionProcess();
 
             for (Sprite aSprite : allInLoop)
+            {
                 aSprite.didCollisionProcess();
+            }
         }
 
         for (Sprite aSprite : allInLoop)
+        {
             aSprite.didFinishUpdateState();
+        }
 
     }
 
@@ -284,7 +309,9 @@ public class Scene extends JPanel
             {
                 Layer aLayer = layers.get(i);
                 if (aLayer == null)
+                {
                     continue;
+                }
 
                 totalLayers++;
             }
@@ -296,7 +323,9 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
 
             if (bShowMemoryUsage)
+            {
                 theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT - GAP_TEXT);
+            }
         }
 
         allInLoop.clear();
