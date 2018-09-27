@@ -40,16 +40,16 @@ public class Scene extends JPanel
     private int blue = 0;
     private Color theBackgroundColor = new Color(red, green, blue);
     private boolean bEnableCollisionDetect = false;
-    static long INTERVAL = 500;
-    static long DELAY = 5;
     static long LEFT_TEXT = 30;
     static long TOP_TEXT = 45;
     static long GAP_TEXT = 20;
-    long number = 0;
     long lastTime = System.currentTimeMillis();
+    long lastFPSTime = System.currentTimeMillis();
     long fps = 0;
     float timeEllapsed = 0;
     long actionCount = 0;
+    long FPS_INTERVAL = 500;
+    long FPS = 100;
     String strMemoryUsage = "";
 
     protected Random theRandom = new Random();
@@ -99,6 +99,10 @@ public class Scene extends JPanel
                 }
 
                 theImage = null;
+                if (theGraphics2D != null)
+                {
+                    theGraphics2D.dispose();
+                }
                 theGraphics2D = null;
 
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -114,6 +118,11 @@ public class Scene extends JPanel
             if (theImage == null)
             {
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+                if (theGraphics2D != null)
+                {
+                    theGraphics2D.dispose();
+                }
+                theGraphics2D = null;
                 theGraphics2D = theImage.createGraphics();
             }
 
@@ -129,6 +138,10 @@ public class Scene extends JPanel
     public void stop()
     {
         theImage = null;
+        if (theGraphics2D != null)
+        {
+            theGraphics2D.dispose();
+        }
         theGraphics2D = null;
 
         bPaused = true;
@@ -144,14 +157,7 @@ public class Scene extends JPanel
             g.drawImage(theImage, 0, 0, null);
         }
 
-        try
-        {
-            Thread.sleep(DELAY);
-            repaint();
-        } catch (InterruptedException ex)
-        {
-
-        }
+        repaint();
     }
 
     private void addSprite(Sprite aSprite, int zOrder)
@@ -179,23 +185,18 @@ public class Scene extends JPanel
         addSprite(aSprite, aSprite.getLayer());
     }
 
-    private void Loop()
+    private void updateModel(double currentTime)
     {
-        number++;
-
-        double currentTime = System.currentTimeMillis();
-
         allInLoop.clear();
-
-        int totalLayers = 0;
 
         for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
         {
             Layer aLayer = layers.get(i);
             if (aLayer == null)
+            {
                 continue;
+            }
 
-            totalLayers++;
             allInLoop.addAll(aLayer.AllObjects);
         }
 
@@ -203,11 +204,15 @@ public class Scene extends JPanel
         {
             Layer aLayer = layers.get(i);
             if (aLayer == null)
+            {
                 continue;
+            }
 
             //remove all dead sprites
             for (Sprite aSprite : aLayer.DeadObjects)
+            {
                 aSprite.theScene = null;
+            }
 
             aLayer.AllObjects.removeAll(aLayer.DeadObjects);
             aLayer.DeadObjects.clear();
@@ -221,7 +226,9 @@ public class Scene extends JPanel
                 aSprite.didUpdateState();
 
                 if (aSprite instanceof Sprite)
+                {
                     actionCount += ((Sprite) aSprite).getActionCount();
+                }
 
                 if (!aSprite.isAlive())
                 {
@@ -239,12 +246,20 @@ public class Scene extends JPanel
             collisionProcess();
 
             for (Sprite aSprite : allInLoop)
+            {
                 aSprite.didCollisionProcess();
+            }
         }
 
         for (Sprite aSprite : allInLoop)
+        {
             aSprite.didFinishUpdateState();
+        }
 
+    }
+
+    private void updateGUI(double currentTime)
+    {
         //update GUI
         if (theGraphics2D != null)
         {
@@ -264,14 +279,13 @@ public class Scene extends JPanel
                 aSprite.didUpdateGUI();
             }
 
-            long time = System.currentTimeMillis();
-            long delta = time - lastTime;
-            if (delta > INTERVAL)
+            if (currentTime - lastFPSTime >= FPS_INTERVAL)
             {
-                fps = (long) ((number / (delta * 1.0)) * 1000);
-                number = 0;
-                lastTime = time;
+                fps = (long) (1000.0 / (currentTime - lastTime));
+                lastFPSTime = (long) currentTime;
             }
+
+            lastTime = (long) currentTime;
 
             //draw fps
             String text = "FPS: " + fps;
@@ -289,6 +303,18 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
 
             //draw total layers
+            int totalLayers = 0;
+
+            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+            {
+                Layer aLayer = layers.get(i);
+                if (aLayer == null)
+                {
+                    continue;
+                }
+
+                totalLayers++;
+            }
             text = "LAYERS: " + totalLayers;
             theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
 
@@ -297,10 +323,26 @@ public class Scene extends JPanel
             theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
 
             if (bShowMemoryUsage)
+            {
                 theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT - GAP_TEXT);
+            }
         }
 
         allInLoop.clear();
+    }
+
+    private void Loop()
+    {
+        double currentTime = System.currentTimeMillis();
+
+        long delta = (long) (currentTime - lastTime);
+        if (delta < 1000.0 / FPS)
+        {
+            return;
+        }
+
+        this.updateModel(currentTime);
+        this.updateGUI(currentTime);
     }
 
     public void setRed(int value)
