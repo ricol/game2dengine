@@ -6,13 +6,13 @@
 package au.com.rmit.Game2dEngine.physics.collision;
 
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.Game2dEngine.geometry.CircleShape;
-import au.com.rmit.Game2dEngine.geometry.ClosureShape;
-import au.com.rmit.Game2dEngine.geometry.Point;
-import au.com.rmit.Game2dEngine.geometry.Shape;
-import au.com.rmit.Game2dEngine.math.common.MathConsts;
-import au.com.rmit.Game2dEngine.math.equation.CollisionQuadraticEquation;
-import au.com.rmit.Game2dEngine.math.vector.Vector;
+import au.com.rmit.math.geometry.CircleShape;
+import au.com.rmit.math.geometry.ClosureShape;
+import au.com.rmit.math.geometry.Point;
+import au.com.rmit.math.geometry.Shape;
+import au.com.rmit.math.common.MathConsts;
+import au.com.rmit.math.equation.CollisionQuadraticEquation;
+import au.com.rmit.math.vector.Vector;
 import au.com.rmit.Game2dEngine.physics.sprites.WallSprite;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 import static java.lang.Math.abs;
@@ -107,7 +107,9 @@ public class PhysicsCollisionProcess
             //a circle collide with a circle
             Vector AB = new Vector(B.getCentreX() - A.getCentreX(), B.getCentreY() - A.getCentreY());
             if (AB.getTheMagnitude() <= 0)
+            {
                 return;
+            }
 
             Vector BC = AB.getPerpendicularUnitVectorClockwise();
 
@@ -115,7 +117,9 @@ public class PhysicsCollisionProcess
 
             double cosBC_V_A = BC.getCosValueForAngleToVector(V_A);
             if (cosBC_V_A < 0)
+            {
                 BC = AB.getPerpendicularUnitVectorCounterClockwise();
+            }
 
             Vector UNIT_AB = AB.getTheUnitVector();
             Vector V_A_AB = V_A.getProjectVectorOn(UNIT_AB);
@@ -126,12 +130,16 @@ public class PhysicsCollisionProcess
             double absV_A_AB = V_A_AB.getTheMagnitude();
 
             if (V_A.getCosValueForAngleToVector(AB) < 0)
+            {
                 absV_A_AB = -absV_A_AB;
+            }
 
             double absV_B_AB = V_B_AB.getTheMagnitude();
 
             if (V_B.getCosValueForAngleToVector(AB) < 0)
+            {
                 absV_B_AB = -absV_B_AB;
+            }
 
             CollisionQuadraticEquation aEquation = new CollisionQuadraticEquation(A.getMass(), B.getMass(), absV_A_AB, absV_B_AB);
             double resultAbsV_A_AB = aEquation.getNewVelocityAlternative();
@@ -171,7 +179,9 @@ public class PhysicsCollisionProcess
                 A.setVelocityY(-A.getVelocityY());
             }
         } else
+        {
             System.out.println("Warning: Shape Collision <" + theShapeOfA + " VS " + theShapeOfB + " not implemented!");
+        }
     }
 
     public static boolean isCollide(Sprite theSprite, Sprite theTarget)
@@ -181,7 +191,9 @@ public class PhysicsCollisionProcess
 
         boolean bResult = false;
         if ((theShape instanceof ClosureShape) && (theTargetShape instanceof ClosureShape))
+        {
             bResult = ((ClosureShape) theShape).collideWith((ClosureShape) theTargetShape);
+        }
 
         return bResult;
     }
@@ -238,9 +250,11 @@ public class PhysicsCollisionProcess
     public static ArrayList<Point> getCollisionPointsForCircle(CircleShape A, CircleShape B)
     {
         ArrayList<Point> points = new ArrayList<>();
-        
+
         if (A.centre.equals(B.centre) && abs(A.radius - B.radius) < MathConsts.E)
+        {
             return points;
+        }
 
         double r1 = A.radius;
         double r2 = B.radius;
@@ -263,7 +277,9 @@ public class PhysicsCollisionProcess
 
         points.add(p1);
         if (!p1.equals(p2) && abs(r1 + r2 - r) > MathConsts.E)
+        {
             points.add(p2);
+        }
 
         return points;
     }

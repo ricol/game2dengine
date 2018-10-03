@@ -5,7 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.physics.sprites;
 
-import au.com.rmit.Game2dEngine.geometry.SpecialRectangleShape;
+import au.com.rmit.Game2dEngine.Shape.ESpecialRectangleShape;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 
 /**
@@ -34,7 +34,7 @@ public class WallSprite extends Sprite
 
         this.bCollisionDetect = true;
 
-        this.setTheShape(new SpecialRectangleShape(x, y, width, height));
+        this.setTheShape(new ESpecialRectangleShape(x, y, width, height));
     }
 
 }
