@@ -3,13 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.geometry;
+package au.com.rmit.Game2dEngine.Shape;
+
+import au.com.rmit.Game2dEngine.sprite.Node;
 
 /**
  *
  * @author ricolwang
  */
-public class OpenShape extends Shape
+public interface EINode
 {
 
+    public Node getNode();
+
+    public void setTheNode(Node theNode);
 }

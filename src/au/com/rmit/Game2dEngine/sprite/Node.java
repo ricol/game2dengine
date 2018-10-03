@@ -5,8 +5,9 @@
  */
 package au.com.rmit.Game2dEngine.sprite;
 
-import au.com.rmit.Game2dEngine.geometry.CircleShape;
-import au.com.rmit.Game2dEngine.geometry.Shape;
+import au.com.rmit.Game2dEngine.Shape.ECircleShape;
+import au.com.rmit.Game2dEngine.Shape.EIShape;
+import au.com.rmit.math.geometry.Shape;
 import java.util.Random;
 
 /**
@@ -23,7 +24,7 @@ public class Node
     private double height = 0;
 
     protected Random theRandom = new Random();
-    private Shape theShape = null;
+    private EIShape theShape = null;
 
     public Node(double x, double y, double width, double height)
     {
@@ -83,15 +84,17 @@ public class Node
 
     public Shape getTheShape()
     {
-        return this.theShape;
+        return this.theShape.getShape();
     }
 
-    public void setTheShape(Shape theShape)
+    public void setTheShape(EIShape theShape)
     {
         this.theShape = theShape;
 
         if (this.theShape != null)
+        {
             this.theShape.setTheNode(this);
+        }
 
         this.onShapeAdded(theShape);
     }
@@ -116,7 +119,7 @@ public class Node
         this.setY(value - height / 2.0);
     }
 
-    public void onShapeAdded(Shape theShape)
+    public void onShapeAdded(EIShape theShape)
     {
 
     }
@@ -125,7 +128,7 @@ public class Node
     {
         if (this.theShape == null)
         {
-            CircleShape aCircleShape = new CircleShape(this.getCentreX(), this.getCentreY(), this.getWidth() > this.getHeight() ? this.getWidth() / 2.0f : this.getHeight() / 2.0f);
+            ECircleShape aCircleShape = new ECircleShape(this.getCentreX(), this.getCentreY(), this.getWidth() > this.getHeight() ? this.getWidth() / 2.0f : this.getHeight() / 2.0f);
             this.setTheShape(aCircleShape);
         }
 

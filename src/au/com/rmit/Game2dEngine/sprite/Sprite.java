@@ -7,10 +7,10 @@ package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.Game2dEngine.geometry.Line;
-import au.com.rmit.Game2dEngine.geometry.Shape;
-import au.com.rmit.Game2dEngine.math.common.MathConsts;
-import au.com.rmit.Game2dEngine.math.vector.Vector;
+import au.com.rmit.math.geometry.Line;
+import au.com.rmit.math.geometry.Shape;
+import au.com.rmit.math.common.MathConsts;
+import au.com.rmit.math.vector.Vector;
 import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
@@ -162,7 +162,9 @@ public abstract class Sprite extends Node
         if (this.theScene != null)
         {
             if (this.theScene.isScenePaused())
+            {
                 return;
+            }
         }
 
         if (bShouldDie)
@@ -176,7 +178,9 @@ public abstract class Sprite extends Node
         currentLife += t;
 
         if (currentLife >= lifetime)
+        {
             this.setShouldDie();
+        }
 
         //update state
         if (this.theGravity != null && this.bEnableGravity)
@@ -223,7 +227,9 @@ public abstract class Sprite extends Node
                     theSetOfActionsInQueueWillDelete.clear();
                 }
             } else
+            {
                 this.theQueueOfActions.remove(theSetOfQueuedActions);
+            }
         }
 
         //perform other actions
@@ -237,7 +243,9 @@ public abstract class Sprite extends Node
         if (this.theSetOfActions.size() <= 0 && this.theQueueOfActions.size() <= 0)
         {
             if (this.bDeadIfNoActions)
+            {
                 this.setShouldDie();
+            }
         } else
         {
             //run actions
@@ -277,7 +285,9 @@ public abstract class Sprite extends Node
             aSprite.didUpdateState();
 
             if (!aSprite.isAlive)
+            {
                 this.theSetOfChildrenWillDelete.add(aSprite);
+            }
         }
 
         //delete old children
@@ -299,7 +309,9 @@ public abstract class Sprite extends Node
         for (Sprite aSprite : this.theSetOfAttached)
         {
             if (!aSprite.isAlive)
+            {
                 this.theSetOfAttachedWillDelete.add(aSprite);
+            }
         }
 
         //delete old attached
@@ -315,7 +327,9 @@ public abstract class Sprite extends Node
         if (this.bKillWhenOutOfScene)
         {
             if (!this.isAlive)
+            {
                 return;
+            }
 
             int tmpX = (int) this.getX();
             int tmpY = (int) this.getY();
@@ -336,13 +350,19 @@ public abstract class Sprite extends Node
             }
 
             if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
+            {
                 this.setShouldDie();
+            }
 
             if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+            {
                 this.setShouldDie();
+            }
 
             if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
+            {
                 this.setShouldDie();
+            }
         }
     }
 
@@ -364,7 +384,9 @@ public abstract class Sprite extends Node
     public void updateGUI(final Graphics2D theGraphicsInTheScene)
     {
         if (!this.isAlive)
+        {
             return;
+        }
 
         int tmpX = (int) this.getX();
         int tmpY = (int) this.getY();
@@ -377,28 +399,40 @@ public abstract class Sprite extends Node
         if (bChild)
         {
             if (this.parent == null)
+            {
                 return;
+            }
             tmpSceneWidth = (int) this.parent.getWidth();
             tmpSceneHeight = (int) this.parent.getHeight();
         } else
         {
             if (this.theScene == null)
+            {
                 return;
+            }
             tmpSceneWidth = this.theScene.getWidth();
             tmpSceneHeight = this.theScene.getHeight();
         }
 
         if (tmpX + tmpW < 0 || tmpY + tmpH < 0)
+        {
             return;
+        }
 
         if (tmpX > tmpSceneWidth || tmpY > tmpSceneHeight)
+        {
             return;
+        }
 
         if (abs(tmpW) <= 0.1 || abs(tmpH) <= 0.1)
+        {
             return;
+        }
 
         if (theGraphicsInTheScene == null)
+        {
             return;
+        }
 
         Graphics2D theGraphics2D = this.getTheImageGraphics();
         if (bCustomDrawing)
@@ -446,7 +480,9 @@ public abstract class Sprite extends Node
 
         //draw its attached children
         for (Sprite aSprite : this.theSetOfAttached)
+        {
             aSprite.updateGUI(theGraphicsInTheScene);
+        }
 
         this.drawFrame(theGraphics2D);
         this.drawShape(theGraphicsInTheScene);
@@ -480,14 +516,18 @@ public abstract class Sprite extends Node
     private BufferedImage getTheImageCanvas()
     {
         if (theImageCanvas == null)
+        {
             theImageCanvas = new BufferedImage(abs((int) getWidth()), abs((int) getHeight()), BufferedImage.TYPE_INT_ARGB);
+        }
         return theImageCanvas;
     }
 
     private Graphics2D getTheImageGraphics()
     {
         if (theGraphics == null)
+        {
             theGraphics = this.getTheImageCanvas().createGraphics();
+        }
         return theGraphics;
     }
 
@@ -512,7 +552,9 @@ public abstract class Sprite extends Node
         {
             Shape theShape = this.getTheShape();
             if (theShape != null)
+            {
                 theShape.draw(theGraphics2D, theColorOfTheShape);
+            }
         }
     }
 
@@ -524,7 +566,9 @@ public abstract class Sprite extends Node
 
             Vector v = this.velocity.multiplyNumber(this.DrawVelocityBase);
             if (v.getTheMagnitude() <= MathConsts.E)
+            {
                 return;
+            }
 
             v.start.x = this.getCentreX();
             v.start.y = this.getCentreY();
@@ -533,7 +577,9 @@ public abstract class Sprite extends Node
             ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
             lines.add(aLine);
             for (Line line : lines)
+            {
                 theGraphics2D.drawLine((int) line.start.x, (int) line.start.y, (int) line.end.x, (int) line.end.y);
+            }
         }
     }
 
@@ -544,12 +590,16 @@ public abstract class Sprite extends Node
             theGraphics2D.setColor(theColorOfGravityVector);
 
             if (this.theGravity == null)
+            {
                 return;
+            }
 
             Vector G = new Vector(this.theGravity.GX, this.theGravity.GY);
             Vector v = G.multiplyNumber(this.DrawGravityBase);
             if (v.getTheMagnitude() <= 0)
+            {
                 return;
+            }
 
             v.start.x = this.getCentreX();
             v.start.y = this.getCentreY();
@@ -567,7 +617,9 @@ public abstract class Sprite extends Node
     private void setDead()
     {
         if (!this.isAlive)
+        {
             return;
+        }
 
         this.isAlive = false;
         this.onDead();
@@ -576,15 +628,21 @@ public abstract class Sprite extends Node
     protected void setShouldDie()
     {
         if (bShouldDie)
+        {
             return;
+        }
 
         bShouldDie = true;
 
         for (Sprite aSprite : this.theSetOfChildren)
+        {
             aSprite.setShouldDie();
+        }
 
         for (Sprite aSprite : this.theSetOfAttached)
+        {
             aSprite.setShouldDie();
+        }
 
         this.onWillDead();
     }
@@ -597,9 +655,12 @@ public abstract class Sprite extends Node
     public void applyGravity(final Gravity theG)
     {
         if (theG != null)
+        {
             this.theGravity = new Gravity(theG.GX, theG.GY);
-        else
+        } else
+        {
             this.theGravity = null;
+        }
     }
 
     public void addAction(Action aAction)
@@ -611,8 +672,19 @@ public abstract class Sprite extends Node
     public void enQueueActions(Set<Action> aSetOfActions)
     {
         for (Action aAction : aSetOfActions)
+        {
             aAction.setSprite(this);
+        }
         this.theQueueOfActions.add(aSetOfActions);
+    }
+
+    public void removeActions(Set<Action> aSetOfActions)
+    {
+        for (Action aAction : aSetOfActions)
+        {
+            aAction.setSprite(null);
+        }
+        this.theQueueOfActions.remove(aSetOfActions);
     }
 
     public int getActionCount()
@@ -669,7 +741,9 @@ public abstract class Sprite extends Node
     public void setMass(double mass)
     {
         if (mass >= 0)
+        {
             this.mass = mass;
+        }
     }
 
     public boolean gravityEnabled()
@@ -824,7 +898,9 @@ public abstract class Sprite extends Node
     public void setLayer(int layer)
     {
         if (layer >= Scene.MIN_LAYER && layer <= Scene.MAX_LAYER)
+        {
             this.layer = layer;
+        }
     }
 
     public double getLife()
@@ -860,7 +936,9 @@ public abstract class Sprite extends Node
         if (this.theScene != null)
         {
             if (aSprite.theScene == null)
+            {
                 this.theScene.addSprite(aSprite);
+            }
         }
     }
 
@@ -886,7 +964,9 @@ public abstract class Sprite extends Node
     public void setCollisionCategory(int theCollisionCategory)
     {
         if (this.isValidCategory(theCollisionCategory))
+        {
             this.collisionCategory = theCollisionCategory;
+        }
     }
 
     public int getCollisionCategory()
@@ -897,13 +977,17 @@ public abstract class Sprite extends Node
     public void addTargetCollisionCategory(int theTargetCollisionCategory)
     {
         if (this.isValidCategory(theTargetCollisionCategory))
+        {
             this.collisionTargetCategory |= theTargetCollisionCategory;
+        }
     }
 
     public void removeTargetCollisionCategory(int theTargetCollisionCategory)
     {
         if (this.isInTheTargetCollisionCategory(theTargetCollisionCategory))
+        {
             this.collisionTargetCategory ^= theTargetCollisionCategory;
+        }
     }
 
     public boolean isInTheTargetCollisionCategory(int theTargetCollisionCategory)
@@ -924,7 +1008,9 @@ public abstract class Sprite extends Node
     public void onCollideWith(final Sprite target)
     {
         if (this.bEnablePhysics)
+        {
             PhysicsCollisionProcess.processCollision(this, target);
+        }
     }
 
     public void onNotCollideWith(final Sprite target)
