@@ -565,7 +565,7 @@ public abstract class Sprite extends Node
             theGraphics2D.setColor(theColorOfVelocityVector);
 
             Vector v = this.velocity.multiplyNumber(this.DrawVelocityBase);
-            if (v.getTheMagnitude() <= MathConsts.E)
+            if (v.getTheMagnitude() <= MathConsts.Minimum)
             {
                 return;
             }
