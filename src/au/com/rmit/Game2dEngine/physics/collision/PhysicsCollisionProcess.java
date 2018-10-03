@@ -251,7 +251,7 @@ public class PhysicsCollisionProcess
     {
         ArrayList<Point> points = new ArrayList<>();
 
-        if (A.centre.equals(B.centre) && abs(A.radius - B.radius) < MathConsts.E)
+        if (A.centre.equals(B.centre) && abs(A.radius - B.radius) < MathConsts.Minimum)
         {
             return points;
         }
@@ -276,7 +276,7 @@ public class PhysicsCollisionProcess
         Point p2 = V_AC_COUNTER_CLOCK_WISE.getTheEndPoint();
 
         points.add(p1);
-        if (!p1.equals(p2) && abs(r1 + r2 - r) > MathConsts.E)
+        if (!p1.equals(p2) && abs(r1 + r2 - r) > MathConsts.Minimum)
         {
             points.add(p2);
         }
