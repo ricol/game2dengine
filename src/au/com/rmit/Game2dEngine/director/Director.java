@@ -73,7 +73,7 @@ public class Director
         {
             if (parent != null)
             {
-                parent.remove(currentScene);
+                parent.remove(currentScene.getComponent());
             }
             currentScene = null;
         }
@@ -81,10 +81,10 @@ public class Director
         currentScene = scene;
         if (parent != null)
         {
-            scene.setLocation(0, 0);
-            scene.setSize(new Dimension(parent.getWidth(), parent.getHeight()));
+            scene.getComponent().setLocation(0, 0);
+            scene.getComponent().setSize(new Dimension(parent.getWidth(), parent.getHeight()));
 
-            parent.add(scene, BorderLayout.CENTER);
+            parent.add(scene.getComponent(), BorderLayout.CENTER);
             parent.repaint();
         }
 
@@ -95,8 +95,8 @@ public class Director
     {
         if (this.currentScene != null)
         {
-            this.currentScene.setLocation(x, y);
-            this.currentScene.setSize(new Dimension(width, height));
+            this.currentScene.getComponent().setLocation(x, y);
+            this.currentScene.getComponent().setSize(new Dimension(width, height));
         }
     }
 }

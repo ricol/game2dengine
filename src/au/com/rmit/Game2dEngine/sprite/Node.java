@@ -7,7 +7,6 @@ package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.Shape.ECircleShape;
 import au.com.rmit.Game2dEngine.Shape.EIShape;
-import au.com.rmit.math.geometry.Shape;
 import java.util.Random;
 
 /**
@@ -82,7 +81,7 @@ public class Node
         this.refreshShape(0, 0, 0, height - oldHeight);
     }
 
-    public Shape getTheShape()
+    public EIShape getTheShape()
     {
         return this.theShape.getShape();
     }

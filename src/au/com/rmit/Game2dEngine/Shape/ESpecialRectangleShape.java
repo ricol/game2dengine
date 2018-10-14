@@ -5,9 +5,10 @@
  */
 package au.com.rmit.Game2dEngine.Shape;
 
-import au.com.rmit.math.geometry.Shape;
-import au.com.rmit.math.geometry.SpecialRectangleShape;
+import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
 import au.com.rmit.Game2dEngine.sprite.Node;
+import au.com.rmit.math.geometry.SpecialRectangleShape;
+import java.awt.Color;
 
 /**
  *
@@ -46,9 +47,16 @@ public class ESpecialRectangleShape extends SpecialRectangleShape implements EIS
     }
 
     @Override
-    public Shape getShape()
+    public EIShape getShape()
     {
         return this;
+    }
+
+    @Override
+    public void draw(IEngineGraphics theGraphicsInTheScene, Color theColor)
+    {
+        theGraphicsInTheScene.setColor(theColor);
+        theGraphicsInTheScene.drawRect((int) this.left, (int) this.top, (int) width - 1, (int) height - 1);
     }
 
 }

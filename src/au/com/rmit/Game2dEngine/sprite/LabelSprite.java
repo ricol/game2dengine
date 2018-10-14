@@ -5,9 +5,9 @@
  */
 package au.com.rmit.Game2dEngine.sprite;
 
+import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics2D;
 
 /**
  *
@@ -59,7 +59,7 @@ public class LabelSprite extends Sprite
     }
 
     @Override
-    public void onCustomDraw(Graphics2D theGraphics2D)
+    public void onCustomDraw(IEngineGraphics theGraphics2D)
     {
         super.onCustomDraw(theGraphics2D);
 

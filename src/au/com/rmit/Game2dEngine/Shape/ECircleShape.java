@@ -5,9 +5,10 @@
  */
 package au.com.rmit.Game2dEngine.Shape;
 
-import au.com.rmit.math.geometry.CircleShape;
-import au.com.rmit.math.geometry.Shape;
+import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
 import au.com.rmit.Game2dEngine.sprite.Node;
+import au.com.rmit.math.geometry.CircleShape;
+import java.awt.Color;
 
 /**
  *
@@ -46,9 +47,19 @@ public class ECircleShape extends CircleShape implements EIShape
     }
 
     @Override
-    public Shape getShape()
+    public EIShape getShape()
     {
         return this;
+    }
+    
+    @Override
+    public void draw(IEngineGraphics theGraphicsInTheScene, Color theColor)
+    {
+        int tmpRadius = (int) radius;
+        int tmpX = (int) (centre.x - tmpRadius);
+        int tmpY = (int) (centre.y - tmpRadius);
+        theGraphicsInTheScene.setColor(theColor);
+        theGraphicsInTheScene.drawArc(tmpX, tmpY, 2 * tmpRadius, 2 * tmpRadius, 0, 360);
     }
 
 }

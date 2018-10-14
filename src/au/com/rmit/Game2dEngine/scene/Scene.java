@@ -5,11 +5,12 @@
  */
 package au.com.rmit.Game2dEngine.scene;
 
+import au.com.rmit.Game2dEngine.painter.EngineGraphics;
+import au.com.rmit.Game2dEngine.painter.Painter;
 import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -19,14 +20,13 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
  *
  * @author ricolwang
  */
-public class Scene extends JPanel
+public class Scene extends Painter
 {
 
     public static int MIN_LAYER = 0;
@@ -60,7 +60,6 @@ public class Scene extends JPanel
 
     Timer theTimer = new Timer(10, new ActionListener()
     {
-
         @Override
         public void actionPerformed(ActionEvent e)
         {
@@ -70,7 +69,6 @@ public class Scene extends JPanel
 
     Timer theTimerForMemory = new Timer(500, new ActionListener()
     {
-
         @Override
         public void actionPerformed(ActionEvent e)
         {
@@ -79,7 +77,6 @@ public class Scene extends JPanel
     });
 
     BufferedImage theImage;
-    Graphics2D theGraphics2D;
 
     public Scene()
     {
@@ -99,14 +96,16 @@ public class Scene extends JPanel
                 }
 
                 theImage = null;
-                if (theGraphics2D != null)
+                if (theEngineGraphics != null)
                 {
-                    theGraphics2D.dispose();
+                    theEngineGraphics.dispose();
                 }
-                theGraphics2D = null;
+                theEngineGraphics = null;
 
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-                theGraphics2D = theImage.createGraphics();
+                EngineGraphics g = new EngineGraphics();
+                g.theGraphics = theImage.createGraphics();
+                theEngineGraphics = g;
             }
         });
     }
@@ -118,12 +117,14 @@ public class Scene extends JPanel
             if (theImage == null)
             {
                 theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-                if (theGraphics2D != null)
+                if (theEngineGraphics != null)
                 {
-                    theGraphics2D.dispose();
+                    theEngineGraphics.dispose();
                 }
-                theGraphics2D = null;
-                theGraphics2D = theImage.createGraphics();
+                theEngineGraphics = null;
+                EngineGraphics g = new EngineGraphics();
+                g.theGraphics = theImage.createGraphics();
+                theEngineGraphics = g;
             }
 
             bPaused = false;
@@ -138,26 +139,13 @@ public class Scene extends JPanel
     public void stop()
     {
         theImage = null;
-        if (theGraphics2D != null)
+        if (theEngineGraphics != null)
         {
-            theGraphics2D.dispose();
+            theEngineGraphics.dispose();
         }
-        theGraphics2D = null;
+        theEngineGraphics = null;
 
         bPaused = true;
-    }
-
-    @Override
-    public void paint(Graphics g)
-    {
-        Loop();
-
-        if (theImage != null)
-        {
-            g.drawImage(theImage, 0, 0, null);
-        }
-
-        repaint();
     }
 
     private void addSprite(Sprite aSprite, int zOrder)
@@ -261,21 +249,21 @@ public class Scene extends JPanel
     private void updateGUI(double currentTime)
     {
         //update GUI
-        if (theGraphics2D != null)
+        if (theEngineGraphics != null)
         {
             if (theImageBackground != null)
             {
-                theGraphics2D.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight(), null);
+                theEngineGraphics.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight());
             } else
             {
-                theGraphics2D.setColor(theBackgroundColor);
-                theGraphics2D.fillRect(0, 0, this.getWidth(), this.getHeight());
+                theEngineGraphics.setColor(theBackgroundColor);
+                theEngineGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
             }
 
             for (Sprite aSprite : allInLoop)
             {
                 aSprite.willUpdateGUI();
-                aSprite.updateGUI(theGraphics2D);
+                aSprite.updateGUI(theEngineGraphics);
                 aSprite.didUpdateGUI();
             }
 
@@ -289,18 +277,18 @@ public class Scene extends JPanel
 
             //draw fps
             String text = "FPS: " + fps;
-            theGraphics2D.setColor(Color.RED);
-            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT);
+            theEngineGraphics.setColor(Color.RED);
+            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT);
 
             //draw sprites count
             int totalNodes = allInLoop.size();
 
             text = "NODES: " + totalNodes;
-            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
+            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
 
             //draw total actions
             text = "ACTIONS: " + actionCount;
-            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
+            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
 
             //draw total layers
             int totalLayers = 0;
@@ -316,33 +304,19 @@ public class Scene extends JPanel
                 totalLayers++;
             }
             text = "LAYERS: " + totalLayers;
-            theGraphics2D.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
+            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
 
             //draw current time ellapsed
             text = String.format("TIME: %.2f", timeEllapsed);
-            theGraphics2D.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
+            theEngineGraphics.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
 
             if (bShowMemoryUsage)
             {
-                theGraphics2D.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT - GAP_TEXT);
+                theEngineGraphics.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT - GAP_TEXT);
             }
         }
 
         allInLoop.clear();
-    }
-
-    private void Loop()
-    {
-        double currentTime = System.currentTimeMillis();
-
-        long delta = (long) (currentTime - lastTime);
-        if (delta < 1000.0 / FPS)
-        {
-            return;
-        }
-
-        this.updateModel(currentTime);
-        this.updateGUI(currentTime);
     }
 
     public void setRed(int value)
@@ -466,6 +440,30 @@ public class Scene extends JPanel
         PhysicsCollisionProcess.collisionDetectionArbitrary(this.allNodes);
 
         this.allNodes.clear();
+    }
+
+    @Override
+    public void loop(Graphics g)
+    {
+        double currentTime = System.currentTimeMillis();
+
+        long delta = (long) (currentTime - lastTime);
+        if (delta < 1000.0 / FPS)
+        {
+            if (theImage != null)
+            {
+                g.drawImage(theImage, 0, 0, null);
+            }
+            return;
+        }
+
+        this.updateModel(currentTime);
+        this.updateGUI(currentTime);
+
+        if (theImage != null)
+        {
+            g.drawImage(theImage, 0, 0, null);
+        }
     }
 
 }

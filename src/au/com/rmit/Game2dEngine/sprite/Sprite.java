@@ -5,16 +5,18 @@
  */
 package au.com.rmit.Game2dEngine.sprite;
 
+import au.com.rmit.Game2dEngine.Shape.EIShape;
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
-import au.com.rmit.math.geometry.Line;
-import au.com.rmit.math.geometry.Shape;
-import au.com.rmit.math.common.MathConsts;
-import au.com.rmit.math.vector.Vector;
+import au.com.rmit.Game2dEngine.painter.EngineGraphics;
+import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
 import au.com.rmit.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import au.com.rmit.Game2dEngine.physics.gravity.Gravity;
 import au.com.rmit.Game2dEngine.scene.Layer;
 import au.com.rmit.Game2dEngine.scene.Scene;
+import au.com.rmit.math.common.MathConsts;
+import au.com.rmit.math.geometry.Line;
+import au.com.rmit.math.vector.Vector;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
@@ -108,6 +110,7 @@ public abstract class Sprite extends Node
     private Graphics2D theGraphics;
     private BufferedImage theImage;
     private final Color blackTransparent = new Color(0, 0, 0, 0);
+    EngineGraphics theEngineGraphics = new EngineGraphics();
 
     public Sprite(double x, double y, double width, double height, double mass, double velocityX, double velocityY)
     {
@@ -381,7 +384,7 @@ public abstract class Sprite extends Node
 
     }
 
-    public void updateGUI(final Graphics2D theGraphicsInTheScene)
+    public void updateGUI(final IEngineGraphics theGraphicsInTheScene)
     {
         if (!this.isAlive)
         {
@@ -434,20 +437,22 @@ public abstract class Sprite extends Node
             return;
         }
 
-        Graphics2D theGraphics2D = this.getTheImageGraphics();
+        theEngineGraphics.theGraphics = this.getTheImageGraphics();
+
+        IEngineGraphics theEngineGraphicsI = theEngineGraphics;
         if (bCustomDrawing)
         {
-            this.onCustomDraw(theGraphics2D);
+            this.onCustomDraw(theEngineGraphicsI);
         } else
         {
             //clear background
-            theGraphics2D.setBackground(blackTransparent);
-            theGraphics2D.clearRect(0, 0, tmpW, tmpH);
+            theEngineGraphicsI.setBackground(blackTransparent);
+            theEngineGraphicsI.clearRect(0, 0, tmpW, tmpH);
 
-            AffineTransform old = theGraphics2D.getTransform();
+            AffineTransform old = theEngineGraphicsI.getTransform();
 
             //rotate the angle
-            theGraphics2D.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
+            theEngineGraphicsI.rotate(angle, tmpW / 2.0f, tmpH / 2.0f);
 
             //draw itself
             if (this.theImage != null)
@@ -457,25 +462,25 @@ public abstract class Sprite extends Node
                 int tmpImageHeight = this.theImage.getHeight();
                 int tmpImagePosX = (int) ((getWidth() - tmpImageWidth) / 2.0f);
                 int tmpImagePosY = (int) ((getHeight() - tmpImageHeight) / 2.0f);
-                theGraphics2D.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight, null);
+                theEngineGraphicsI.drawImage(theImage, tmpImagePosX, tmpImagePosY, tmpImageWidth, tmpImageHeight);
 
             } else
             {
                 //fill
-                theGraphics2D.setColor(theColor);
-                theGraphics2D.drawRect(0, 0, tmpW - 1, tmpH - 1);
+                theEngineGraphicsI.setColor(theColor);
+                theEngineGraphicsI.drawRect(0, 0, tmpW - 1, tmpH - 1);
             }
 
             //draw its children
             for (Sprite aSprite : this.theSetOfChildren)
             {
                 aSprite.willUpdateGUI();
-                aSprite.updateGUI(theGraphics2D);
+                aSprite.updateGUI(theEngineGraphicsI);
                 aSprite.didUpdateGUI();
             }
 
             //restore
-            theGraphics2D.setTransform(old);
+            theEngineGraphicsI.setTransform(old);
         }
 
         //draw its attached children
@@ -484,7 +489,7 @@ public abstract class Sprite extends Node
             aSprite.updateGUI(theGraphicsInTheScene);
         }
 
-        this.drawFrame(theGraphics2D);
+        this.drawFrame(theEngineGraphicsI);
         this.drawShape(theGraphicsInTheScene);
         this.drawVelocityVector(theGraphicsInTheScene);
         this.drawGravityVector(theGraphicsInTheScene);
@@ -496,7 +501,7 @@ public abstract class Sprite extends Node
 
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
             theGraphicsInTheScene.setComposite(ac);
-            theGraphicsInTheScene.drawImage(theImageCanvas, (int) this.getX(), (int) this.getY(), null);
+            theGraphicsInTheScene.drawImage(theImageCanvas, (int) this.getX(), (int) this.getY());
 
             theGraphicsInTheScene.setComposite(old);
         }
@@ -537,7 +542,7 @@ public abstract class Sprite extends Node
         theImageCanvas = null;
     }
 
-    private void drawFrame(final Graphics2D theGraphics2D)
+    private void drawFrame(final IEngineGraphics theGraphics2D)
     {
         if (this.bDrawFrame)
         {
@@ -546,11 +551,11 @@ public abstract class Sprite extends Node
         }
     }
 
-    private void drawShape(final Graphics2D theGraphics2D)
+    private void drawShape(final IEngineGraphics theGraphics2D)
     {
         if (this.bDrawShape)
         {
-            Shape theShape = this.getTheShape();
+            EIShape theShape = this.getTheShape();
             if (theShape != null)
             {
                 theShape.draw(theGraphics2D, theColorOfTheShape);
@@ -558,7 +563,7 @@ public abstract class Sprite extends Node
         }
     }
 
-    private void drawVelocityVector(final Graphics2D theGraphics2D)
+    private void drawVelocityVector(final IEngineGraphics theGraphics2D)
     {
         if (this.bDrawVelocityVector)
         {
@@ -583,7 +588,7 @@ public abstract class Sprite extends Node
         }
     }
 
-    private void drawGravityVector(final Graphics2D theGraphics2D)
+    private void drawGravityVector(final IEngineGraphics theGraphics2D)
     {
         if (this.bDrawGravityVector)
         {
@@ -1036,13 +1041,13 @@ public abstract class Sprite extends Node
     {
     }
 
-    public void onCustomDraw(final Graphics2D theGraphics2D)
+    public void onCustomDraw(final IEngineGraphics theGraphics2D)
     {
         theGraphics2D.setBackground(blackTransparent);
         theGraphics2D.clearRect(0, 0, (int) getWidth(), (int) getHeight());
     }
 
-    public void onCustomDrawInTheScene(final Graphics2D theGraphics2D)
+    public void onCustomDrawInTheScene(final IEngineGraphics theGraphics2D)
     {
 
     }

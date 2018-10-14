@@ -5,7 +5,8 @@
  */
 package au.com.rmit.Game2dEngine.Shape;
 
-import au.com.rmit.math.geometry.Shape;
+import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
+import java.awt.Color;
 
 /**
  *
@@ -14,7 +15,9 @@ import au.com.rmit.math.geometry.Shape;
 public interface EIShape extends EINode
 {
 
-    public Shape getShape();
+    public EIShape getShape();
 
     public void refresh(double changeX, double changeY, double changeWidth, double changeHeight);
+
+    public void draw(IEngineGraphics theGraphicsInTheScene, Color theColor);
 }
