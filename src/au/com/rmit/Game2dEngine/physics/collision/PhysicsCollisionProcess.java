@@ -5,7 +5,6 @@
  */
 package au.com.rmit.Game2dEngine.physics.collision;
 
-import au.com.rmit.Game2dEngine.Shape.EIShape;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.physics.sprites.WallSprite;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
@@ -17,6 +16,7 @@ import au.com.rmit.math.geometry.Point;
 import au.com.rmit.math.vector.Vector;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
@@ -99,8 +99,8 @@ public class PhysicsCollisionProcess
 
     public static void processCollision(Sprite A, Sprite B)
     {
-        EIShape theShapeOfA = A.getTheShape();
-        EIShape theShapeOfB = B.getTheShape();
+        IEShape theShapeOfA = A.getTheShape();
+        IEShape theShapeOfB = B.getTheShape();
 
         if (theShapeOfA instanceof CircleShape && theShapeOfB instanceof CircleShape)
         {
@@ -186,8 +186,8 @@ public class PhysicsCollisionProcess
 
     public static boolean isCollide(Sprite theSprite, Sprite theTarget)
     {
-        EIShape theShape = theSprite.getTheShape();
-        EIShape theTargetShape = theTarget.getTheShape();
+        IEShape theShape = theSprite.getTheShape();
+        IEShape theTargetShape = theTarget.getTheShape();
 
         boolean bResult = false;
         if ((theShape instanceof ClosureShape) && (theTargetShape instanceof ClosureShape))

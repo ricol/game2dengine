@@ -10,18 +10,19 @@ import au.com.rmit.Game2dEngine.sprite.Node;
 import au.com.rmit.math.geometry.Line;
 import au.com.rmit.math.geometry.PolygonShape;
 import java.awt.Color;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
  * @author ricolwang
  */
-public class EPolygonShape extends PolygonShape implements EIShape
+public class EPolygonShape extends PolygonShape implements IEShape
 {
 
     Node theNode;
 
     @Override
-    public EIShape getShape()
+    public IEShape getShape()
     {
         return null;
     }

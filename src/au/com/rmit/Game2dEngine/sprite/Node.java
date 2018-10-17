@@ -6,8 +6,8 @@
 package au.com.rmit.Game2dEngine.sprite;
 
 import au.com.rmit.Game2dEngine.Shape.ECircleShape;
-import au.com.rmit.Game2dEngine.Shape.EIShape;
 import java.util.Random;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
@@ -23,7 +23,7 @@ public class Node
     private double height = 0;
 
     protected Random theRandom = new Random();
-    private EIShape theShape = null;
+    private IEShape theShape = null;
 
     public Node(double x, double y, double width, double height)
     {
@@ -81,12 +81,12 @@ public class Node
         this.refreshShape(0, 0, 0, height - oldHeight);
     }
 
-    public EIShape getTheShape()
+    public IEShape getTheShape()
     {
         return this.theShape.getShape();
     }
 
-    public void setTheShape(EIShape theShape)
+    public void setTheShape(IEShape theShape)
     {
         this.theShape = theShape;
 
@@ -118,7 +118,7 @@ public class Node
         this.setY(value - height / 2.0);
     }
 
-    public void onShapeAdded(EIShape theShape)
+    public void onShapeAdded(IEShape theShape)
     {
 
     }

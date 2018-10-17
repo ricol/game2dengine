@@ -5,7 +5,6 @@
  */
 package au.com.rmit.Game2dEngine.sprite;
 
-import au.com.rmit.Game2dEngine.Shape.EIShape;
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.painter.EngineGraphics;
@@ -33,6 +32,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 import javax.imageio.ImageIO;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
@@ -555,7 +555,7 @@ public abstract class Sprite extends Node
     {
         if (this.bDrawShape)
         {
-            EIShape theShape = this.getTheShape();
+            IEShape theShape = this.getTheShape();
             if (theShape != null)
             {
                 theShape.draw(theGraphics2D, theColorOfTheShape);

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package au.com.rmit.Game2dEngine.Shape;
+package au.com.rmit.Game2dEngine.Shape.Interface;
 
 import au.com.rmit.Game2dEngine.sprite.Node;
 
@@ -11,7 +11,7 @@ import au.com.rmit.Game2dEngine.sprite.Node;
  *
  * @author ricolwang
  */
-public interface EINode
+public interface IENode
 {
 
     public Node getNode();

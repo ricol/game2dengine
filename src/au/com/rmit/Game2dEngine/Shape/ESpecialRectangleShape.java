@@ -9,12 +9,13 @@ import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
 import au.com.rmit.Game2dEngine.sprite.Node;
 import au.com.rmit.math.geometry.SpecialRectangleShape;
 import java.awt.Color;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
  * @author ricolwang
  */
-public class ESpecialRectangleShape extends SpecialRectangleShape implements EIShape
+public class ESpecialRectangleShape extends SpecialRectangleShape implements IEShape
 {
 
     Node theNode;
@@ -47,7 +48,7 @@ public class ESpecialRectangleShape extends SpecialRectangleShape implements EIS
     }
 
     @Override
-    public EIShape getShape()
+    public IEShape getShape()
     {
         return this;
     }

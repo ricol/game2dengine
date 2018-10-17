@@ -9,12 +9,13 @@ import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
 import au.com.rmit.Game2dEngine.sprite.Node;
 import au.com.rmit.math.geometry.CircleShape;
 import java.awt.Color;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
  * @author ricolwang
  */
-public class ECircleShape extends CircleShape implements EIShape
+public class ECircleShape extends CircleShape implements IEShape
 {
 
     Node theNode;
@@ -47,7 +48,7 @@ public class ECircleShape extends CircleShape implements EIShape
     }
 
     @Override
-    public EIShape getShape()
+    public IEShape getShape()
     {
         return this;
     }

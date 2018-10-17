@@ -10,12 +10,13 @@ import au.com.rmit.Game2dEngine.sprite.Node;
 import au.com.rmit.math.geometry.Line;
 import au.com.rmit.math.geometry.Point;
 import java.awt.Color;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
  * @author ricolwang
  */
-public class ELine extends Line implements EIShape
+public class ELine extends Line implements IEShape
 {
 
     Node theNode;
@@ -33,7 +34,7 @@ public class ELine extends Line implements EIShape
     }
 
     @Override
-    public EIShape getShape()
+    public IEShape getShape()
     {
         return null;
     }
