@@ -15,35 +15,17 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseListener;
-import javax.swing.JPanel;
+import java.awt.image.BufferedImage;
 
 /**
  *
  * @author ricolwang
  */
-class Panel extends JPanel
-{
-
-    IPanelDelegate delegate;
-
-    Panel(IPanelDelegate delegate)
-    {
-        super();
-        this.delegate = delegate;
-    }
-
-    @Override
-    public void paint(Graphics g)
-    {
-        delegate.update(g);
-        this.repaint();
-    }
-}
-
 public class Painter implements IPainter, IUserInteraction, IWindow, IPanelDelegate
 {
 
-    Panel panel = new Panel(this);
+    protected Panel panel = new Panel(this);
+    protected BufferedImage theImage;
     protected IEngineGraphics theEngineGraphics;
 
     @Override
@@ -56,11 +38,6 @@ public class Painter implements IPainter, IUserInteraction, IWindow, IPanelDeleg
     public int getWidth()
     {
         return panel.getWidth();
-    }
-
-    public void loop(Graphics g)
-    {
-
     }
 
     @Override
@@ -90,6 +67,9 @@ public class Painter implements IPainter, IUserInteraction, IWindow, IPanelDeleg
     @Override
     public void update(Graphics g)
     {
-        loop(g);
+        if (theImage != null)
+        {
+            g.drawImage(theImage, 0, 0, null);
+        }
     }
 }

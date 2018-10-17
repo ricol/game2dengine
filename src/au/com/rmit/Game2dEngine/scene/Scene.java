@@ -49,7 +49,7 @@ public class Scene extends Painter
     float timeEllapsed = 0;
     long actionCount = 0;
     long FPS_INTERVAL = 500;
-    long FPS = 100;
+    long FPS = 200;
     String strMemoryUsage = "";
 
     protected Random theRandom = new Random();
@@ -75,8 +75,6 @@ public class Scene extends Painter
             collectMemoryInfo();
         }
     });
-
-    BufferedImage theImage;
 
     public Scene()
     {
@@ -443,27 +441,18 @@ public class Scene extends Painter
     }
 
     @Override
-    public void loop(Graphics g)
+    public void update(Graphics g)
     {
         double currentTime = System.currentTimeMillis();
 
         long delta = (long) (currentTime - lastTime);
-        if (delta < 1000.0 / FPS)
+        if (delta > 1000.0 / FPS)
         {
-            if (theImage != null)
-            {
-                g.drawImage(theImage, 0, 0, null);
-            }
-            return;
+            this.updateModel(currentTime);
+            this.updateGUI(currentTime);
         }
-
-        this.updateModel(currentTime);
-        this.updateGUI(currentTime);
-
-        if (theImage != null)
-        {
-            g.drawImage(theImage, 0, 0, null);
-        }
+        
+        super.update(g);
     }
 
 }
