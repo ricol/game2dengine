@@ -5,6 +5,8 @@
  */
 package au.com.rmit.Game2dEngine.sprite;
 
+import au.com.rmit.Game2dEngine.Cache.ResourceCache;
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 import au.com.rmit.Game2dEngine.action.Action;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.painter.EngineGraphics;
@@ -32,7 +34,6 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 import javax.imageio.ImageIO;
-import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
@@ -132,14 +133,12 @@ public abstract class Sprite extends Node
     {
         this(0, 0, 0, 0, 0, 0, 0);
 
-        try
+        theImage = ResourceCache.getSharedInstance().getImage(imagename);
+        if (theImage == null)
         {
-            theImage = ImageIO.read(new File(imagename));
-            this.initForImage();
-        } catch (IOException e)
-        {
-            System.out.println("Sprite exception: " + e);
+            System.out.println(imagename + " not found!");
         }
+        this.initForImage();
     }
 
     public Sprite()
@@ -971,6 +970,9 @@ public abstract class Sprite extends Node
         if (this.isValidCategory(theCollisionCategory))
         {
             this.collisionCategory = theCollisionCategory;
+        }else 
+        {
+            System.out.println("Invalid collision category!");
         }
     }
 

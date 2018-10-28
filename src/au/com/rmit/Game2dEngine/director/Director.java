@@ -75,6 +75,7 @@ public class Director
             {
                 parent.remove(currentScene.getComponent());
             }
+            currentScene.stop();
             currentScene = null;
         }
 

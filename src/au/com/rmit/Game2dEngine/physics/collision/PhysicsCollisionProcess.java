@@ -5,6 +5,7 @@
  */
 package au.com.rmit.Game2dEngine.physics.collision;
 
+import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 import au.com.rmit.Game2dEngine.common.Game2dEngineShared;
 import au.com.rmit.Game2dEngine.physics.sprites.WallSprite;
 import au.com.rmit.Game2dEngine.sprite.Sprite;
@@ -16,7 +17,6 @@ import au.com.rmit.math.geometry.Point;
 import au.com.rmit.math.vector.Vector;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
-import au.com.rmit.Game2dEngine.Shape.Interface.IEShape;
 
 /**
  *
@@ -29,6 +29,8 @@ public class PhysicsCollisionProcess
     {
         for (Sprite aSprite : nodes)
         {
+            if (aSprite == null) continue;
+
             if (!aSprite.bCollisionDetect)
             {
                 continue;
@@ -41,6 +43,8 @@ public class PhysicsCollisionProcess
 
             for (Sprite aTargetSprite : nodes)
             {
+                if (aTargetSprite == null) continue;
+
                 if (aSprite.equals(aTargetSprite))
                 {
                     continue;
@@ -68,6 +72,8 @@ public class PhysicsCollisionProcess
     {
         for (Sprite aSprite : nodes)
         {
+            if (aSprite == null) continue;
+
             if (!aSprite.bCollisionDetect)
             {
                 continue;
@@ -80,6 +86,8 @@ public class PhysicsCollisionProcess
 
             for (Sprite aTargetSprite : nodes)
             {
+                if (aTargetSprite == null) continue;
+
                 if (aSprite.equals(aTargetSprite))
                 {
                     continue;

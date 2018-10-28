@@ -5,40 +5,33 @@
  */
 package au.com.rmit.Game2dEngine.painter;
 
-import au.com.rmit.Game2dEngine.painter.interfaces.IPanelDelegate;
+import java.awt.Canvas;
 import java.awt.Graphics;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JPanel;
+import java.awt.image.BufferStrategy;
 
 /**
  *
  * @author ricolwang
  */
-public class Panel extends JPanel
+public class Panel extends Canvas
 {
 
-    IPanelDelegate delegate;
+    BufferStrategy strategy;
 
-    Panel(IPanelDelegate delegate)
+    public void render()
     {
-        super();
-        this.delegate = delegate;
+        strategy.show();
     }
 
-    @Override
-    public void paint(Graphics g)
+    public Graphics getRenderGraphics()
     {
-        delegate.update(g);
-        
-        try
+        if (strategy == null)
         {
-            Thread.sleep(1);
-        } catch (InterruptedException ex)
-        {
-            Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+            createBufferStrategy(2);
+            strategy = this.getBufferStrategy();
+            this.setIgnoreRepaint(true);
         }
         
-        this.repaint();
+        return strategy.getDrawGraphics();
     }
 }

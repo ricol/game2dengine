@@ -26,7 +26,7 @@ import javax.swing.Timer;
  *
  * @author ricolwang
  */
-public class Scene extends Painter
+public class Scene extends Painter implements Runnable
 {
 
     public static int MIN_LAYER = 0;
@@ -34,6 +34,8 @@ public class Scene extends Painter
     public boolean bShowMemoryUsage = true;
     public BufferedImage theImageBackground;
     private boolean bPaused;
+    private boolean bQuit;
+    private boolean bRunning;
 
     private int red = 0;
     private int green = 0;
@@ -53,6 +55,7 @@ public class Scene extends Painter
     String strMemoryUsage = "";
 
     protected Random theRandom = new Random();
+    private Thread theThread;
 
     HashMap<Integer, Layer> layers = new HashMap();
     ArrayList<Sprite> allNodes = new ArrayList();
@@ -88,24 +91,32 @@ public class Scene extends Painter
             @Override
             public void componentResized(ComponentEvent evt)
             {
-                if (theImage == null)
-                {
-                    return;
-                }
-
-                theImage = null;
-                if (theEngineGraphics != null)
-                {
-                    theEngineGraphics.dispose();
-                }
-                theEngineGraphics = null;
-
-                theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-                EngineGraphics g = new EngineGraphics();
-                g.theGraphics = theImage.createGraphics();
-                theEngineGraphics = g;
+                painterSizeDidChanged();
             }
         });
+    }
+
+    @Override
+    public void painterSizeDidChanged()
+    {
+        super.painterSizeDidChanged(); //To change body of generated methods, choose Tools | Templates.
+
+        if (theImage == null || getWidth() <= 0 || getHeight() <= 0) return;
+
+        synchronized (this)
+        {
+            theImage = null;
+            if (theEngineGraphics != null)
+            {
+                theEngineGraphics.dispose();
+            }
+            theEngineGraphics = null;
+
+            theImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+            EngineGraphics g = new EngineGraphics();
+            g.theGraphics = theImage.createGraphics();
+            theEngineGraphics = g;
+        }
     }
 
     public void start()
@@ -126,7 +137,54 @@ public class Scene extends Painter
             }
 
             bPaused = false;
+
+            if (theThread == null)
+            {
+                theThread = new Thread(this);
+            }
+
+            theThread.start();
         }
+    }
+
+    @Override
+    public void run()
+    {
+        if (bRunning) return;
+
+        bRunning = true;
+        while (!bQuit)
+        {
+            try
+            {
+                Thread.sleep(1);
+                if (!bPaused)
+                {
+                    double currentTime = System.currentTimeMillis();
+
+                    long delta = (long) (currentTime - lastTime);
+                    if (delta > 1000.0 / FPS)
+                    {
+                        this.updateModel(currentTime);
+                        synchronized (this)
+                        {
+                            this.updateGUI(currentTime);
+                        }
+                    }
+
+                    Graphics g = this.getRenderGraphics();
+                    g.drawImage(theImage, 0, 0, null);
+                    g.dispose();
+                    this.render();
+                }
+            } catch (InterruptedException e)
+            {
+                System.out.println("Exception: Game Loop Run throw exception " + e.getLocalizedMessage());
+            }
+        }
+
+        System.out.println("Game Loop Run Quit!");
+        bRunning = false;
     }
 
     public void pause()
@@ -144,6 +202,7 @@ public class Scene extends Painter
         theEngineGraphics = null;
 
         bPaused = true;
+        bQuit = true;
     }
 
     private void addSprite(Sprite aSprite, int zOrder)
@@ -207,6 +266,8 @@ public class Scene extends Painter
             //update sprites states
             for (Sprite aSprite : aLayer.AllObjects)
             {
+                if (aSprite == null) continue;
+
                 aSprite.willUpdateState();
                 aSprite.updateState(currentTime);
                 aSprite.didUpdateState();
@@ -233,14 +294,22 @@ public class Scene extends Painter
 
             for (Sprite aSprite : allInLoop)
             {
+                if (aSprite == null) continue;
                 aSprite.didCollisionProcess();
             }
         }
 
         for (Sprite aSprite : allInLoop)
         {
+            if (aSprite == null) continue;
             aSprite.didFinishUpdateState();
         }
+
+        didUpdateModel();
+    }
+
+    protected void didUpdateModel()
+    {
 
     }
 
@@ -260,6 +329,8 @@ public class Scene extends Painter
 
             for (Sprite aSprite : allInLoop)
             {
+                if (aSprite == null) continue;
+
                 aSprite.willUpdateGUI();
                 aSprite.updateGUI(theEngineGraphics);
                 aSprite.didUpdateGUI();
@@ -438,21 +509,6 @@ public class Scene extends Painter
         PhysicsCollisionProcess.collisionDetectionArbitrary(this.allNodes);
 
         this.allNodes.clear();
-    }
-
-    @Override
-    public void update(Graphics g)
-    {
-        double currentTime = System.currentTimeMillis();
-
-        long delta = (long) (currentTime - lastTime);
-        if (delta > 1000.0 / FPS)
-        {
-            this.updateModel(currentTime);
-            this.updateGUI(currentTime);
-        }
-        
-        super.update(g);
     }
 
 }

@@ -7,7 +7,6 @@ package au.com.rmit.Game2dEngine.painter;
 
 import au.com.rmit.Game2dEngine.painter.interfaces.IEngineGraphics;
 import au.com.rmit.Game2dEngine.painter.interfaces.IPainter;
-import au.com.rmit.Game2dEngine.painter.interfaces.IPanelDelegate;
 import au.com.rmit.Game2dEngine.painter.interfaces.IUserInteraction;
 import au.com.rmit.Game2dEngine.painter.interfaces.IWindow;
 import java.awt.Component;
@@ -21,10 +20,10 @@ import java.awt.image.BufferedImage;
  *
  * @author ricolwang
  */
-public class Painter implements IPainter, IUserInteraction, IWindow, IPanelDelegate
+public class Painter implements IPainter, IUserInteraction, IWindow
 {
 
-    protected Panel panel = new Panel(this);
+    private Panel panel = new Panel();
     protected BufferedImage theImage;
     protected IEngineGraphics theEngineGraphics;
 
@@ -64,12 +63,18 @@ public class Painter implements IPainter, IUserInteraction, IWindow, IPanelDeleg
         panel.setSize(d);
     }
 
-    @Override
-    public void update(Graphics g)
+    public void render()
     {
-        if (theImage != null)
-        {
-            g.drawImage(theImage, 0, 0, null);
-        }
+        panel.render();
+    }
+
+    public Graphics getRenderGraphics()
+    {
+        return panel.getRenderGraphics();
+    }
+
+    public void painterSizeDidChanged()
+    {
+
     }
 }
