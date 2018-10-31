@@ -42,26 +42,28 @@ public class Scene extends Painter implements Runnable
     private int blue = 0;
     private Color theBackgroundColor = new Color(red, green, blue);
     private boolean bEnableCollisionDetect = false;
-    static long LEFT_TEXT = 30;
-    static long TOP_TEXT = 45;
-    static long GAP_TEXT = 20;
-    long lastTime = System.currentTimeMillis();
-    long lastFPSTime = System.currentTimeMillis();
-    long fps = 0;
-    float timeEllapsed = 0;
-    long actionCount = 0;
-    long FPS_INTERVAL = 500;
-    long FPS = 200;
-    String strMemoryUsage = "";
+    private static final long LEFT_TEXT = 30;
+    private static final long TOP_TEXT = 45;
+    private static final long GAP_TEXT = 20;
+    private final long lastModelUpdateTime = System.currentTimeMillis();
+    private long lastFPSTime = System.currentTimeMillis();
+    private final int FPS_UPDATE_INTERVAL = 500;
+    private long lastUpdateFPSTime = System.currentTimeMillis();
+    private long fps = 0;
+    private float timeEllapsed = 0;
+    private long actionCount = 0;
+    private final long FPS = 100;
+    private long MODEL_UPDATE_FPS = 200;
+    private String strMemoryUsage = "";
 
     protected Random theRandom = new Random();
     private Thread theThread;
 
-    HashMap<Integer, Layer> layers = new HashMap();
-    ArrayList<Sprite> allNodes = new ArrayList();
-    ArrayList<Sprite> allInLoop = new ArrayList();
+    private final HashMap<Integer, Layer> layers = new HashMap();
+    private final ArrayList<Sprite> allNodes = new ArrayList();
+    private final ArrayList<Sprite> allInLoop = new ArrayList();
 
-    Timer theTimer = new Timer(10, new ActionListener()
+    private final Timer theTimer = new Timer(10, new ActionListener()
     {
         @Override
         public void actionPerformed(ActionEvent e)
@@ -70,7 +72,7 @@ public class Scene extends Painter implements Runnable
         }
     });
 
-    Timer theTimerForMemory = new Timer(500, new ActionListener()
+    private final Timer theTimerForMemory = new Timer(500, new ActionListener()
     {
         @Override
         public void actionPerformed(ActionEvent e)
@@ -153,23 +155,33 @@ public class Scene extends Painter implements Runnable
         if (bRunning) return;
 
         bRunning = true;
+        long sleep = 2;
         while (!bQuit)
         {
-            try
+            double currentTime = System.currentTimeMillis();
+            if (!bPaused)
             {
-                Thread.sleep(1);
-                if (!bPaused)
+                long delta = (long) (currentTime - lastModelUpdateTime);
+                if (delta > 1000.0 / MODEL_UPDATE_FPS)
                 {
-                    double currentTime = System.currentTimeMillis();
+                    this.updateModel(currentTime);
+                    MODEL_UPDATE_FPS = (long) currentTime;
+                }
 
-                    long delta = (long) (currentTime - lastTime);
-                    if (delta > 1000.0 / FPS)
+                delta = (long) (currentTime - lastFPSTime);
+                if (delta > 1000.0 / FPS)
+                {
+                    if ((long) (currentTime - lastUpdateFPSTime) >= FPS_UPDATE_INTERVAL)
                     {
-                        this.updateModel(currentTime);
-                        synchronized (this)
-                        {
-                            this.updateGUI(currentTime);
-                        }
+                        fps = (long) (1000.0 / delta);
+                        lastUpdateFPSTime = (long) currentTime;
+                    }
+
+                    lastFPSTime = (long) currentTime;
+
+                    synchronized (this)
+                    {
+                        this.updateGUI(currentTime);
                     }
 
                     Graphics g = this.getRenderGraphics();
@@ -177,9 +189,14 @@ public class Scene extends Painter implements Runnable
                     g.dispose();
                     this.render();
                 }
-            } catch (InterruptedException e)
+            }
+
+            try
             {
-                System.out.println("Exception: Game Loop Run throw exception " + e.getLocalizedMessage());
+                Thread.sleep(sleep);
+            } catch (InterruptedException ex)
+            {
+
             }
         }
 
@@ -335,14 +352,6 @@ public class Scene extends Painter implements Runnable
                 aSprite.updateGUI(theEngineGraphics);
                 aSprite.didUpdateGUI();
             }
-
-            if (currentTime - lastFPSTime >= FPS_INTERVAL)
-            {
-                fps = (long) (1000.0 / (currentTime - lastTime));
-                lastFPSTime = (long) currentTime;
-            }
-
-            lastTime = (long) currentTime;
 
             //draw fps
             String text = "FPS: " + fps;
