@@ -5,10 +5,12 @@
  */
 package com.wang.Game2dEngine.director;
 
+import com.wang.Game2dEngine.monitor.InputMonitor;
 import com.wang.Game2dEngine.scene.Scene;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -89,6 +91,8 @@ public class Director
 
             parent.add(scene.getComponent(), BorderLayout.CENTER);
             parent.repaint();
+            
+            //fix menu hide behind frame issue
             Component o = parent.getParent();
             while (!(o instanceof JFrame))
             {
@@ -99,6 +103,23 @@ public class Director
         }
 
         scene.start();
+
+        //add InputMonitor as the input listener
+        KeyListener[] allListeners = scene.getComponent().getKeyListeners();
+        boolean bAdded = false;
+        for (KeyListener l : allListeners)
+        {
+            if (l == InputMonitor.getSharedInstance())
+            {
+                bAdded = true;
+                break;
+            }
+        }
+
+        if (!bAdded)
+        {
+            scene.getComponent().addKeyListener(InputMonitor.getSharedInstance());
+        }
     }
 
     public void updatePosition(int x, int y, int width, int height)

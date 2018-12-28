@@ -5,6 +5,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,8 +18,14 @@ import java.awt.event.MouseMotionListener;
  *
  * @author ricolwang
  */
-public class MouseMonitor implements MouseListener, KeyListener, MouseMotionListener
+public class InputMonitor implements MouseListener, KeyListener, MouseMotionListener
 {
+
+    public interface IKeyTyped
+    {
+
+        void inputMonitorKeyTyped(char key);
+    }
 
     public boolean leftButtonPressed = false;
     public boolean rightButtonPressed = false;
@@ -25,9 +34,11 @@ public class MouseMonitor implements MouseListener, KeyListener, MouseMotionList
     public int MouseY;
     public boolean mouseEntered = false;
 
-    static MouseMonitor instance = new MouseMonitor();
+    static InputMonitor instance = new InputMonitor();
+    HashMap<Integer, Boolean> keyStatus = new HashMap<>();
+    Set<IKeyTyped> keytypedobserver = new HashSet<>();
 
-    public static MouseMonitor getSharedInstance()
+    public static InputMonitor getSharedInstance()
     {
         return instance;
     }
@@ -91,19 +102,22 @@ public class MouseMonitor implements MouseListener, KeyListener, MouseMotionList
     @Override
     public void keyTyped(KeyEvent e)
     {
-
+        for (IKeyTyped i : keytypedobserver)
+        {
+            i.inputMonitorKeyTyped(e.getKeyChar());
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e)
     {
-
+        this.updateKeyStatus(e.getKeyCode(), true);
     }
 
     @Override
     public void keyReleased(KeyEvent e)
     {
-
+        this.updateKeyStatus(e.getKeyCode(), false);
     }
 
     @Override
@@ -117,5 +131,25 @@ public class MouseMonitor implements MouseListener, KeyListener, MouseMotionList
     {
         MouseX = e.getX();
         MouseY = e.getY();
+    }
+
+    public boolean isKeyPressed(int key)
+    {
+        return keyStatus.getOrDefault(key, false);
+    }
+
+    void updateKeyStatus(int key, boolean status)
+    {
+        keyStatus.put(key, status);
+    }
+
+    public void addObserverForKeyTyped(IKeyTyped o)
+    {
+        this.keytypedobserver.add(o);
+    }
+
+    public void removeObserverForKeyTyped(IKeyTyped o)
+    {
+        this.keytypedobserver.remove(o);
     }
 }
