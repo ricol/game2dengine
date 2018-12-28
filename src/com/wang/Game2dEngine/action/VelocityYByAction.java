@@ -38,7 +38,7 @@ public class VelocityYByAction extends VelocityAction
         this.velocityYByDuration = abs(duration * 1000);
         if (!bImmediately)
         {
-            this.velocityYBySpeed = x / abs(duration * 1000);
+            this.velocityYBySpeed = x / velocityYByDuration;
         }
         this.velocityYByCurrent = 0;
     }

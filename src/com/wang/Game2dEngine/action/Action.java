@@ -18,9 +18,9 @@ public abstract class Action
     public String identifer = this.getClass().getName();
     protected boolean bImmediately;
 
-    public static final double MINIMUM = 0.001;
-    public static final double EQUAL_STANDARD = 0.000000001;
-    public static final double MINIMUM_DURATION = 0.001;
+    public static final double MINIMUM = 1e-03;
+    public static final double EQUAL_STANDARD = 1e-10;
+    public static final double MINIMUM_DURATION = 1e-3;
 
     public Random theRandom = new Random();
     protected Sprite theSprite = null;

@@ -54,14 +54,17 @@ public abstract class Sprite extends Node
     public Color theColorOfTheShape = Color.red;
     public Color theColorOfVelocityVector = Color.white;
     public Color theColorOfGravityVector = Color.green;
+    public Color theColorOfAccelarationVector = Color.orange;
     public boolean bCollisionDetect = false;
     public boolean bEnablePhysics = false;
     public boolean bEnableGravity = false;
     public boolean bKillWhenOutOfScene = false;
     public boolean bDrawVelocityVector = false;
     public boolean bDrawGravityVector = false;
+    public boolean bDrawAccelarationVector = false;
     public double DrawVelocityBase = 1;
     public double DrawGravityBase = 1;
+    public double DrawAccelarationBase = 1;
 
     public WeakHashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new WeakHashMap<>();
     public static final long EVER = Long.MAX_VALUE;
@@ -70,6 +73,8 @@ public abstract class Sprite extends Node
     private double lifetime = Sprite.EVER; //in seconds
     private double lastUpdateTime;
     private double starttime = System.currentTimeMillis();
+    private Vector accelaration = new Vector(0, 0);
+    private Vector accelarationChange = new Vector(0, 0);
     private Vector velocity = new Vector(0, 0);
     private Vector velocityChange = new Vector(0, 0);
     private Vector change = new Vector(0, 0);
@@ -192,6 +197,12 @@ public abstract class Sprite extends Node
             velocity.x += velocityChange.x;
             velocity.y += velocityChange.y;
         }
+
+        //apply accelaration
+        velocityChange.x = this.accelaration.x * t;
+        velocityChange.y = this.accelaration.y * t;
+        velocity.x += velocityChange.x;
+        velocity.y += velocityChange.y;
 
         change.x = velocity.x * t;
         change.y = velocity.y * t;
@@ -492,6 +503,7 @@ public abstract class Sprite extends Node
         this.drawShape(theGraphicsInTheScene);
         this.drawVelocityVector(theGraphicsInTheScene);
         this.drawGravityVector(theGraphicsInTheScene);
+        this.drawAccelarationVector(theGraphicsInTheScene);
         this.onCustomDrawInTheScene(theGraphicsInTheScene);
 
         if (theImageCanvas != null)
@@ -618,6 +630,31 @@ public abstract class Sprite extends Node
         }
     }
 
+    private void drawAccelarationVector(final IEngineGraphics theGraphics2D)
+    {
+        if (this.bDrawAccelarationVector)
+        {
+            theGraphics2D.setColor(theColorOfAccelarationVector);
+
+            Vector A = this.accelaration.multiplyNumber(this.DrawAccelarationBase);
+            if (A.getTheMagnitude() <= 0)
+            {
+                return;
+            }
+
+            A.start.x = this.getCentreX();
+            A.start.y = this.getCentreY();
+
+            Line aLine = new Line(A.start, A.getTheEndPoint());
+            ArrayList<Line> lines = aLine.getArrowLines(10, Math.PI / 4.0);
+            lines.add(aLine);
+            for (Line line : lines)
+            {
+                theGraphics2D.drawLine((int) line.start.x, (int) line.start.y, (int) line.end.x, (int) line.end.y);
+            }
+        }
+    }
+
     private void setDead()
     {
         if (!this.isAlive)
@@ -681,7 +718,7 @@ public abstract class Sprite extends Node
         }
         this.theQueueOfActions.add(aSetOfActions);
     }
-
+    
     public void removeActions(Set<Action> aSetOfActions)
     {
         for (Action aAction : aSetOfActions)
@@ -735,6 +772,37 @@ public abstract class Sprite extends Node
     public double getVelocityAngle()
     {
         return this.velocityAngle;
+    }
+
+    public void setAccelaration(Vector a)
+    {
+        this.accelaration.x = a.x;
+        this.accelaration.y = a.y;
+    }
+
+    public void setAccelarationX(double value)
+    {
+        this.accelaration.x = value;
+    }
+
+    public void setAccelarationY(double value)
+    {
+        this.accelaration.y = value;
+    }
+
+    public double getAccelarationX()
+    {
+        return accelaration.x;
+    }
+
+    public double getAccelarationY()
+    {
+        return accelaration.y;
+    }
+
+    public Vector getAccelaration()
+    {
+        return this.accelaration;
     }
 
     public double getMass()
@@ -970,7 +1038,7 @@ public abstract class Sprite extends Node
         if (this.isValidCategory(theCollisionCategory))
         {
             this.collisionCategory = theCollisionCategory;
-        }else 
+        } else
         {
             System.out.println("Invalid collision category!");
         }
@@ -1129,4 +1197,21 @@ public abstract class Sprite extends Node
         this.restoreVelocityY();
     }
 
+    public void restoreAccelaration()
+    {
+        this.restoreAccelarationX();
+        this.restoreAccelarationY();
+    }
+
+    public void restoreAccelarationX()
+    {
+        this.setAccelarationX(this.getAccelarationX() - accelarationChange.x);
+        accelarationChange.x = 0;
+    }
+
+    public void restoreAccelarationY()
+    {
+        this.setAccelarationY(this.getAccelarationY() - accelarationChange.y);
+        accelarationChange.y = 0;
+    }
 }

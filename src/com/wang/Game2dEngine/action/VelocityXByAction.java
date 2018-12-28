@@ -38,7 +38,7 @@ public class VelocityXByAction extends VelocityAction
         this.velocityXByDuration = abs(duration * 1000);
         if (!bImmediately)
         {
-            this.velocityXBySpeed = x / abs(duration * 1000);
+            this.velocityXBySpeed = x / velocityXByDuration;
         }
         this.velocityXByCurrent = 0;
     }
