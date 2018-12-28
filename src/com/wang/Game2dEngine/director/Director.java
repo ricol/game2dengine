@@ -7,7 +7,9 @@ package com.wang.Game2dEngine.director;
 
 import com.wang.Game2dEngine.scene.Scene;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -87,6 +89,13 @@ public class Director
 
             parent.add(scene.getComponent(), BorderLayout.CENTER);
             parent.repaint();
+            Component o = parent.getParent();
+            while (!(o instanceof JFrame))
+            {
+                o = o.getParent();
+            }
+            o.setSize(o.getSize().width, o.getSize().height + 1);
+            o.setSize(o.getSize().width, o.getSize().height - 1);
         }
 
         scene.start();
