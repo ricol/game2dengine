@@ -147,6 +147,13 @@ public class Scene extends Painter implements Runnable
 
             theThread.start();
         }
+        
+        didStart();
+    }
+    
+    public void didStart()
+    {
+        
     }
 
     @Override
