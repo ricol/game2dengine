@@ -33,6 +33,7 @@ public class Scene extends Painter implements Runnable
     public static int MAX_LAYER = 9;
     public boolean bShowMemoryUsage = true;
     public BufferedImage theImageBackground;
+    public Object theSynObject = new Object();
     private boolean bPaused;
     private boolean bQuit;
     private boolean bRunning;
@@ -52,8 +53,8 @@ public class Scene extends Painter implements Runnable
     private long fps = 0;
     private float timeEllapsed = 0;
     private long actionCount = 0;
-    private final long FPS = 100;
-    private long MODEL_UPDATE_FPS = 200;
+    private final long FPS = 120;
+    private long MODEL_UPDATE_FPS = 500;
     private String strMemoryUsage = "";
 
     protected Random theRandom = new Random();
@@ -165,41 +166,46 @@ public class Scene extends Painter implements Runnable
         while (!bQuit)
         {
             double currentTime = System.currentTimeMillis();
-            if (!bPaused)
+            long delta = (long) (currentTime - lastModelUpdateTime);
+
+            synchronized (this.theSynObject)
             {
-                long delta = (long) (currentTime - lastModelUpdateTime);
                 if (delta > 1000.0 / MODEL_UPDATE_FPS)
                 {
-                    synchronized(this)
-                    {
-                        this.updateModel(currentTime);
-                    }
+                    this.updateModel(currentTime);
                     MODEL_UPDATE_FPS = (long) currentTime;
-                }
-
-                delta = (long) (currentTime - lastFPSTime);
-                if (delta > 1000.0 / FPS)
-                {
-                    if ((long) (currentTime - lastUpdateFPSTime) >= FPS_UPDATE_INTERVAL)
-                    {
-                        fps = (long) (1000.0 / delta);
-                        lastUpdateFPSTime = (long) currentTime;
-                    }
-
-                    lastFPSTime = (long) currentTime;
-
-                    synchronized (this)
-                    {
-                        this.updateGUI(currentTime);
-                    }
-
-                    Graphics g = this.getRenderGraphics();
-                    g.drawImage(theImage, 0, 0, null);
-                    g.dispose();
-                    this.render();
                 }
             }
 
+            delta = (long) (currentTime - lastFPSTime);
+            if (delta > 1000.0 / FPS)
+            {
+                if ((long) (currentTime - lastUpdateFPSTime) >= FPS_UPDATE_INTERVAL)
+                {
+                    fps = (long) (1000.0 / delta);
+                    lastUpdateFPSTime = (long) currentTime;
+                }
+
+                lastFPSTime = (long) currentTime;
+
+                synchronized (this)
+                {
+                    this.updateGUI(currentTime);
+                }
+
+                Graphics g = this.getRenderGraphics();
+                g.drawImage(theImage, 0, 0, null);
+                g.dispose();
+                this.render();
+            }
+
+            try
+            {
+                Thread.sleep(2);
+            } catch (InterruptedException ex)
+            {
+
+            }
         }
 
         System.out.println("Game Loop Run Quit!");
