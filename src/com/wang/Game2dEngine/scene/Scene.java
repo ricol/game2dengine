@@ -147,13 +147,13 @@ public class Scene extends Painter implements Runnable
 
             theThread.start();
         }
-        
+
         didStart();
     }
-    
+
     public void didStart()
     {
-        
+
     }
 
     @Override
@@ -162,7 +162,6 @@ public class Scene extends Painter implements Runnable
         if (bRunning) return;
 
         bRunning = true;
-        long sleep = 2;
         while (!bQuit)
         {
             double currentTime = System.currentTimeMillis();
@@ -171,7 +170,10 @@ public class Scene extends Painter implements Runnable
                 long delta = (long) (currentTime - lastModelUpdateTime);
                 if (delta > 1000.0 / MODEL_UPDATE_FPS)
                 {
-                    this.updateModel(currentTime);
+                    synchronized(this)
+                    {
+                        this.updateModel(currentTime);
+                    }
                     MODEL_UPDATE_FPS = (long) currentTime;
                 }
 
@@ -198,13 +200,6 @@ public class Scene extends Painter implements Runnable
                 }
             }
 
-            try
-            {
-                Thread.sleep(sleep);
-            } catch (InterruptedException ex)
-            {
-
-            }
         }
 
         System.out.println("Game Loop Run Quit!");
