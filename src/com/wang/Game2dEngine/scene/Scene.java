@@ -56,6 +56,8 @@ public class Scene extends Painter implements Runnable
     private long FPS = 120;
     private long MODEL_UPDATE_FPS = 500;
     private String strMemoryUsage = "";
+    private Graphics g = null;
+    private String text;
 
     protected Random theRandom = new Random();
     private Thread theThread;
@@ -177,26 +179,38 @@ public class Scene extends Painter implements Runnable
                 }
             }
 
-            delta = (long) (currentTime - lastFPSTime);
-            if (delta > 1000.0 / FPS)
+            synchronized (this)
             {
-                if ((long) (currentTime - lastUpdateFPSTime) >= FPS_UPDATE_INTERVAL)
+                delta = (long) (currentTime - lastFPSTime);
+                if (delta > 1000.0 / FPS)
                 {
-                    fps = (long) (1000.0 / delta);
-                    lastUpdateFPSTime = (long) currentTime;
+                    if ((long) (currentTime - lastUpdateFPSTime) >= FPS_UPDATE_INTERVAL)
+                    {
+                        fps = (long) (1000.0 / delta);
+                        lastUpdateFPSTime = (long) currentTime;
+                    }
+
+                    lastFPSTime = (long) currentTime;
+
+                    try
+                    {
+                        this.updateGUI(currentTime);
+                        g = this.getRenderGraphics();
+                        g.drawImage(theImage, 0, 0, null);
+                        this.render();
+                    } catch (Exception e)
+                    {
+                        System.out.println("Exception: Graphics failure!");
+                    } finally
+                    {
+                        if (g != null)
+                        {
+                            g.dispose();
+                            g = null;
+                        }
+                    }
+
                 }
-
-                lastFPSTime = (long) currentTime;
-
-                synchronized (this)
-                {
-                    this.updateGUI(currentTime);
-                }
-
-                Graphics g = this.getRenderGraphics();
-                g.drawImage(theImage, 0, 0, null);
-                g.dispose();
-                this.render();
             }
 
             try
@@ -341,66 +355,63 @@ public class Scene extends Painter implements Runnable
     private void updateGUI(double currentTime)
     {
         //update GUI
-        if (theEngineGraphics != null)
+        if (theEngineGraphics == null)
         {
-            if (theImageBackground != null)
-            {
-                theEngineGraphics.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight());
-            } else
-            {
-                theEngineGraphics.setColor(theBackgroundColor);
-                theEngineGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
-            }
+            allInLoop.clear();
+            return;
+        };
 
-            for (Sprite aSprite : allInLoop)
-            {
-                if (aSprite == null) continue;
-
-                aSprite.willUpdateGUI();
-                aSprite.updateGUI(theEngineGraphics);
-                aSprite.didUpdateGUI();
-            }
-
-            //draw fps
-            String text = "FPS: " + fps;
-            theEngineGraphics.setColor(Color.RED);
-            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT);
-
-            //draw sprites count
-            int totalNodes = allInLoop.size();
-
-            text = "NODES: " + totalNodes;
-            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
-
-            //draw total actions
-            text = "ACTIONS: " + actionCount;
-            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
-
-            //draw total layers
-            int totalLayers = 0;
-
-            for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
-            {
-                Layer aLayer = layers.get(i);
-                if (aLayer == null)
-                {
-                    continue;
-                }
-
-                totalLayers++;
-            }
-            text = "LAYERS: " + totalLayers;
-            theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
-
-            //draw current time ellapsed
-            text = String.format("TIME: %.2f", timeEllapsed);
-            theEngineGraphics.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
-
-            if (bShowMemoryUsage)
-            {
-                theEngineGraphics.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT - GAP_TEXT);
-            }
+        if (theImageBackground != null)
+        {
+            theEngineGraphics.drawImage(theImageBackground, 0, 0, this.getWidth(), this.getHeight());
+        } else
+        {
+            theEngineGraphics.setColor(theBackgroundColor);
+            theEngineGraphics.fillRect(0, 0, this.getWidth(), this.getHeight());
         }
+
+        for (Sprite aSprite : allInLoop)
+        {
+            if (aSprite == null) continue;
+
+            aSprite.willUpdateGUI();
+            aSprite.updateGUI(theEngineGraphics);
+            aSprite.didUpdateGUI();
+        }
+
+        //draw fps
+        text = "FPS: " + fps;
+        theEngineGraphics.setColor(Color.RED);
+        theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT);
+
+        //draw sprites count
+        int totalNodes = allInLoop.size();
+
+        text = "NODES: " + totalNodes;
+        theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT);
+
+        //draw total actions
+        text = "ACTIONS: " + actionCount;
+        theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 2);
+
+        //draw total layers
+        int totalLayers = 0;
+
+        for (int i = MIN_LAYER; i <= MAX_LAYER; i++)
+        {
+            Layer aLayer = layers.get(i);
+            if (aLayer == null) continue;
+
+            totalLayers++;
+        }
+        text = "LAYERS: " + totalLayers;
+        theEngineGraphics.drawString(text, LEFT_TEXT, TOP_TEXT + GAP_TEXT * 3);
+
+        //draw current time ellapsed
+        text = String.format("TIME: %.2f", timeEllapsed);
+        theEngineGraphics.drawString(text, LEFT_TEXT, this.getHeight() - TOP_TEXT);
+
+        if (bShowMemoryUsage) theEngineGraphics.drawString(strMemoryUsage, LEFT_TEXT, this.getHeight() - TOP_TEXT - GAP_TEXT);
 
         allInLoop.clear();
     }
@@ -534,7 +545,7 @@ public class Scene extends Painter implements Runnable
         else if (fps < 50) this.FPS = 50;
         else this.FPS = fps;
     }
-    
+
     public void setModelFps(int fps)
     {
         if (fps > 1000) this.MODEL_UPDATE_FPS = 1000;
