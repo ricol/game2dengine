@@ -53,7 +53,7 @@ public class Scene extends Painter implements Runnable
     private long fps = 0;
     private float timeEllapsed = 0;
     private long actionCount = 0;
-    private final long FPS = 120;
+    private long FPS = 120;
     private long MODEL_UPDATE_FPS = 500;
     private String strMemoryUsage = "";
 
@@ -528,4 +528,17 @@ public class Scene extends Painter implements Runnable
         this.allNodes.clear();
     }
 
+    public void setFps(int fps)
+    {
+        if (fps > 150) this.FPS = 150;
+        else if (fps < 50) this.FPS = 50;
+        else this.FPS = fps;
+    }
+    
+    public void setModelFps(int fps)
+    {
+        if (fps > 1000) this.MODEL_UPDATE_FPS = 1000;
+        else if (fps < 10) this.MODEL_UPDATE_FPS = 10;
+        else this.MODEL_UPDATE_FPS = fps;
+    }
 }
