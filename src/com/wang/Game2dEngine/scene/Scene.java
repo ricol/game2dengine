@@ -33,7 +33,7 @@ public class Scene extends Painter implements Runnable
     public static int MAX_LAYER = 9;
     public boolean bShowMemoryUsage = true;
     public BufferedImage theImageBackground;
-    public Object theSynObject = new Object();
+    public final Object theSynObject = new Object();
     private boolean bPaused;
     private boolean bQuit;
     private boolean bRunning;
@@ -46,18 +46,18 @@ public class Scene extends Painter implements Runnable
     private static final long LEFT_TEXT = 30;
     private static final long TOP_TEXT = 45;
     private static final long GAP_TEXT = 20;
-    private final long lastModelUpdateTime = System.currentTimeMillis();
     private long lastFPSTime = System.currentTimeMillis();
     private final int FPS_UPDATE_INTERVAL = 500;
     private long lastUpdateFPSTime = System.currentTimeMillis();
     private long fps = 0;
     private float timeEllapsed = 0;
     private long actionCount = 0;
-    private long FPS = 120;
-    private long MODEL_UPDATE_FPS = 500;
+    private long FPS = 200;
     private String strMemoryUsage = "";
     private Graphics g = null;
     private String text;
+    private long delta = 0;
+    private double currentTime = System.currentTimeMillis();
 
     protected Random theRandom = new Random();
     private Thread theThread;
@@ -167,57 +167,36 @@ public class Scene extends Painter implements Runnable
         bRunning = true;
         while (!bQuit)
         {
-            double currentTime = System.currentTimeMillis();
-            long delta = (long) (currentTime - lastModelUpdateTime);
-
-            synchronized (this.theSynObject)
+            currentTime = System.currentTimeMillis();
+            delta = (long) (currentTime - lastFPSTime);
+            if (delta > 1000.0 / FPS)
             {
-                if (delta > 1000.0 / MODEL_UPDATE_FPS)
+                if ((long) (currentTime - lastUpdateFPSTime) >= FPS_UPDATE_INTERVAL)
+                {
+                    fps = (long) (1000.0 / delta);
+                    lastUpdateFPSTime = (long) currentTime;
+                }
+
+                lastFPSTime = (long) currentTime;
+
+                try
                 {
                     this.updateModel(currentTime);
-                    MODEL_UPDATE_FPS = (long) currentTime;
-                }
-            }
-
-            synchronized (this)
-            {
-                delta = (long) (currentTime - lastFPSTime);
-                if (delta > 1000.0 / FPS)
+                    this.updateGUI(currentTime);
+                    g = this.getRenderGraphics();
+                    g.drawImage(theImage, 0, 0, null);
+                    this.render();
+                } catch (Exception e)
                 {
-                    if ((long) (currentTime - lastUpdateFPSTime) >= FPS_UPDATE_INTERVAL)
+                    System.out.println("Exception: Graphics failure!");
+                } finally
+                {
+                    if (g != null)
                     {
-                        fps = (long) (1000.0 / delta);
-                        lastUpdateFPSTime = (long) currentTime;
+                        g.dispose();
+                        g = null;
                     }
-
-                    lastFPSTime = (long) currentTime;
-
-                    try
-                    {
-                        this.updateGUI(currentTime);
-                        g = this.getRenderGraphics();
-                        g.drawImage(theImage, 0, 0, null);
-                        this.render();
-                    } catch (Exception e)
-                    {
-                        System.out.println("Exception: Graphics failure!");
-                    } finally
-                    {
-                        if (g != null)
-                        {
-                            g.dispose();
-                            g = null;
-                        }
-                    }
-
                 }
-            }
-
-            try
-            {
-                Thread.sleep(2);
-            } catch (InterruptedException ex)
-            {
 
             }
         }
@@ -544,12 +523,5 @@ public class Scene extends Painter implements Runnable
         if (fps > 150) this.FPS = 150;
         else if (fps < 50) this.FPS = 50;
         else this.FPS = fps;
-    }
-
-    public void setModelFps(int fps)
-    {
-        if (fps > 1000) this.MODEL_UPDATE_FPS = 1000;
-        else if (fps < 10) this.MODEL_UPDATE_FPS = 10;
-        else this.MODEL_UPDATE_FPS = fps;
     }
 }
