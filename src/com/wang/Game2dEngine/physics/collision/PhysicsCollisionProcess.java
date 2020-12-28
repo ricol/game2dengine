@@ -11,8 +11,8 @@ import com.wang.Game2dEngine.physics.sprites.WallSprite;
 import com.wang.Game2dEngine.sprite.Sprite;
 import com.wang.math.common.MathConsts;
 import com.wang.math.equation.CollisionQuadraticEquation;
-import com.wang.math.geometry.CircleShape;
-import com.wang.math.geometry.ClosureShape;
+import com.wang.math.geometry.CircledShape;
+import com.wang.math.geometry.ConfinedShape;
 import com.wang.math.geometry.Point;
 import com.wang.math.vector.Vector;
 import static java.lang.Math.abs;
@@ -110,7 +110,7 @@ public class PhysicsCollisionProcess
         IEShape theShapeOfA = A.getTheShape();
         IEShape theShapeOfB = B.getTheShape();
 
-        if (theShapeOfA instanceof CircleShape && theShapeOfB instanceof CircleShape)
+        if (theShapeOfA instanceof CircledShape && theShapeOfB instanceof CircledShape)
         {
             //a circle collide with a circle
             Vector AB = new Vector(B.getCentreX() - A.getCentreX(), B.getCentreY() - A.getCentreY());
@@ -198,9 +198,9 @@ public class PhysicsCollisionProcess
         IEShape theTargetShape = theTarget.getTheShape();
 
         boolean bResult = false;
-        if ((theShape instanceof ClosureShape) && (theTargetShape instanceof ClosureShape))
+        if ((theShape instanceof ConfinedShape) && (theTargetShape instanceof ConfinedShape))
         {
-            bResult = ((ClosureShape) theShape).collideWith((ClosureShape) theTargetShape);
+            bResult = ((ConfinedShape) theShape).collideWith((ConfinedShape) theTargetShape);
         }
 
         return bResult;
@@ -255,7 +255,7 @@ public class PhysicsCollisionProcess
         }
     }
 
-    public static ArrayList<Point> getCollisionPointsForCircle(CircleShape A, CircleShape B)
+    public static ArrayList<Point> getCollisionPointsForCircle(CircledShape A, CircledShape B)
     {
         ArrayList<Point> points = new ArrayList<>();
 

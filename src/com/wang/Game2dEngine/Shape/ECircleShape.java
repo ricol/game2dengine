@@ -7,7 +7,7 @@ package com.wang.Game2dEngine.Shape;
 
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
 import com.wang.Game2dEngine.sprite.Node;
-import com.wang.math.geometry.CircleShape;
+import com.wang.math.geometry.CircledShape;
 import java.awt.Color;
 import com.wang.Game2dEngine.Shape.Interface.IEShape;
 
@@ -15,7 +15,7 @@ import com.wang.Game2dEngine.Shape.Interface.IEShape;
  *
  * @author ricolwang
  */
-public class ECircleShape extends CircleShape implements IEShape
+public class ECircleShape extends CircledShape implements IEShape
 {
 
     Node theNode;
