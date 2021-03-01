@@ -158,34 +158,37 @@ public class PhysicsCollisionProcess
             Vector V_A_BC = V_A.getProjectVectorOn(UNIT_BC);
             Vector RESULT_V_A = RESULT_V_A_AB.addVector(V_A_BC);
 
-            A.setVelocityX(RESULT_V_A.x);
-            A.setVelocityY(RESULT_V_A.y);
+            A.setVelocityX(RESULT_V_A.x * B.friction);
+            A.setVelocityY(RESULT_V_A.y * B.friction);
 
             Vector RESULT_V_B_AB = UNIT_AB.multiplyNumber(resultAbsV_B_AB);
             Vector V_B_BC = V_B.getProjectVectorOn(UNIT_BC);
             Vector RESULT_V_B = RESULT_V_B_AB.addVector(V_B_BC);
 
-            B.setVelocityX(RESULT_V_B.x);
-            B.setVelocityY(RESULT_V_B.y);
+            B.setVelocityX(RESULT_V_B.x * A.friction);
+            B.setVelocityY(RESULT_V_B.y * A.friction);
 
             A.setTargetCollisionProcessed(true);
+            B.restorePosition();
+            A.restorePosition();
         } else if (B instanceof WallSprite)
         {
             //any shape collide to a wall
             WallSprite aWall = (WallSprite) B;
             if (aWall.wallType == WallSprite.WALLTYPE.LEFT)
             {
-                A.setVelocityX(-A.getVelocityX());
+                A.setVelocityX(-A.getVelocityX() * B.friction);
             } else if (aWall.wallType == WallSprite.WALLTYPE.RIGHT)
             {
-                A.setVelocityX(-A.getVelocityX());
+                A.setVelocityX(-A.getVelocityX() * B.friction);
             } else if (aWall.wallType == WallSprite.WALLTYPE.TOP)
             {
-                A.setVelocityY(-A.getVelocityY());
+                A.setVelocityY(-A.getVelocityY() * B.friction);
             } else if (aWall.wallType == WallSprite.WALLTYPE.BOTTOM)
             {
-                A.setVelocityY(-A.getVelocityY());
+                A.setVelocityY(-A.getVelocityY() * B.friction);
             }
+            A.restorePosition();
         } else
         {
             System.out.println("Warning: Shape Collision <" + theShapeOfA + " VS " + theShapeOfB + " not implemented!");

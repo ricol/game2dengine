@@ -33,7 +33,6 @@ public class WallSprite extends Sprite
         super(x, y, width, height, mass, velocityX, velocityY);
 
         this.bCollisionDetect = true;
-
         this.setTheShape(new ESpecialRectangleShape(x, y, width, height));
     }
 

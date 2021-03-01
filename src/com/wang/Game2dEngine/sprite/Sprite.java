@@ -65,6 +65,7 @@ public abstract class Sprite extends Node
     public double DrawVelocityBase = 1;
     public double DrawGravityBase = 1;
     public double DrawAccelarationBase = 1;
+    public double friction = 0.9;
 
     public WeakHashMap<Sprite, Game2dEngineShared.TypeCollisionDetection> hashCollision = new WeakHashMap<>();
     public static final long EVER = Long.MAX_VALUE;
