@@ -15,11 +15,12 @@ import com.wang.math.geometry.CircledShape;
 import com.wang.math.geometry.ConfinedShape;
 import com.wang.math.geometry.Point;
 import com.wang.math.vector.Vector;
-import static java.lang.Math.abs;
+
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+
 /**
- *
  * @author ricolwang
  */
 public class PhysicsCollisionProcess
@@ -271,22 +272,22 @@ public class PhysicsCollisionProcess
         double r2 = B.radius;
         double r = A.centre.getDistanceFrom(B.centre);
 
-        double cos = (r2 * r2 - r1 * r1 - r * r) / (-2 * r1 * r);
+        double cos = (r2 * r2 - r1 * r1 - r * r) / (-2 * r1 * r2 * r);
         double angel = Math.acos(cos);
+
         Vector V_AB = new Vector(B.centre.x - A.centre.x, B.centre.y - A.centre.y);
         Vector V_AB_ROTATE_CLOCK_WISE = V_AB.getVectorRotateByInClockwise(angel);
         Vector V_AB_ROTATE_CLOCK_WISE_UNIT = V_AB_ROTATE_CLOCK_WISE.getTheUnitVector();
         Vector V_AC_CLOCK_WISE = V_AB_ROTATE_CLOCK_WISE_UNIT.multiplyNumber(r1);
         V_AC_CLOCK_WISE.start = A.centre;
         Point p1 = V_AC_CLOCK_WISE.getTheEndPoint();
-
+        points.add(p1);
         Vector V_AB_ROTATE_COUNTER_CLOCK_WISE = V_AB.getVectorRotateByInCounterClockwise(angel);
         Vector V_AB_ROTATE_COUNTER_CLOCK_WISE_UNIT = V_AB_ROTATE_COUNTER_CLOCK_WISE.getTheUnitVector();
         Vector V_AC_COUNTER_CLOCK_WISE = V_AB_ROTATE_COUNTER_CLOCK_WISE_UNIT.multiplyNumber(r1);
         V_AC_COUNTER_CLOCK_WISE.start = A.centre;
         Point p2 = V_AC_COUNTER_CLOCK_WISE.getTheEndPoint();
 
-        points.add(p1);
         if (!p1.equals(p2) && abs(r1 + r2 - r) > MathConsts.Minimum)
         {
             points.add(p2);
