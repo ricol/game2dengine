@@ -19,6 +19,7 @@ import com.wang.math.vector.Vector;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.max;
 
 /**
  * @author ricolwang
@@ -271,8 +272,10 @@ public class PhysicsCollisionProcess
         double r1 = A.radius;
         double r2 = B.radius;
         double r = A.centre.getDistanceFrom(B.centre);
+        double half_r = r / 2;
 
-        double cos = (r2 * r2 - r1 * r1 - r * r) / (-2 * r1 * r2 * r);
+        double cos = half_r / max(r1, r2);
+        if (cos > 1) return points;
         double angel = Math.acos(cos);
 
         Vector V_AB = new Vector(B.centre.x - A.centre.x, B.centre.y - A.centre.y);
