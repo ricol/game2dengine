@@ -5,14 +5,14 @@
  */
 package com.wang.Game2dEngine.Shape;
 
+import com.wang.Game2dEngine.Shape.Interface.IEShape;
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
 import com.wang.Game2dEngine.sprite.Node;
 import com.wang.math.geometry.SpecialRectangleShape;
-import java.awt.Color;
-import com.wang.Game2dEngine.Shape.Interface.IEShape;
+
+import java.awt.*;
 
 /**
- *
  * @author ricolwang
  */
 public class ESpecialRectangleShape extends SpecialRectangleShape implements IEShape

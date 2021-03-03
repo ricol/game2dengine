@@ -5,14 +5,14 @@
  */
 package com.wang.Game2dEngine.Shape;
 
+import com.wang.Game2dEngine.Shape.Interface.IEShape;
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
 import com.wang.Game2dEngine.sprite.Node;
 import com.wang.math.geometry.CircledShape;
-import java.awt.Color;
-import com.wang.Game2dEngine.Shape.Interface.IEShape;
+
+import java.awt.*;
 
 /**
- *
  * @author ricolwang
  */
 public class ECircleShape extends CircledShape implements IEShape
@@ -52,7 +52,7 @@ public class ECircleShape extends CircledShape implements IEShape
     {
         return this;
     }
-    
+
     @Override
     public void draw(IEngineGraphics theGraphicsInTheScene, Color theColor)
     {

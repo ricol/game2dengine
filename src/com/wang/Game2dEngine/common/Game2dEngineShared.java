@@ -6,7 +6,6 @@
 package com.wang.Game2dEngine.common;
 
 /**
- *
  * @author ricolwang
  */
 public class Game2dEngineShared
@@ -16,5 +15,7 @@ public class Game2dEngineShared
     {
 
         UNDECTED, COLLIDED, UNCOLLIDED
-    };
+    }
+
+    ;
 }

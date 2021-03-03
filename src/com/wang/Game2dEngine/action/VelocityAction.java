@@ -6,7 +6,6 @@
 package com.wang.Game2dEngine.action;
 
 /**
- *
  * @author ricolwang
  */
 public class VelocityAction extends Action

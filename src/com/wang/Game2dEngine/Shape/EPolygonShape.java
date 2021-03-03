@@ -5,15 +5,15 @@
  */
 package com.wang.Game2dEngine.Shape;
 
+import com.wang.Game2dEngine.Shape.Interface.IEShape;
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
 import com.wang.Game2dEngine.sprite.Node;
 import com.wang.math.geometry.Line;
 import com.wang.math.geometry.PolygonShape;
-import java.awt.Color;
-import com.wang.Game2dEngine.Shape.Interface.IEShape;
+
+import java.awt.*;
 
 /**
- *
  * @author ricolwang
  */
 public class EPolygonShape extends PolygonShape implements IEShape

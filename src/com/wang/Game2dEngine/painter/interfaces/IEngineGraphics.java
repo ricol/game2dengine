@@ -5,18 +5,11 @@
  */
 package com.wang.Game2dEngine.painter.interfaces;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Polygon;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 /**
- *
  * @author ricolwang
  */
 public interface IEngineGraphics

@@ -7,11 +7,10 @@ package com.wang.Game2dEngine.sprite.UI;
 
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
 import com.wang.Game2dEngine.sprite.Sprite;
-import java.awt.Color;
-import java.awt.Font;
+
+import java.awt.*;
 
 /**
- *
  * @author ricolwang Remember to set width and height of the text
  */
 public class SLabel extends Sprite

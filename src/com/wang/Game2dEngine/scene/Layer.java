@@ -6,10 +6,10 @@
 package com.wang.Game2dEngine.scene;
 
 import com.wang.Game2dEngine.sprite.Sprite;
+
 import java.util.ArrayList;
 
 /**
- *
  * @author ricolwang
  */
 public class Layer

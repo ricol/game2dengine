@@ -9,15 +9,13 @@ import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
 import com.wang.Game2dEngine.painter.interfaces.IPainter;
 import com.wang.Game2dEngine.painter.interfaces.IUserInteraction;
 import com.wang.Game2dEngine.painter.interfaces.IWindow;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
+
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 /**
- *
  * @author ricolwang
  */
 public class Painter implements IPainter, IUserInteraction, IWindow

@@ -6,10 +6,10 @@
 package com.wang.Game2dEngine.Shape.Interface;
 
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
-import java.awt.Color;
+
+import java.awt.*;
 
 /**
- *
  * @author ricolwang
  */
 public interface IEShape extends IENode

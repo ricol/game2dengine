@@ -1,10 +1,6 @@
 package com.wang.Game2dEngine.monitor;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,8 +10,8 @@ import java.util.Set;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
- *
  * @author ricolwang
  */
 public class InputMonitor implements MouseListener, KeyListener, MouseMotionListener

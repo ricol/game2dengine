@@ -6,19 +6,12 @@
 package com.wang.Game2dEngine.painter;
 
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Polygon;
+
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 /**
- *
  * @author ricolwang
  */
 public class EngineGraphics implements IEngineGraphics
@@ -34,7 +27,7 @@ public class EngineGraphics implements IEngineGraphics
 
     @Override
     public void drawImage(Image img, int x, int y,
-            int width, int height)
+                          int width, int height)
     {
         theGraphics.drawImage(img, x, y, width, height, null);
     }

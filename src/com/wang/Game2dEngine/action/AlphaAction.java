@@ -6,7 +6,6 @@
 package com.wang.Game2dEngine.action;
 
 /**
- *
  * @author ricolwang
  */
 public class AlphaAction extends Action

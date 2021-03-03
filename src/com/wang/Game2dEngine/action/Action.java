@@ -6,10 +6,10 @@
 package com.wang.Game2dEngine.action;
 
 import com.wang.Game2dEngine.sprite.Sprite;
+
 import java.util.Random;
 
 /**
- *
  * @author ricolwang
  */
 public abstract class Action

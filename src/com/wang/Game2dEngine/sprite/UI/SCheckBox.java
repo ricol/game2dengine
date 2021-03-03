@@ -8,10 +8,9 @@ package com.wang.Game2dEngine.sprite.UI;
 import com.wang.Game2dEngine.sprite.Sprite;
 
 /**
- *
  * @author ricolwang
  */
 public class SCheckBox extends Sprite
 {
-    
+
 }

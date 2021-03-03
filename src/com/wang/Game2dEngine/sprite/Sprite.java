@@ -18,25 +18,19 @@ import com.wang.Game2dEngine.scene.Scene;
 import com.wang.math.common.MathConsts;
 import com.wang.math.geometry.Line;
 import com.wang.math.vector.Vector;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics2D;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import static java.lang.Math.abs;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Set;
-import java.util.WeakHashMap;
-import javax.imageio.ImageIO;
+import java.util.*;
+
+import static java.lang.Math.abs;
 
 /**
- *
  * @author ricolwang
  */
 public abstract class Sprite extends Node
@@ -719,7 +713,7 @@ public abstract class Sprite extends Node
         }
         this.theQueueOfActions.add(aSetOfActions);
     }
-    
+
     public void removeActions(Set<Action> aSetOfActions)
     {
         for (Action aAction : aSetOfActions)

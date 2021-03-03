@@ -6,10 +6,9 @@
 package com.wang.Game2dEngine.director;
 
 /**
- *
  * @author ricolwang
  */
 public class Camera
 {
-    
+
 }

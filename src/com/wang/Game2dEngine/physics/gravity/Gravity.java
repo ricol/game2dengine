@@ -6,7 +6,6 @@
 package com.wang.Game2dEngine.physics.gravity;
 
 /**
- *
  * @author ricolwang
  */
 public class Gravity

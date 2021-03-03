@@ -7,10 +7,10 @@ package com.wang.Game2dEngine.sprite.other;
 
 import com.wang.Game2dEngine.painter.interfaces.IEngineGraphics;
 import com.wang.Game2dEngine.sprite.Sprite;
-import java.awt.Color;
+
+import java.awt.*;
 
 /**
- *
  * @author ricolwang
  */
 public class LifeBar extends Sprite

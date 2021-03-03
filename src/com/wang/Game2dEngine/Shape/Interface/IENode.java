@@ -8,7 +8,6 @@ package com.wang.Game2dEngine.Shape.Interface;
 import com.wang.Game2dEngine.sprite.Node;
 
 /**
- *
  * @author ricolwang
  */
 public interface IENode

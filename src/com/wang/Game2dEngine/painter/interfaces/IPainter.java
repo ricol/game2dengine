@@ -5,10 +5,9 @@
  */
 package com.wang.Game2dEngine.painter.interfaces;
 
-import java.awt.Component;
+import java.awt.*;
 
 /**
- *
  * @author ricolwang
  */
 public interface IPainter

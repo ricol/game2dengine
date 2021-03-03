@@ -6,10 +6,10 @@
 package com.wang.Game2dEngine.action;
 
 import com.wang.Game2dEngine.sprite.Sprite;
+
 import static java.lang.Math.abs;
 
 /**
- *
  * @author ricolwang
  */
 public class VelocityXToAction extends VelocityAction

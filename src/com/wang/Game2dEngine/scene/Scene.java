@@ -9,8 +9,9 @@ import com.wang.Game2dEngine.painter.EngineGraphics;
 import com.wang.Game2dEngine.painter.Painter;
 import com.wang.Game2dEngine.physics.collision.PhysicsCollisionProcess;
 import com.wang.Game2dEngine.sprite.Sprite;
-import java.awt.Color;
-import java.awt.Graphics;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -20,10 +21,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import javax.swing.Timer;
 
 /**
- *
  * @author ricolwang
  */
 public class Scene extends Painter implements Runnable
@@ -338,7 +337,8 @@ public class Scene extends Painter implements Runnable
         {
             allInLoop.clear();
             return;
-        };
+        }
+        ;
 
         if (theImageBackground != null)
         {

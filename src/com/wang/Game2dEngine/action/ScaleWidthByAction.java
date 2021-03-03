@@ -8,7 +8,6 @@ package com.wang.Game2dEngine.action;
 import static java.lang.Math.abs;
 
 /**
- *
  * @author ricolwang
  */
 public class ScaleWidthByAction extends ScaleAction

@@ -9,7 +9,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.MouseListener;
 
 /**
- *
  * @author ricolwang
  */
 public interface IUserInteraction

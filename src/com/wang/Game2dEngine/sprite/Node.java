@@ -6,11 +6,11 @@
 package com.wang.Game2dEngine.sprite;
 
 import com.wang.Game2dEngine.Shape.ECircleShape;
-import java.util.Random;
 import com.wang.Game2dEngine.Shape.Interface.IEShape;
 
+import java.util.Random;
+
 /**
- *
  * @author ricolwang
  */
 public class Node

@@ -7,15 +7,12 @@ package com.wang.Game2dEngine.director;
 
 import com.wang.Game2dEngine.monitor.InputMonitor;
 import com.wang.Game2dEngine.scene.Scene;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyListener;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
- *
  * @author ricolwang
  */
 public class Director
@@ -91,7 +88,7 @@ public class Director
 
             parent.add(scene.getComponent(), BorderLayout.CENTER);
             parent.repaint();
-            
+
             //fix menu hide behind frame issue
             Component o = parent.getParent();
             while (!(o instanceof JFrame))

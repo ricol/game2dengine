@@ -8,7 +8,6 @@ package com.wang.Game2dEngine.action;
 import static java.lang.Math.abs;
 
 /**
- *
  * @author ricolwang
  */
 public class CountdownByAction extends Action

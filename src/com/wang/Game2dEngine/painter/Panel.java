@@ -5,12 +5,10 @@
  */
 package com.wang.Game2dEngine.painter;
 
-import java.awt.Canvas;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 /**
- *
  * @author ricolwang
  */
 public class Panel extends Canvas
@@ -31,7 +29,7 @@ public class Panel extends Canvas
             strategy = this.getBufferStrategy();
             this.setIgnoreRepaint(true);
         }
-        
+
         return strategy.getDrawGraphics();
     }
 }

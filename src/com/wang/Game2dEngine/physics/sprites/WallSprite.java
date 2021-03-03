@@ -9,7 +9,6 @@ import com.wang.Game2dEngine.Shape.ESpecialRectangleShape;
 import com.wang.Game2dEngine.sprite.Sprite;
 
 /**
- *
  * @author ricolwang
  */
 public class WallSprite extends Sprite
@@ -24,7 +23,9 @@ public class WallSprite extends Sprite
     {
 
         LEFT, RIGHT, TOP, BOTTOM
-    };
+    }
+
+    ;
 
     public WALLTYPE wallType = WALLTYPE.LEFT;
 
