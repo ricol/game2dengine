@@ -13,9 +13,9 @@ import java.awt.*;
 public interface IWindow
 {
 
-    public void setSize(Dimension d);
+    void setSize(Dimension d);
 
-    public int getWidth();
+    int getWidth();
 
-    public int getHeight();
+    int getHeight();
 }

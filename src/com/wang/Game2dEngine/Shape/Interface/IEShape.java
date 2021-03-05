@@ -15,9 +15,9 @@ import java.awt.*;
 public interface IEShape extends IENode
 {
 
-    public IEShape getShape();
+    IEShape getShape();
 
-    public void refresh(double changeX, double changeY, double changeWidth, double changeHeight);
+    void refresh(double changeX, double changeY, double changeWidth, double changeHeight);
 
-    public void draw(IEngineGraphics theGraphicsInTheScene, Color theColor);
+    void draw(IEngineGraphics theGraphicsInTheScene, Color theColor);
 }

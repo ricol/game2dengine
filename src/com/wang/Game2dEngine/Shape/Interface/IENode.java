@@ -13,7 +13,7 @@ import com.wang.Game2dEngine.sprite.Node;
 public interface IENode
 {
 
-    public Node getNode();
+    Node getNode();
 
-    public void setTheNode(Node theNode);
+    void setTheNode(Node theNode);
 }

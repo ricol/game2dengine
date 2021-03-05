@@ -10,14 +10,14 @@ import static java.lang.Math.abs;
 /**
  * @author ricolwang
  */
-public class AccelarationXByAction extends AccelarationAction
+public class AccelerationXByAction extends AccelerationAction
 {
     double accelarationXBy;
     float accelarationXByDuration;
     double accelarationXBySpeed;
     double accelarationXByCurrent;
 
-    public AccelarationXByAction()
+    public AccelerationXByAction()
     {
         this.accelarationXBy = 0;
         this.accelarationXByDuration = 0;

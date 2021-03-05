@@ -11,8 +11,8 @@ package com.wang.Game2dEngine.physics.gravity;
 public class Gravity
 {
 
-    public double GX = 9.8f;
-    public double GY = 0f;
+    public double GX;
+    public double GY;
 
     public Gravity(double gx, double gy)
     {

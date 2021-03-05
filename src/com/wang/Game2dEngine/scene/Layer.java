@@ -16,11 +16,11 @@ public class Layer
 {
 
     public Scene theScene;
-    public int zOrder = -1;
+    public int zOrder;
 
-    public ArrayList<Sprite> AllObjects = new ArrayList();
-    public ArrayList<Sprite> DeadObjects = new ArrayList();
-    public ArrayList<Sprite> NewObjects = new ArrayList();
+    public ArrayList<Sprite> AllObjects = new ArrayList<>();
+    public ArrayList<Sprite> DeadObjects = new ArrayList<>();
+    public ArrayList<Sprite> NewObjects = new ArrayList<>();
 
     public Layer(int zOrder, Scene theScene)
     {

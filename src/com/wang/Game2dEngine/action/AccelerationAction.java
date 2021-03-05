@@ -8,7 +8,7 @@ package com.wang.Game2dEngine.action;
 /**
  * @author ricolwang
  */
-public class AccelarationAction extends Action
+public class AccelerationAction extends Action
 {
 
 }

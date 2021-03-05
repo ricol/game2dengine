@@ -35,13 +35,13 @@ public class MoveCentreYToAction extends MoveAction
         }
     }
 
-    public void MoveCentreYTo(double x, float duration)
+    public void moveCentreYTo(double y, float duration)
     {
         if (duration <= 0)
         {
             duration = 0;
         }
-        this.moveCentreYTo = x;
+        this.moveCentreYTo = y;
         this.moveCentreYToDuration = abs(duration * 1000);
     }
 

@@ -15,47 +15,47 @@ import java.awt.image.BufferedImage;
 public interface IEngineGraphics
 {
 
-    public void drawString(String text, float x, float y);
+    void drawString(String text, float x, float y);
 
-    public void drawImage(Image img, int x, int y, int width, int height);
+    void drawImage(Image img, int x, int y, int width, int height);
 
-    public void setColor(Color color);
+    void setColor(Color color);
 
-    public void fillRect(int x, int y, int width, int height);
+    void fillRect(int x, int y, int width, int height);
 
-    public void dispose();
+    void dispose();
 
-    public void drawRect(int x, int y, int width, int height);
+    void drawRect(int x, int y, int width, int height);
 
-    public void drawLine(int x0, int y0, int x1, int y1);
+    void drawLine(int x0, int y0, int x1, int y1);
 
-    public void fillArc(int x, int y, int width, int height, int startAngel, int endAngel);
+    void fillArc(int x, int y, int width, int height, int startAngel, int endAngel);
 
-    public void drawArc(int x, int y, int width, int height, int startAngel, int endAngel);
+    void drawArc(int x, int y, int width, int height, int startAngel, int endAngel);
 
-    public void setBackground(Color blackTransparent);
+    void setBackground(Color blackTransparent);
 
-    public void clearRect(int x, int y, int width, int height);
+    void clearRect(int x, int y, int width, int height);
 
-    public AffineTransform getTransform();
+    AffineTransform getTransform();
 
-    public void rotate(double theta, float x, float y);
+    void rotate(double theta, float x, float y);
 
-    public void setTransform(AffineTransform t);
+    void setTransform(AffineTransform t);
 
-    public Composite getComposite();
+    Composite getComposite();
 
-    public void setComposite(AlphaComposite ac);
+    void setComposite(AlphaComposite ac);
 
-    public void drawImage(BufferedImage image, int x, int y);
+    void drawImage(BufferedImage image, int x, int y);
 
-    public void setComposite(Composite c);
+    void setComposite(Composite c);
 
-    public void setFont(Font f);
+    void setFont(Font f);
 
-    public void fillOval(int x, int y, int width, int height);
+    void fillOval(int x, int y, int width, int height);
 
-    public void drawPolygon(Polygon p);
+    void drawPolygon(Polygon p);
 
-    public void setStroke(BasicStroke basicStroke);
+    void setStroke(BasicStroke basicStroke);
 }

@@ -12,8 +12,6 @@ import com.wang.Game2dEngine.sprite.Sprite;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
@@ -32,7 +30,6 @@ public class Scene extends Painter implements Runnable
     public static int MAX_LAYER = 9;
     public boolean bShowMemoryUsage = true;
     public BufferedImage theImageBackground;
-    public final Object theSynObject = new Object();
     private boolean bPaused;
     private boolean bQuit;
     private boolean bRunning;
@@ -61,27 +58,12 @@ public class Scene extends Painter implements Runnable
     protected Random theRandom = new Random();
     private Thread theThread;
 
-    private final HashMap<Integer, Layer> layers = new HashMap();
-    private final ArrayList<Sprite> allNodes = new ArrayList();
-    private final ArrayList<Sprite> allInLoop = new ArrayList();
+    private final HashMap<Integer, Layer> layers = new HashMap<>();
+    private final ArrayList<Sprite> allNodes = new ArrayList<>();
+    private final ArrayList<Sprite> allInLoop = new ArrayList<>();
 
-    private final Timer theTimer = new Timer(10, new ActionListener()
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            timeEllapsed += 0.01;
-        }
-    });
-
-    private final Timer theTimerForMemory = new Timer(500, new ActionListener()
-    {
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            collectMemoryInfo();
-        }
-    });
+    private final Timer theTimer = new Timer(10, e -> timeEllapsed += 0.01);
+    private final Timer theTimerForMemory = new Timer(500, e -> collectMemoryInfo());
 
     public Scene()
     {
@@ -289,10 +271,7 @@ public class Scene extends Painter implements Runnable
                 aSprite.updateState(currentTime);
                 aSprite.didUpdateState();
 
-                if (aSprite instanceof Sprite)
-                {
-                    actionCount += ((Sprite) aSprite).getActionCount();
-                }
+                actionCount += aSprite.getActionCount();
 
                 if (!aSprite.isAlive())
                 {
@@ -338,7 +317,6 @@ public class Scene extends Painter implements Runnable
             allInLoop.clear();
             return;
         }
-        ;
 
         if (theImageBackground != null)
         {
@@ -521,7 +499,6 @@ public class Scene extends Painter implements Runnable
     public void setFps(int fps)
     {
         if (fps > 150) this.FPS = 150;
-        else if (fps < 50) this.FPS = 50;
-        else this.FPS = fps;
+        else this.FPS = Math.max(fps, 50);
     }
 }

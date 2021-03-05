@@ -10,36 +10,36 @@ import static java.lang.Math.abs;
 /**
  * @author ricolwang
  */
-public class AccelarationYByAction extends AccelarationAction
+public class AccelerationYByAction extends AccelerationAction
 {
 
-    double accelarationYBy;
-    float accelarationYByDuration;
-    double accelarationYBySpeed;
-    double accelarationYByCurrent;
+    double accelerationYBy;
+    float accelerationYByDuration;
+    double accelerationYBySpeed;
+    double accelerationYByCurrent;
 
-    public AccelarationYByAction()
+    public AccelerationYByAction()
     {
-        this.accelarationYBy = 0;
-        this.accelarationYByDuration = 0;
-        this.accelarationYBySpeed = 0;
-        this.accelarationYByCurrent = 0;
+        this.accelerationYBy = 0;
+        this.accelerationYByDuration = 0;
+        this.accelerationYBySpeed = 0;
+        this.accelerationYByCurrent = 0;
     }
 
-    public void accelarationYBy(double x, float duration)
+    public void accelerationYBy(double y, float duration)
     {
         if (duration <= 0)
         {
             duration = 0;
             bImmediately = true;
         }
-        this.accelarationYBy = x;
-        this.accelarationYByDuration = abs(duration * 1000);
+        this.accelerationYBy = y;
+        this.accelerationYByDuration = abs(duration * 1000);
         if (!bImmediately)
         {
-            this.accelarationYBySpeed = x / abs(duration * 1000);
+            this.accelerationYBySpeed = y / abs(duration * 1000);
         }
-        this.accelarationYByCurrent = 0;
+        this.accelerationYByCurrent = 0;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AccelarationYByAction extends AccelarationAction
     {
         if (bImmediately)
         {
-            this.theSprite.setAccelarationY(this.theSprite.getAccelarationY() + accelarationYBy);
+            this.theSprite.setAccelarationY(this.theSprite.getAccelarationY() + accelerationYBy);
             bComplete = true;
         }
 
@@ -56,15 +56,15 @@ public class AccelarationYByAction extends AccelarationAction
             return;
         }
 
-        if (abs(this.accelarationYBy) > Action.MINIMUM)
+        if (abs(this.accelerationYBy) > Action.MINIMUM)
         {
             double x = this.theSprite.getAccelarationY();
-            double value = this.accelarationYBySpeed * runningTime;
-            this.accelarationYByCurrent += value;
+            double value = this.accelerationYBySpeed * runningTime;
+            this.accelerationYByCurrent += value;
 
-            if (this.accelarationYBySpeed > 0)
+            if (this.accelerationYBySpeed > 0)
             {
-                if (this.accelarationYByCurrent > this.accelarationYBy)
+                if (this.accelerationYByCurrent > this.accelerationYBy)
                 {
                     bComplete = true;
                 } else
@@ -73,7 +73,7 @@ public class AccelarationYByAction extends AccelarationAction
                 }
             } else
             {
-                if (this.accelarationYByCurrent < this.accelarationYBy)
+                if (this.accelerationYByCurrent < this.accelerationYBy)
                 {
                     bComplete = true;
                 } else

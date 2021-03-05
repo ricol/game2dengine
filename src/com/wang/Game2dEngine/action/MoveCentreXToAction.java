@@ -35,7 +35,7 @@ public class MoveCentreXToAction extends MoveAction
         }
     }
 
-    public void MoveCentreXTo(double x, float duration)
+    public void moveCentreXTo(double x, float duration)
     {
         if (duration <= 0)
         {

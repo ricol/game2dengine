@@ -15,7 +15,7 @@ import java.util.Random;
 public abstract class Action
 {
 
-    public String identifer = this.getClass().getName();
+    public String identifier = this.getClass().getName();
     protected boolean bImmediately;
 
     public static final double MINIMUM = 1e-03;
@@ -45,7 +45,7 @@ public abstract class Action
     @Override
     public String toString()
     {
-        return "Action: " + this.getClass().getName() + " - id: " + identifer;
+        return "Action: " + this.getClass().getName() + " - id: " + identifier;
     }
 
     public Sprite getTheSprite()

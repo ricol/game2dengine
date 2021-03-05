@@ -12,5 +12,5 @@ import java.awt.*;
  */
 public interface IPainter
 {
-    public Component getComponent();
+    Component getComponent();
 }

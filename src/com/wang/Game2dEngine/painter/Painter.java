@@ -21,7 +21,7 @@ import java.awt.image.BufferedImage;
 public class Painter implements IPainter, IUserInteraction, IWindow
 {
 
-    private Panel panel = new Panel();
+    private final Panel panel = new Panel();
     protected BufferedImage theImage;
     protected IEngineGraphics theEngineGraphics;
 

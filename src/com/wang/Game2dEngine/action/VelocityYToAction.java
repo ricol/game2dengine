@@ -35,13 +35,13 @@ public class VelocityYToAction extends VelocityAction
         }
     }
 
-    public void velocityYTo(double x, float duration)
+    public void velocityYTo(double y, float duration)
     {
         if (duration <= 0)
         {
             duration = 0;
         }
-        this.velocityYTo = x;
+        this.velocityYTo = y;
         this.velocityYToDuration = abs(duration * 1000);
     }
 

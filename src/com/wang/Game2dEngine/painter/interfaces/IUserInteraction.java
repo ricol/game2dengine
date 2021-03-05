@@ -14,7 +14,7 @@ import java.awt.event.MouseListener;
 public interface IUserInteraction
 {
 
-    public void addMouseListener(MouseListener listener);
+    void addMouseListener(MouseListener listener);
 
-    public void addComponentListener(ComponentAdapter componentAdapter);
+    void addComponentListener(ComponentAdapter componentAdapter);
 }
