@@ -30,10 +30,8 @@ open class Scene : Painter(), Runnable
         private set
     private var bQuit = false
     private var bRunning = false
-    private var _red = 0
-    private var _green = 0
-    private var _blue = 0
-    private var theBackgroundColor = Color(red, green, blue)
+    private var theBackgroundColor: Color? = null
+        get() = Color(red, green, blue)
     private var bEnableCollisionDetect = false
     private var lastFPSTime = System.currentTimeMillis()
     private val FPS_UPDATE_INTERVAL = 500
@@ -295,38 +293,35 @@ open class Scene : Painter(), Runnable
         allInLoop.clear()
     }
 
-    var red: Int
+    var red: Int = 0
         set(value)
         {
-            if (value >= 0 && value <= 255)
+            if (value in 0..255)
             {
-                _red = value
-                theBackgroundColor = Color(_red, _green, _blue)
+                field = value
+                theBackgroundColor = Color(red, green, blue)
             }
         }
-        get() = _red
 
-    var green: Int
+    var green: Int = 0
         set(value)
         {
-            if (value >= 0 && value <= 255)
+            if (value in 0..255)
             {
-                _green = value
-                theBackgroundColor = Color(_red, _green, blue)
+                field = value
+                theBackgroundColor = Color(red, green, blue)
             }
         }
-        get() = _green
 
-    var blue: Int
+    var blue: Int = 0
         set(value)
         {
-            if (value >= 0 && value <= 255)
+            if (value in 0..255)
             {
-                _blue = value
-                theBackgroundColor = Color(_red, _green, _blue)
+                field = value
+                theBackgroundColor = Color(red, green, blue)
             }
         }
-        get() = _blue
 
     fun collisionDetectEnabled(): Boolean
     {

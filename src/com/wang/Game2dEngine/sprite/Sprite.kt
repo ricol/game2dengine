@@ -29,7 +29,7 @@ import javax.imageio.ImageIO
 /**
  * @author ricolwang
  */
-abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0, width: Double = 0.0, height: Double = 0.0, var mass: Double = 0.0, velocityX: Double = 0.0, velocityY: Double = 0.0) : Node(x, y, width, height)
+abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0, width: Double = 0.0, height: Double = 0.0, velocityX: Double = 0.0, velocityY: Double = 0.0) : Node(x, y, width, height)
 {
     var bChild = false
     var parent: Sprite? = null
@@ -68,9 +68,7 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
     open var life = EVER.toDouble() //in seconds
     private var lastUpdateTime: Double
     val startTime = System.currentTimeMillis().toDouble()
-    private var _accelaration = Vector(0.0, 0.0)
     private val accelarationChange = Vector(0.0, 0.0)
-    private var _velocity = Vector(0.0, 0.0)
     private val velocityChange = Vector(0.0, 0.0)
     private val change = Vector(0.0, 0.0)
     var velocityAngle = 0.0
@@ -92,7 +90,14 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
         }
     var collisionTargetCategory = 0x00
         private set
-
+    var mass: Double = 0.0
+        set(value)
+        {
+            if (mass >= 0)
+            {
+                field = value
+            }
+        }
     //sets for actions and each action will execute in parallel.
     private val theSetOfActionsWillDelete: MutableSet<Action> = HashSet()
     private val theSetOfActionsWillAdd: MutableSet<Action> = HashSet()
@@ -113,11 +118,9 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
     private val theSetOfAttached: MutableSet<Sprite> = HashSet()
     var gravity: Gravity? = null
         private set
-    private var _red = 0
-    private var _green = 0
-    private var _blue = 0
     var angle = 0.0
-    var color = Color(_red / 255.0f, _green / 255.0f, _blue / 255.0f, alpha)
+    var color: Color? = null
+        get() = Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha)
         private set
     private var theImageCanvas: BufferedImage? = null
     private var theGraphics: Graphics2D? = null
@@ -125,12 +128,13 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
     private val blackTransparent = Color(0, 0, 0, 0)
     var theEngineGraphics = EngineGraphics()
 
-    constructor(x: Double, y: Double, width: Double, height: Double, mass: Double, velocityX: Double, velocityY: Double, velocityAngle: Double) : this(x, y, width, height, mass, velocityX, velocityY)
+    constructor(x: Double, y: Double, width: Double, height: Double, mass: Double, velocityX: Double, velocityY: Double, velocityAngle: Double) : this(x, y, width, height, velocityX, velocityY)
     {
+        this.mass = mass
         this.velocityAngle = velocityAngle
     }
 
-    constructor(imagename: String?) : this(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    constructor(imagename: String?) : this(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     {
         theImage = imagename?.let { ResourceCache.Companion.sharedInstance.getImage(it) }
         if (theImage == null)
@@ -185,8 +189,8 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
         velocity.y += velocityChange.y
         change.x = velocity.x * t
         change.y = velocity.y * t
-        x = x + change.x
-        y = y + change.y
+        x += change.x
+        y += change.y
         val IncAngle = velocityAngle * t
         angle += IncAngle
 
@@ -619,12 +623,12 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
 
     fun applyGravity(theG: Gravity?)
     {
-        if (theG != null)
+        gravity = if (theG != null)
         {
-            gravity = Gravity(theG.GX, theG.GY)
+            Gravity(theG.GX, theG.GY)
         } else
         {
-            gravity = null
+            null
         }
     }
 
@@ -667,20 +671,18 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
             velocity.y = value
         }
 
-    var velocity: Vector
+    var velocity: Vector = Vector(0.0, 0.0)
         set(value)
         {
-            _velocity.x = value.x
-            _velocity.y = value.y
+            field.x = value.x
+            field.y = value.y
         }
-        get() = _velocity
 
-    var acceleration: Vector
-        get() = _accelaration
+    var acceleration: Vector = Vector(0.0, 0.0)
         set(value)
         {
-            _accelaration.x = value.x
-            _accelaration.y = value.y
+            field.x = value.x
+            field.y = value.y
         }
 
     var accelarationX: Double
@@ -695,21 +697,6 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
         {
             acceleration.y = value
         }
-
-    @JvmName("getMass1")
-    fun getMass(): Double
-    {
-        return mass
-    }
-
-    @JvmName("setMass1")
-    fun setMass(mass: Double)
-    {
-        if (mass >= 0)
-        {
-            this.mass = mass
-        }
-    }
 
     fun gravityEnabled(): Boolean
     {
@@ -777,50 +764,49 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
         }
         get() = super.height
 
-    private var _alpha: Float = 1.0f
-    var alpha: Float
+    var alpha: Float = 1.0f
         set(value)
         {
-            if (value >= 0 && value <= 1)
+            if (value in 0.0..1.0)
             {
-                _alpha = value
-                color = Color(red / 255.0f, green / 255.0f, blue / 255.0f, _alpha)
+                field = value
+                color = Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha)
             }
         }
-        get() = _alpha
+        get() = field
 
-    var red: Int
+    var red: Int = 0
         set(value)
         {
-            if (value >= 0 && value <= 255)
+            if (value in 0..255)
             {
-                _red = value
-                color = Color(_red / 255.0f, _green / 255.0f, _blue / 255.0f, alpha)
+                field = value
+                color = Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha)
             }
         }
-        get() = _red
+        get() = field
 
-    var green: Int
+    var green: Int = 0
         set(value)
         {
-            if (value >= 0 && value <= 255)
+            if (value in 0..255)
             {
-                _green = value
-                color = Color(_red / 255.0f, _green / 255.0f, _blue / 255.0f, alpha)
+                field = value
+                color = Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha)
             }
         }
-        get() = _green
+        get() = field
 
-    var blue: Int
+    var blue: Int = 0
         set(value)
         {
-            if (value >= 0 && value <= 255)
+            if (value in 0..255)
             {
-                _blue = value
-                color = Color(_red / 255.0f, _green / 255.0f, _blue / 255.0f, alpha)
+                field = value
+                color = Color(red / 255.0f, green / 255.0f, blue / 255.0f, alpha)
             }
         }
-        get() = _blue
+        get() = field
 
     fun setLifeTime(life: Double)
     {
@@ -975,13 +961,13 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
 
     fun restoreX()
     {
-        x = x - change.x
+        x -= change.x
         change.x = 0.0
     }
 
     fun restoreY()
     {
-        y = y - change.y
+        y -= change.y
         change.y = 0.0
     }
 
@@ -1005,13 +991,13 @@ abstract class Sprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
 
     fun restoreAccelarationX()
     {
-        accelarationX = accelarationX - accelarationChange.x
+        accelarationX -= accelarationChange.x
         accelarationChange.x = 0.0
     }
 
     fun restoreAccelarationY()
     {
-        accelarationY = accelarationY - accelarationChange.y
+        accelarationY -= accelarationChange.y
         accelarationChange.y = 0.0
     }
 

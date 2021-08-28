@@ -15,52 +15,42 @@ import java.util.*
 open class Node(x: Double, y: Double, width: Double, height: Double)
 {
     var identifier: String? = null
-    private var _x: Double = 0.0
-    open var x
+    open var x: Double = 0.0
         set(value)
         {
             val oldX = this.x
-            _x = value
+            field = value
             refreshShape(value - oldX, 0.0, 0.0, 0.0)
         }
-        get() = _x
-    private var _y: Double = 0.0
-    open var y
+    open var y: Double = 0.0
         set(value)
         {
             val oldY = this.y
-            _y = value
+            field = value
             refreshShape(0.0, value - oldY, 0.0, 0.0)
         }
-        get() = _y
-    private var _width: Double = 0.0
-    open var width
+    open var width: Double = 0.0
         set(value)
         {
             val oldWidth = this.width
-            _width = value
+            field = value
             refreshShape(0.0, 0.0, value - oldWidth, 0.0)
         }
-        get() = _width
-    private var _height: Double = 0.0
-    open var height
+    open var height: Double = 0.0
         set(value)
         {
             val oldHeight = this.height
-            _height = value
+            field = value
             refreshShape(0.0, 0.0, 0.0, value - oldHeight)
         }
-        get() = _height
     protected var theRandom = Random()
-    private var _theShape: IEShape? = null
-    var theShape: IEShape?
+    var theShape: IEShape? = null
         set(value)
         {
-            _theShape = value
+            field = value
             value?.setTheNode(this)
             onShapeAdded(value)
         }
-        get() = _theShape
 
     var centreX: Double
         get() = x + width / 2.0

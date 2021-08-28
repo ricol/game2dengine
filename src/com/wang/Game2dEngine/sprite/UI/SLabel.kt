@@ -22,7 +22,7 @@ class SLabel : Sprite
     var textPosX = 10
     var textPosY = 10
 
-    constructor(x: Double, y: Double, text: String, theTextFont: Font?) : super(x, y, 0.0, 0.0, 0.0, 0.0, 0.0)
+    constructor(x: Double, y: Double, text: String, theTextFont: Font?) : super(x, y, 0.0, 0.0, 0.0, 0.0)
     {
         bCustomDrawing = true
         this.text = text
@@ -33,7 +33,7 @@ class SLabel : Sprite
         green = 255
     }
 
-    constructor(text: String, theTextFont: Font?) : super(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    constructor(text: String, theTextFont: Font?) : super(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     {
         bCustomDrawing = true
         this.text = text
@@ -44,7 +44,7 @@ class SLabel : Sprite
         green = 255
     }
 
-    constructor(text: String) : super(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
+    constructor(text: String) : super(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)
     {
         bCustomDrawing = true
         this.text = text

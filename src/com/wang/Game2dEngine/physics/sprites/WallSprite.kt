@@ -11,7 +11,7 @@ import com.wang.Game2dEngine.sprite.Sprite
 /**
  * @author ricolwang
  */
-open class WallSprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0, width: Double = 0.0, height: Double = 0.0, mass: Double = 0.0, velocityX: Double = 0.0, velocityY: Double = 0.0) : Sprite(x, y, width, height, mass, velocityX, velocityY)
+open class WallSprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0, width: Double = 0.0, height: Double = 0.0, mass: Double = 0.0, velocityX: Double = 0.0, velocityY: Double = 0.0) : Sprite(x, y, width, height, velocityX, velocityY)
 {
     enum class WALLTYPE
     {
@@ -24,5 +24,6 @@ open class WallSprite @JvmOverloads constructor(x: Double = 0.0, y: Double = 0.0
     {
         bCollisionDetect = true
         theShape = ESpecialRectangleShape(x, y, width, height)
+        this.mass = mass
     }
 }

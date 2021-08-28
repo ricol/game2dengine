@@ -14,7 +14,7 @@ import java.awt.Color
  */
 class LifeBar(width: Int, height: Int, life: Int) : Sprite(0.0, 0.0, width.toDouble(), height.toDouble())
 {
-    var current: Int
+    var current: Int = life
     override fun onCustomDraw(theGraphics2D: IEngineGraphics)
     {
         super.onCustomDraw(theGraphics2D) //To change body of generated methods, choose Tools | Templates.
@@ -35,7 +35,6 @@ class LifeBar(width: Int, height: Int, life: Int) : Sprite(0.0, 0.0, width.toDou
 
     init
     {
-        current = life
         bCustomDrawing = true
         red = 255
     }
